@@ -16,3 +16,11 @@ dev_dependencies:
   rmi_generator: ^0.0.3
   built_value_generator: ^6.1.6
   build_runner: ^1.1.2
+  blackbird_device_generator: 
+    path: ../device_generator
+
+dependency_overrides:
+  rmi: 
+    path: ../../dart/remote_method_invocation/rmi
+  rmi_generator: 
+    path: ../../dart/remote_method_invocation/rmi_generator

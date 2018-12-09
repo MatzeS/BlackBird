@@ -6,7 +6,7 @@ part 'simple_device_test.g.dart';
 
 class I2CMaster {}
 
-abstract class SimpleDevice extends _$SimpleDevice implements Device {
+abstract class SimpleDevice implements Device {
   int propertyField;
 
   SimpleDevice(this.propertyField);
@@ -22,4 +22,9 @@ abstract class SimpleDevice extends _$SimpleDevice implements Device {
   void executiveMethod() {
     print('executive');
   }
+}
+
+main() {
+  SimpleDevice device = SimpleDevice.device(1);
+  // device.implementation()
 }
