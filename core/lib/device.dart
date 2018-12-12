@@ -29,7 +29,7 @@ abstract class Device implements RmiTarget {
 
 abstract class Host implements Device {
   Host._();
-  // factory Host.device() => _$HostDevice();
+  factory Host.device() => _$HostDevice();
 
   static Host getRemote(Context context, String uuid) =>
       _$HostRmi.getRemote(context, uuid);

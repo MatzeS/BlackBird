@@ -6,11 +6,11 @@ part of 'simple_device.dart';
 // DeviceGenerator
 // **************************************************************************
 
-class _$SimpleDeviceDevice extends SimpleDevice {
-  _$SimpleDeviceDevice() : super._();
+class _$SimpleDeviceDevice implements SimpleDevice {
+  _$SimpleDeviceDevice();
 
   SimpleDevice implementation(Map<Symbol, Object> dependencies) =>
-      _$SimpleDeviceImplementation(dependencies);
+      _$SimpleDeviceImplementation(this, dependencies);
   @override
   Object invoke(Invocation invocation) =>
       _$SimpleDeviceInvoker.invoke(invocation, this);
@@ -19,27 +19,32 @@ class _$SimpleDeviceDevice extends SimpleDevice {
   SimpleDevice getRemote(Context context, String uuid) =>
       _$SimpleDeviceRmi.getRemote(context, uuid);
 
+  int aProperty;
+
+  Device otherDevice;
+
   int get hashCode => Blackbird().interfaceDevice(this).hashCode;
   Type get runtimeType => Blackbird().interfaceDevice(this).runtimeType;
   Host get host => throw new Exception(
       'cannot get runtime dependencys on device representation');
-  dynamic noSuchMethod(Invocation invocation) =>
-      Blackbird().interfaceDevice(this).noSuchMethod(invocation);
+  void executiveMethod() => Blackbird().interfaceDevice(this).executiveMethod();
   int get aRuntimeDependency => throw new Exception(
       'cannot get runtime dependencys on device representation');
   int get executiveGetter => Blackbird().interfaceDevice(this).executiveGetter;
   set executiveSetter(int value) =>
       Blackbird().interfaceDevice(this).executiveSetter = value;
-
-  String toString() => 'simple device string';
 }
 
 class _$SimpleDeviceImplementation extends SimpleDevice {
+  int _aProperty;
+
   Host _host;
   int _aRuntimeDependency;
   Device _otherDevice;
 
-  _$SimpleDeviceImplementation(Map<Symbol, Object> parameters) : super._() {
+  _$SimpleDeviceImplementation(
+      SimpleDevice delegate, Map<Symbol, Object> parameters)
+      : super._() {
     if (parameters == null) {
       Map<Symbol, Type> types = {};
       Map<Symbol, List<Object>> annotations = {};
@@ -55,13 +60,13 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
     }
 
     _host = parameters[#host];
-    ;
     _aRuntimeDependency = parameters[#aRuntimeDependency];
     _otherDevice = parameters[#otherDevice];
+    _aProperty = delegate.aProperty;
   }
 
   SimpleDevice implementation(Map<Symbol, Object> dependencies) =>
-      _$SimpleDeviceImplementation(dependencies);
+      throw Exception('this is already an implementation');
   @override
   Object invoke(Invocation invocation) =>
       _$SimpleDeviceInvoker.invoke(invocation, this);
@@ -69,8 +74,6 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
       _$SimpleDeviceRmi.provideRemote(context, this);
   SimpleDevice getRemote(Context context, String uuid) =>
       _$SimpleDeviceRmi.getRemote(context, uuid);
-
-  int _aProperty;
 
   Host get host => _host;
   int get aProperty => _aProperty;

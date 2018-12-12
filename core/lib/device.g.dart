@@ -10,7 +10,7 @@ class _$HostDevice implements Host {
   _$HostDevice();
 
   Host implementation(Map<Symbol, Object> dependencies) =>
-      _$HostImplementation(dependencies);
+      _$HostImplementation(this, dependencies);
   @override
   Object invoke(Invocation invocation) =>
       _$HostInvoker.invoke(invocation, this);
@@ -23,15 +23,13 @@ class _$HostDevice implements Host {
   Type get runtimeType => Blackbird().interfaceDevice(this).runtimeType;
   Host get host => throw new Exception(
       'cannot get runtime dependencys on device representation');
-  String toString() => Blackbird().interfaceDevice(this).toString();
-  dynamic noSuchMethod(Invocation invocation) =>
-      Blackbird().interfaceDevice(this).noSuchMethod(invocation);
 }
 
 class _$HostImplementation extends Host {
   Host _host;
 
-  _$HostImplementation(Map<Symbol, Object> parameters) : super._() {
+  _$HostImplementation(Host delegate, Map<Symbol, Object> parameters)
+      : super._() {
     if (parameters == null) {
       Map<Symbol, Type> types = {};
       Map<Symbol, List<Object>> annotations = {};
@@ -45,7 +43,7 @@ class _$HostImplementation extends Host {
   }
 
   Host implementation(Map<Symbol, Object> dependencies) =>
-      _$HostImplementation(dependencies);
+      throw Exception('this is already an implementation');
   @override
   Object invoke(Invocation invocation) =>
       _$HostInvoker.invoke(invocation, this);
