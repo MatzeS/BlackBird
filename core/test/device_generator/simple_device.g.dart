@@ -1,14 +1,16 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'simple_device_test.dart';
+part of 'simple_device.dart';
 
 // **************************************************************************
 // DeviceGenerator
 // **************************************************************************
 
-class _$SimpleDeviceDevice extends SimpleDevice {
-  SimpleDevice implementation() => _$SimpleDeviceImplementation(this);
+class _$SimpleDeviceDevice implements SimpleDevice {
+  _$SimpleDeviceDevice();
 
+  SimpleDevice implementation(Map<Symbol, Object> dependencies) =>
+      _$SimpleDeviceImplementation(dependencies);
   @override
   Object invoke(Invocation invocation) =>
       _$SimpleDeviceInvoker.invoke(invocation, this);
@@ -17,29 +19,48 @@ class _$SimpleDeviceDevice extends SimpleDevice {
   SimpleDevice getRemote(Context context, String uuid) =>
       _$SimpleDeviceRmi.getRemote(context, uuid);
 
-  _$SimpleDeviceDevice(int propertyField) : super(propertyField);
-
-  void executiveMethod() => Blackbird().interfaceDevice(this).executiveMethod();
-
-  set propertyField(int _propertyField) =>
-      throw new Exception('cannot set device property after construction');
-
-  set master(I2CMaster _master) => throw new Exception(
-      'cannot set runtime dependencys (especially not on device representation)');
-  I2CMaster get master => throw new Exception(
+  int get hashCode => Blackbird().interfaceDevice(this).hashCode;
+  Type get runtimeType => Blackbird().interfaceDevice(this).runtimeType;
+  Host get host => throw new Exception(
       'cannot get runtime dependencys on device representation');
+  String toString() => Blackbird().interfaceDevice(this).toString();
+  dynamic noSuchMethod(Invocation invocation) =>
+      Blackbird().interfaceDevice(this).noSuchMethod(invocation);
+  int get aRuntimeDependency => throw new Exception(
+      'cannot get runtime dependencys on device representation');
+  int get executiveGetter => Blackbird().interfaceDevice(this).executiveGetter;
+  set executiveSetter(int value) =>
+      Blackbird().interfaceDevice(this).executiveSetter = value;
 }
 
 class _$SimpleDeviceImplementation extends SimpleDevice {
-  I2CMaster _master;
+  Host _host;
+  int _aRuntimeDependency;
+  Device _otherDevice;
 
-  _$SimpleDeviceImplementation(SimpleDevice device)
-      : super(device.propertyField) {
-    _master = Blackbird().implementDevice(master);
+  _$SimpleDeviceImplementation(Map<Symbol, Object> parameters) : super._() {
+    if (parameters == null) {
+      Map<Symbol, Type> types = {};
+      Map<Symbol, List<Object>> annotations = {};
+      types.putIfAbsent(#host, () => Host);
+      annotations.putIfAbsent(#host, () => []);
+      types.putIfAbsent(#aRuntimeDependency, () => int);
+      annotations.putIfAbsent(#aRuntimeDependency, () => []);
+      types.putIfAbsent(#otherDevice, () => Device);
+      annotations.putIfAbsent(#otherDevice, () => []);
+      annotations[#host].add(Runtime());
+      annotations[#aRuntimeDependency].add(SomeAnnotation('text', const {}));
+      throw new ConstructionInfoException(types, annotations);
+    }
+
+    _host = parameters[#host];
+    ;
+    _aRuntimeDependency = parameters[#aRuntimeDependency];
+    _otherDevice = parameters[#otherDevice];
   }
 
-  SimpleDevice implementation() => _$SimpleDeviceImplementation(this);
-
+  SimpleDevice implementation(Map<Symbol, Object> dependencies) =>
+      _$SimpleDeviceImplementation(dependencies);
   @override
   Object invoke(Invocation invocation) =>
       _$SimpleDeviceInvoker.invoke(invocation, this);
@@ -48,12 +69,16 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
   SimpleDevice getRemote(Context context, String uuid) =>
       _$SimpleDeviceRmi.getRemote(context, uuid);
 
-  set propertyField(int _propertyField) =>
-      throw new Exception('cannot set device property after construction');
+  int _aProperty;
 
-  set master(I2CMaster _master) =>
-      throw new Exception('cannot set runtime dependencys after construction');
-  I2CMaster get master => _master;
+  Host get host => _host;
+  int get aProperty => _aProperty;
+  set aProperty(int _aProperty) => throw new Exception(
+      'cannot change device property after implementationconstruction');
+  Device get otherDevice => _otherDevice;
+  set otherDevice(Device _otherDevice) => throw new Exception(
+      "cannot change module after implementation construction");
+  int get aRuntimeDependency => _aRuntimeDependency;
 }
 
 // **************************************************************************
@@ -62,18 +87,28 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
 
 class _$SimpleDeviceInvoker {
   static dynamic invoke(Invocation invocation, SimpleDevice target) {
-    if (invocation.isGetter && #propertyField == invocation.memberName) {
-      return target.propertyField;
+    if (invocation.isGetter && #aProperty == invocation.memberName) {
+      return target.aProperty;
     }
-    if (invocation.isSetter && #propertyField == invocation.memberName) {
-      target.propertyField = invocation.positionalArguments[0];
+    if (invocation.isSetter && #aProperty == invocation.memberName) {
+      target.aProperty = invocation.positionalArguments[0];
       return null;
     }
-    if (invocation.isGetter && #master == invocation.memberName) {
-      return target.master;
+    if (invocation.isGetter && #otherDevice == invocation.memberName) {
+      return target.otherDevice;
     }
-    if (invocation.isSetter && #master == invocation.memberName) {
-      target.master = invocation.positionalArguments[0];
+    if (invocation.isSetter && #otherDevice == invocation.memberName) {
+      target.otherDevice = invocation.positionalArguments[0];
+      return null;
+    }
+    if (invocation.isGetter && #aRuntimeDependency == invocation.memberName) {
+      return target.aRuntimeDependency;
+    }
+    if (invocation.isGetter && #executiveGetter == invocation.memberName) {
+      return target.executiveGetter;
+    }
+    if (invocation.isSetter && #executiveSetter == invocation.memberName) {
+      target.executiveSetter = invocation.positionalArguments[0];
       return null;
     }
     if (invocation.isMethod && #executiveMethod == invocation.memberName) {
@@ -95,26 +130,44 @@ class _$SimpleDeviceProxy implements SimpleDevice {
   InvocationHandlerFunction _handle;
   _$SimpleDeviceProxy(this._handle) : super();
 
-  int get propertyField {
-    Invocation invocation = Invocation.getter(#propertyField);
+  int get aProperty {
+    Invocation invocation = Invocation.getter(#aProperty);
 
     return _handle(invocation);
   }
 
-  set propertyField(int _propertyField) {
-    Invocation invocation = Invocation.setter(#propertyField, _propertyField);
+  set aProperty(int _aProperty) {
+    Invocation invocation = Invocation.setter(#aProperty, _aProperty);
 
     _handle(invocation);
   }
 
-  I2CMaster get master {
-    Invocation invocation = Invocation.getter(#master);
+  Device get otherDevice {
+    Invocation invocation = Invocation.getter(#otherDevice);
 
     return _handle(invocation);
   }
 
-  set master(I2CMaster _master) {
-    Invocation invocation = Invocation.setter(#master, _master);
+  set otherDevice(Device _otherDevice) {
+    Invocation invocation = Invocation.setter(#otherDevice, _otherDevice);
+
+    _handle(invocation);
+  }
+
+  int get aRuntimeDependency {
+    Invocation invocation = Invocation.getter(#aRuntimeDependency);
+
+    return _handle(invocation);
+  }
+
+  int get executiveGetter {
+    Invocation invocation = Invocation.getter(#executiveGetter);
+
+    return _handle(invocation);
+  }
+
+  set executiveSetter(int value) {
+    Invocation invocation = Invocation.setter(#executiveSetter, value);
 
     _handle(invocation);
   }
@@ -142,6 +195,12 @@ class _$SimpleDeviceProxy implements SimpleDevice {
     return _handle(invocation);
   }
 
+  Host get host {
+    Invocation invocation = Invocation.getter(#host);
+
+    return _handle(invocation);
+  }
+
   String toString() {
     List<Object> arguments = [];
 
@@ -164,25 +223,13 @@ class _$SimpleDeviceProxy implements SimpleDevice {
     return _handle(_$invocation);
   }
 
-  Device implementation() {
+  Device implementation(Map dependencies) {
     List<Object> arguments = [];
-
+    arguments.add(dependencies);
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation =
         Invocation.method(#implementation, arguments, namedArguments);
-
-    return _handle(_$invocation);
-  }
-
-  Device getRemote(Context context, String uuid) {
-    List<Object> arguments = [];
-    arguments.add(context);
-    arguments.add(uuid);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#getRemote, arguments, namedArguments);
 
     return _handle(_$invocation);
   }
@@ -223,7 +270,10 @@ class _$SimpleDeviceRmi {
     rmiRegisterSerializers([]);
   }
 
-  static void _registerStubConstructors(Context context) {}
+  static void _registerStubConstructors(Context context) {
+    context.registerRemoteStubConstructor('Device', Device.getRemote);
+  }
+
   static SimpleDevice getRemote(Context context, String uuid) {
     _registerSerializers();
     _registerStubConstructors(context);

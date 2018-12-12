@@ -6,9 +6,11 @@ part of 'device.dart';
 // DeviceGenerator
 // **************************************************************************
 
-class _$HostDevice extends Host {
-  Host implementation() => _$HostImplementation(this);
+class _$HostDevice implements Host {
+  _$HostDevice();
 
+  Host implementation(Map<Symbol, Object> dependencies) =>
+      _$HostImplementation(dependencies);
   @override
   Object invoke(Invocation invocation) =>
       _$HostInvoker.invoke(invocation, this);
@@ -17,14 +19,33 @@ class _$HostDevice extends Host {
   Host getRemote(Context context, String uuid) =>
       _$HostRmi.getRemote(context, uuid);
 
-  _$HostDevice() : super();
+  int get hashCode => Blackbird().interfaceDevice(this).hashCode;
+  Type get runtimeType => Blackbird().interfaceDevice(this).runtimeType;
+  Host get host => throw new Exception(
+      'cannot get runtime dependencys on device representation');
+  String toString() => Blackbird().interfaceDevice(this).toString();
+  dynamic noSuchMethod(Invocation invocation) =>
+      Blackbird().interfaceDevice(this).noSuchMethod(invocation);
 }
 
 class _$HostImplementation extends Host {
-  _$HostImplementation(Host device) : super() {}
+  Host _host;
 
-  Host implementation() => _$HostImplementation(this);
+  _$HostImplementation(Map<Symbol, Object> parameters) : super._() {
+    if (parameters == null) {
+      Map<Symbol, Type> types = {};
+      Map<Symbol, List<Object>> annotations = {};
+      types.putIfAbsent(#host, () => Host);
+      annotations.putIfAbsent(#host, () => []);
+      annotations[#host].add(Runtime());
+      throw new ConstructionInfoException(types, annotations);
+    }
 
+    _host = parameters[#host];
+  }
+
+  Host implementation(Map<Symbol, Object> dependencies) =>
+      _$HostImplementation(dependencies);
   @override
   Object invoke(Invocation invocation) =>
       _$HostInvoker.invoke(invocation, this);
@@ -32,6 +53,8 @@ class _$HostImplementation extends Host {
       _$HostRmi.provideRemote(context, this);
   Host getRemote(Context context, String uuid) =>
       _$HostRmi.getRemote(context, uuid);
+
+  Host get host => _host;
 }
 
 // **************************************************************************
@@ -40,23 +63,17 @@ class _$HostImplementation extends Host {
 
 class _$DeviceInvoker {
   static dynamic invoke(Invocation invocation, Device target) {
+    if (invocation.isGetter && #host == invocation.memberName) {
+      return target.host;
+    }
     if (invocation.isMethod && #implementation == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 0; i++)
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
         positionalArguments.add(null);
 
-      return target.implementation();
-    }
-    if (invocation.isMethod && #getRemote == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 2; i++)
-        positionalArguments.add(null);
-
-      return target.getRemote(
+      return target.implementation(
         positionalArguments[0],
-        positionalArguments[1],
       );
     }
   }
@@ -74,25 +91,19 @@ class _$DeviceProxy implements Device {
   InvocationHandlerFunction _handle;
   _$DeviceProxy(this._handle) : super();
 
-  Device implementation() {
-    List<Object> arguments = [];
+  Host get host {
+    Invocation invocation = Invocation.getter(#host);
 
+    return _handle(invocation);
+  }
+
+  Device implementation(Map dependencies) {
+    List<Object> arguments = [];
+    arguments.add(dependencies);
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation =
         Invocation.method(#implementation, arguments, namedArguments);
-
-    return _handle(_$invocation);
-  }
-
-  Device getRemote(Context context, String uuid) {
-    List<Object> arguments = [];
-    arguments.add(context);
-    arguments.add(uuid);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#getRemote, arguments, namedArguments);
 
     return _handle(_$invocation);
   }
@@ -170,6 +181,12 @@ class _$HostProxy implements Host {
     return _handle(invocation);
   }
 
+  Host get host {
+    Invocation invocation = Invocation.getter(#host);
+
+    return _handle(invocation);
+  }
+
   String toString() {
     List<Object> arguments = [];
 
@@ -192,25 +209,13 @@ class _$HostProxy implements Host {
     return _handle(_$invocation);
   }
 
-  Device implementation() {
+  Device implementation(Map dependencies) {
     List<Object> arguments = [];
-
+    arguments.add(dependencies);
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation =
         Invocation.method(#implementation, arguments, namedArguments);
-
-    return _handle(_$invocation);
-  }
-
-  Device getRemote(Context context, String uuid) {
-    List<Object> arguments = [];
-    arguments.add(context);
-    arguments.add(uuid);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#getRemote, arguments, namedArguments);
 
     return _handle(_$invocation);
   }
@@ -252,7 +257,8 @@ class _$DeviceRmi {
   }
 
   static void _registerStubConstructors(Context context) {
-    context.registerRemoteStubConstructor('Device', _$DeviceRmi.getRemote);
+    context.registerRemoteStubConstructor('Host', Host.getRemote);
+    context.registerRemoteStubConstructor('Device', Device.getRemote);
   }
 
   static Device getRemote(Context context, String uuid) {
@@ -278,7 +284,10 @@ class _$HostRmi {
     rmiRegisterSerializers([]);
   }
 
-  static void _registerStubConstructors(Context context) {}
+  static void _registerStubConstructors(Context context) {
+    context.registerRemoteStubConstructor('Host', Host.getRemote);
+  }
+
   static Host getRemote(Context context, String uuid) {
     _registerSerializers();
     _registerStubConstructors(context);

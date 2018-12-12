@@ -1,0 +1,15 @@
+targets:
+  $default:
+    builders:
+      blackbird|blackbird:
+        enabled: true
+
+builders:
+  blackbird:
+    target: ":blackbird"
+    import: "package:blackbird/src/device_generator/generator.dart"
+    builder_factories: ["builder"]
+    build_extensions: {".dart": [".blackbird_device.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]

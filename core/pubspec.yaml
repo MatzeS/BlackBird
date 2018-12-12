@@ -1,4 +1,4 @@
-name: blackbird_core
+name: blackbird
 version: 0.0.1
 description: >
 authors:
@@ -13,11 +13,14 @@ dependencies:
   built_collection: ^4.1.0
   
 dev_dependencies:
+  tuple:
   rmi_generator: ^0.0.3
   built_value_generator: ^6.1.6
   build_runner: ^1.1.2
-  blackbird_device_generator: 
-    path: ../device_generator
+  build_test:
+  test:
+  source_gen_class_visitor: 
+    path: ../../dart/source_gen_class_visitor
 
 dependency_overrides:
   rmi: 
