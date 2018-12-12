@@ -1,0 +1,35 @@
+name: blackbird_device_generator
+version: 0.0.1
+description: >
+authors:
+- Matthias Sokolowski <matthias.sokolowski@googlemail.com>
+
+environment:
+  sdk: '>=2.0.0-dev <3.0.0'
+
+dependencies:
+  rmi: 
+    path: ../../dart/remote_method_invocation/rmi
+  built_value: ^6.1.6
+  built_collection: ^4.1.0
+  source_gen_class_visitor: 
+    path: ../../dart/source_gen_class_visitor
+  tuple:
+
+dev_dependencies:
+  rmi_generator: 
+    path: ../../dart/remote_method_invocation/rmi_generator
+  built_value_generator: ^6.1.6
+  build_runner: ^1.1.2
+  test:
+  build_test:
+
+    
+source_gen_class_visitor: 
+    path: ../../dart/source_gen_class_visitor
+
+dependency_overrides:
+  rmi: 
+    path: ../../dart/remote_method_invocation/rmi
+  rmi_generator: 
+    path: ../../dart/remote_method_invocation/rmi_generator
