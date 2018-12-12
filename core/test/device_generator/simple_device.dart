@@ -1,13 +1,10 @@
 import 'dart:async';
 import 'package:test/test.dart';
-import 'package:blackbird/device.dart';
-import 'package:blackbird/src/device_generator/member_identifier.dart';
 import 'package:rmi/proxy.dart';
 import 'package:rmi/remote_method_invocation.dart';
 
 import 'package:source_gen/source_gen.dart';
 import 'package:build/build.dart';
-import 'package:blackbird/blackbird.dart';
 import 'package:build_test/build_test.dart';
 
 import 'package:analyzer/dart/element/element.dart';
@@ -20,6 +17,8 @@ import 'package:source_gen_class_visitor/class_visitor.dart';
 import 'package:source_gen_class_visitor/helper.dart';
 import 'package:source_gen_class_visitor/output_visitor.dart';
 import 'package:source_gen_class_visitor/override_visitor.dart';
+import 'package:blackbird/device.dart';
+import 'package:blackbird/blackbird.dart';
 
 part 'simple_device.g.dart';
 
@@ -46,5 +45,5 @@ abstract class SimpleDevice implements Device {
   set executiveSetter(int value) {}
 
   SimpleDevice._();
-  factory SimpleDevice.device() => _$SimpleDeviceDevice();
+  factory SimpleDevice.device() => new _$SimpleDeviceDevice();
 }

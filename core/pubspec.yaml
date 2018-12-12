@@ -11,6 +11,8 @@ dependencies:
   rmi: ^0.0.3
   built_value: ^6.1.6
   built_collection: ^4.1.0
+  blackbird_device_generator:
+    path: ../device_generator
   
 dev_dependencies:
   tuple:

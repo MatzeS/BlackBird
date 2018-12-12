@@ -6,8 +6,8 @@ part of 'simple_device.dart';
 // DeviceGenerator
 // **************************************************************************
 
-class _$SimpleDeviceDevice implements SimpleDevice {
-  _$SimpleDeviceDevice();
+class _$SimpleDeviceDevice extends SimpleDevice {
+  _$SimpleDeviceDevice() : super._();
 
   SimpleDevice implementation(Map<Symbol, Object> dependencies) =>
       _$SimpleDeviceImplementation(dependencies);
@@ -23,7 +23,6 @@ class _$SimpleDeviceDevice implements SimpleDevice {
   Type get runtimeType => Blackbird().interfaceDevice(this).runtimeType;
   Host get host => throw new Exception(
       'cannot get runtime dependencys on device representation');
-  String toString() => Blackbird().interfaceDevice(this).toString();
   dynamic noSuchMethod(Invocation invocation) =>
       Blackbird().interfaceDevice(this).noSuchMethod(invocation);
   int get aRuntimeDependency => throw new Exception(
@@ -31,6 +30,8 @@ class _$SimpleDeviceDevice implements SimpleDevice {
   int get executiveGetter => Blackbird().interfaceDevice(this).executiveGetter;
   set executiveSetter(int value) =>
       Blackbird().interfaceDevice(this).executiveSetter = value;
+
+  String toString() => 'simple device string';
 }
 
 class _$SimpleDeviceImplementation extends SimpleDevice {

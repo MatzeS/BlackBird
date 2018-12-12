@@ -15,7 +15,7 @@ import 'device.dart';
 class Blackbird {
 //   //todo singleton
 
-//   Blackbird();
+  Blackbird();
 
 //   List<Device> devices; //TODO
 //   List<Host> get hosts => devices.where((d) => d is Host).toList();
