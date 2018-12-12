@@ -37,7 +37,7 @@ abstract class Host implements Device {
 
 class ConstructionInfoException implements Exception {
   final Map<Symbol, Type> types;
-  final Map<Symbol, Object> annotations;
+  final Map<Symbol, List<Object>> annotations;
   ConstructionInfoException(this.types, this.annotations);
   @override
   String toString() {

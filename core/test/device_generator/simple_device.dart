@@ -27,6 +27,25 @@ class SomeAnnotation {
   final Map<String, int> complexvalue;
   const SomeAnnotation(this.someValue, this.complexvalue);
   bool someMethod() => complexvalue.containsKey('asdf');
+
+  operator ==(Object other) {
+    if (other is! SomeAnnotation) return false;
+    SomeAnnotation another = other as SomeAnnotation;
+    if (another.someValue != someValue) return false;
+    if (!another.complexvalue.keys
+        .toSet()
+        .containsAll(this.complexvalue.keys.toSet())) ;
+    if (!this
+        .complexvalue
+        .keys
+        .toSet()
+        .containsAll(another.complexvalue.keys.toSet())) ;
+    if (!another.complexvalue.keys
+        .every((k) => another.complexvalue[k] == this.complexvalue[k]))
+      return false;
+
+    return true;
+  }
 }
 
 abstract class SimpleDevice implements Device {
@@ -37,7 +56,7 @@ abstract class SimpleDevice implements Device {
 
   Device otherDevice;
 
-  @SomeAnnotation('text', {})
+  @SomeAnnotation('text', {'asdf': 123})
   int get aRuntimeDependency;
 
   void executiveMethod() {}
