@@ -34,30 +34,33 @@ class ImplementationVisitor extends BasicDeviceVisitor {
     StringBuffer constructionInfo = new StringBuffer();
     constructionInfo.write('''
           if(parameters == null){
-          Map<Symbol, Type> types = {};  
-          Map<Symbol, List<Object>> annotations = {};  
+            ConstructionInfoException info = new ConstructionInfoException();
     ''');
 
     List<Element> list = [];
     list.addAll(runtimeDependencies);
     list.addAll(modules);
-    list.where((e) => !e.isSynthetic).map((e) => harmonize(e)).forEach((e) {
-      // register type
-      constructionInfo.write('types.putIfAbsent(#${e.item2}, ()=>${e.item1});');
-      // put empty list to annotation map
-      constructionInfo.write('annotations.putIfAbsent(#${e.item2}, ()=>[]);');
+    list.where((e) => !e.isSynthetic).map((e) => harmonize(e)).map((e) {
+      return new Tuple2<String, String>(
+          TypeChecker.fromStatic(e.item1).toString(), e.item2);
+    }).forEach((e) {
+      // register dependency
+      constructionInfo.write('''
+        info.dependencies.add(
+          new Dependency(name: #${e.item2}, type:"${e.item1}", device: this));
+      ''');
     });
     list.where((e) => !e.isSynthetic).forEach((e) {
       e.metadata.forEach((a) {
         //put annotation to list
         constructionInfo.write('''
-            annotations[#${e.displayName}].add(
+            info[#${e.displayName}].annotations.add(
               ${a.toSource().substring(1)}
             );''');
       });
     });
     constructionInfo.write('''
-      throw new ConstructionInfoException(types, annotations);
+      throw info;
     ''');
     constructionInfo.write('}');
 

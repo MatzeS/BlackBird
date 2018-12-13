@@ -10,7 +10,6 @@ import 'package:source_gen_class_visitor/helper.dart';
 import 'package:source_gen_class_visitor/output_visitor.dart';
 import 'package:source_gen_class_visitor/override_visitor.dart';
 import 'src/device_class.dart';
-import 'src/super_class.dart';
 import 'src/implementation_class.dart';
 
 enum DeviceMemberType { property, runtime, executive, module }

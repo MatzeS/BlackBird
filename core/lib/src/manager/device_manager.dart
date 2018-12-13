@@ -1,81 +1,86 @@
 import 'package:blackbird/blackbird.dart';
+import 'package:blackbird/device.dart';
 
-// abstract class DeviceManager {
-//   final Device device;
-//   DeviceManager(this.device);
+abstract class DeviceManager {
+  final Device device;
+  DeviceManager(this.device);
 
-//   Host get currentHost;
-//   bool get isRemoteHosted =>
-//       currentHost != null && currentHost != Blackbird().localDevice;
-//   bool get isLocallyHosted =>
-//       currentHost != null && currentHost == Blackbird().localDevice;
-//   bool get isAvailable => isRemoteHosted || isLocallyHosted;
+  Host get currentHost;
+  bool get isRemoteHosted =>
+      currentHost != null && currentHost != Blackbird().localDevice;
+  bool get isLocallyHosted =>
+      currentHost != null && currentHost == Blackbird().localDevice;
+  bool get isAvailable => isRemoteHosted || isLocallyHosted;
 
-//   Device get interfaceDevice;
-//   Device get implementDevice;
-// }
+  Device get interfaceDevice;
+  Device get implementDevice;
+}
 
-// class AgentManager extends DeviceManager {
-//   Device localHandle;
-//   AgentManager(Device device) : super(device);
+class AgentManager extends DeviceManager {
+  Device localHandle;
+  AgentManager(Device device) : super(device);
 
-//   Device get remoteHandle {
-//     return null; //TODO
-//   }
+  Device get remoteHandle {
+    throw new Exception('not implemented yet'); //TODO
+  }
 
-//   @override
-//   Host get currentHost {
-//     if (localHandle != null) return Blackbird().localDevice;
-//     return remoteHandle?.host;
-//   }
+  @override
+  Host get currentHost {
+    if (localHandle != null) return Blackbird().localDevice;
 
-//   @override
-//   Device get interfaceDevice {
-//     if (localHandle != null) return localHandle;
-//     if (remoteHandle != null) return remoteHandle;
-//   }
+    return remoteHandle?.host;
+  }
 
-//   @override
-//   Device get implementDevice {
-//     if (isRemoteHosted)
-//       throw new Exception('cannot implement remote hosted device');
+  @override
+  Device get interfaceDevice {
+    if (localHandle != null) return localHandle;
+    if (remoteHandle != null) return remoteHandle;
+  }
 
-//     if (localHandle == null) localHandle = device.implementation();
+  @override
+  Device get implementDevice {
+    if (isRemoteHosted)
+      throw new Exception('cannot implement remote hosted device');
 
-//     return localHandle;
-//   }
-// }
+//CONSTRUCT IT
+    if (localHandle == null) {
+      // localHandle = device.implementativn();
+    }
 
-// class HostManager extends DeviceManager {
-//   HostManager(Host device) : super(device);
+    return localHandle;
+  }
+}
 
-//   @override
-//   Device get implementDevice =>
-//       throw new Exception('cannot implement host devices');
+class HostManager extends DeviceManager {
+  HostManager(Host device) : super(device);
 
-//   Device get remoteHandle {
-// // do netowrk connect and get RMI handle
-//     throw new Exception('not yet implemented');
-//   }
+  @override
+  Device get implementDevice =>
+      throw new Exception('cannot implement host devices');
 
-//   @override
-//   Host get currentHost => device;
+  Device get remoteHandle {
+// do netowrk connect and get RMI handle
+    throw new Exception('not yet implemented');
+  }
 
-//   @override
-//   Device get interfaceDevice => throw new Exception('not yet implemented');
-// }
+  @override
+  Host get currentHost => device;
 
-// class LocalDeviceManager extends DeviceManager {
-//   Device localHandle;
+  @override
+  Device get interfaceDevice => remoteHandle;
+}
 
-//   LocalDeviceManager(Host device) : super(device) {
-//     localHandle = device.implementation();
-//   }
+class LocalDeviceManager extends DeviceManager {
+  Device localHandle;
 
-//   @override
-//   Device get implementDevice => localHandle;
-//   @override
-//   Device get interfaceDevice => implementDevice;
-//   @override
-//   Host get currentHost => device;
-// }
+  LocalDeviceManager(Host device) : super(device) {
+    //TODO
+  }
+
+  @override
+  Device get implementDevice => localHandle;
+  @override
+  Device get interfaceDevice => implementDevice;
+  @override
+  Host get currentHost => device;
+}

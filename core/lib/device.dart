@@ -17,6 +17,14 @@ class Executive {
   const Executive();
 }
 
+class SubModule {
+  const SubModule();
+}
+
+class SuperModule {
+  const SuperModule();
+}
+
 abstract class Device implements RmiTarget {
   Device._();
   Device implementation(Map<Symbol, Object> dependencies);
@@ -36,11 +44,31 @@ abstract class Host implements Device {
 }
 
 class ConstructionInfoException implements Exception {
-  final Map<Symbol, Type> types;
-  final Map<Symbol, List<Object>> annotations;
-  ConstructionInfoException(this.types, this.annotations);
+  List<Dependency> dependencies;
+  ConstructionInfoException([this.dependencies]) {
+    if (dependencies == null) dependencies = [];
+  }
+
   @override
   String toString() {
     return 'ConstructionInfoException';
+  }
+
+  @override
+  Dependency operator [](Object key) {
+    return dependencies.firstWhere((d) => d.name == key);
+  }
+}
+
+class Dependency {
+  Device device;
+  Symbol name;
+  String type;
+  bool isModule;
+  bool get isRuntime => !isModule;
+  List<Object> annotations;
+  Dependency(
+      {this.device, this.name, this.type, this.isModule, this.annotations}) {
+    if (annotations == null) annotations = [];
   }
 }

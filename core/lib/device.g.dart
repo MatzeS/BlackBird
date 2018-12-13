@@ -31,12 +31,13 @@ class _$HostImplementation extends Host {
   _$HostImplementation(Host delegate, Map<Symbol, Object> parameters)
       : super._() {
     if (parameters == null) {
-      Map<Symbol, Type> types = {};
-      Map<Symbol, List<Object>> annotations = {};
-      types.putIfAbsent(#host, () => Host);
-      annotations.putIfAbsent(#host, () => []);
-      annotations[#host].add(Runtime());
-      throw new ConstructionInfoException(types, annotations);
+      ConstructionInfoException info = new ConstructionInfoException();
+      info.dependencies.add(new Dependency(
+          name: #host,
+          type: "asset:blackbird/lib/device.dart#Host",
+          device: this));
+      info[#host].annotations.add(Runtime());
+      throw info;
     }
 
     _host = parameters[#host];
