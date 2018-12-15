@@ -21,9 +21,10 @@ main() {
       expect(info.dependencies.length, 3);
     });
     test('has correct dependencyTypes', () {
-      expect(info[#host].type, 'asset:blackbird/lib/device.dart#Host');
-      expect(info[#aRuntimeDependency].type, 'dart:core#int');
-      expect(info[#otherDevice].type, 'asset:blackbird/lib/device.dart#Device');
+      expect(info[#host].type.first, 'asset:blackbird/lib/device.dart#Host');
+      expect(info[#aRuntimeDependency].type.first, 'dart:core#int');
+      expect(info[#otherDevice].type.first,
+          'asset:blackbird/lib/device.dart#Device');
     });
     test('has correct dependencyAnnotations', () {
       expect(info[#host].annotations.length, 1);

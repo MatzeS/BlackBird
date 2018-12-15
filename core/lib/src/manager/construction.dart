@@ -1,20 +1,26 @@
 import 'device_manager.dart';
 import 'package:blackbird/device.dart';
 import 'dependency_builders.dart';
+import 'package:blackbird/blackbird.dart';
 
 List<DependencyBuilder> dependencyBuilders = [];
 
-bool isSuperModule(Type type, List<Object> annotations) {
-  type is Device;
-}
+addDependencyBuilder(DependencyBuilder builder) =>
+    dependencyBuilders.add(builder);
 
 abstract class ConstructionManager extends DeviceManager {
   ConstructionManager(Device device) : super(device);
 
   Object constructDependency(Dependency dependency) {
-    if (dependency.isRuntime) return constructRuntimeDependency(dependency);
-    //TODO
-    throw new Exception();
+    if (dependency.isSuperModule) {
+      return Blackbird().implementDevice(dependency.module);
+    } else if (dependency.isSubModule) {
+      throw new Exception('not yet implemented');
+    } else if (dependency.isRuntime) {
+      return constructRuntimeDependency(dependency);
+    } else {
+      throw new Exception();
+    }
   }
 
   Object constructRuntimeDependency(Dependency dependency) {

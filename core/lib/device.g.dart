@@ -34,8 +34,9 @@ class _$HostImplementation extends Host {
       ConstructionInfoException info = new ConstructionInfoException();
       info.dependencies.add(new Dependency(
           name: #host,
-          type: "asset:blackbird/lib/device.dart#Host",
-          device: this));
+          type: ["asset:blackbird/lib/device.dart#Host", "dart:core#Object"],
+          device: this,
+          module: null));
       info[#host].annotations.add(Runtime());
       throw info;
     }

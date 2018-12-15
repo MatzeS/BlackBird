@@ -10,6 +10,9 @@ import 'package:source_gen_class_visitor/output_visitor.dart';
 import 'package:source_gen_class_visitor/override_visitor.dart';
 import 'visitor.dart';
 import 'package:tuple/tuple.dart';
+import 'type_list.dart';
+
+import '../member_identifier.dart';
 
 import 'dart:async';
 
@@ -40,14 +43,18 @@ class ImplementationVisitor extends BasicDeviceVisitor {
     List<Element> list = [];
     list.addAll(runtimeDependencies);
     list.addAll(modules);
-    list.where((e) => !e.isSynthetic).map((e) => harmonize(e)).map((e) {
-      return new Tuple2<String, String>(
-          TypeChecker.fromStatic(e.item1).toString(), e.item2);
-    }).forEach((e) {
+    list.where((e) => !e.isSynthetic).forEach((e) {
       // register dependency
+
+      String types = typeList(harmonize(e).item1).join('","');
+
       constructionInfo.write('''
         info.dependencies.add(
-          new Dependency(name: #${e.item2}, type:"${e.item1}", device: this));
+          new Dependency(
+            name: #${harmonize(e).item2}, 
+            type: ["$types"], 
+            device: this, 
+            module: ${isModule(e) ? harmonize(e).item2 : 'null'}));
       ''');
     });
     list.where((e) => !e.isSynthetic).forEach((e) {

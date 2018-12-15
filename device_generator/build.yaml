@@ -1,15 +1,25 @@
 targets:
   $default:
     builders:
-      blackbird_device_generator|blackbird_device_generator:
+      blackbird_device_generator|device_generator:
+        enabled: true
+      blackbird_device_generator|filtered_dependency_builder_type_generator:
         enabled: true
 
 builders:
-  blackbird_device_generator:
+  device_generator:
     target: ":blackbird_device_generator"
     import: "package:blackbird_device_generator/src/generator.dart"
     builder_factories: ["builder"]
     build_extensions: {".dart": [".blackbird_device_generator.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]
+  filtered_dependency_builder_type_generator:
+    target: ":blackbird_device_generator"
+    import: "package:blackbird_device_generator/src/filtered_dependency_builder/generator.dart"
+    builder_factories: ["builder"]
+    build_extensions: {".dart": [".filtered_dependency_builder.g.part"]}
     auto_apply: dependents
     build_to: cache
     applies_builders: ["source_gen|combining_builder"]

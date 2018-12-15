@@ -84,7 +84,7 @@ class DeviceGenerator extends Generator {
     // output.write(await superVisitor.output); TODO remove
     output.write(await deviceOutput.output);
     output.write(await implementationOutput.output);
-    print(output.toString());
+    // print(output.toString());
     return output.toString();
   }
 }

@@ -4,14 +4,15 @@ abstract class DependencyBuilder {
   Object build(Dependency dependency);
 }
 
-abstract class FilteredDependencyBuilder<D, R> {
+abstract class FilteredDependencyBuilder<D, R> extends DependencyBuilder {
   List<String> producedTypes;
 
   bool filterDevice(D device) => true;
-  bool filterType(String type) => true;
+  bool filterType(List<String> type) => true;
   bool filterSymbol(Symbol symbol) => true;
   bool filterAnnotations(List<Object> annotations) => true;
 
+  @override
   Object build(Dependency dependency) {
     if (dependency.device is! D) {
       throw new Exception('does not consume this device');
@@ -25,7 +26,11 @@ abstract class FilteredDependencyBuilder<D, R> {
       throw new Exception('does not produce for this dependency');
     }
 
-    if (!producedTypes.contains(dependency.type)) {
+    if (!producedTypes.contains(dependency.type.first)) {
+      throw new Exception('does not produce this type');
+    }
+
+    if (!filterType(dependency.type)) {
       throw new Exception('does not produce this type');
     }
 
@@ -44,9 +49,11 @@ abstract class SpecificAnnotationBuilder<D, R, A>
   bool filterAnnotation(A annotation) => true;
 
   Object buildFiltered(Dependency dependency) {
-    A annotation = dependency.annotations.firstWhere((a) => a is A, orElse: () {
-      throw new Exception('has no fitting annotation for $A');
-    });
+    A annotation = dependency.findAnnotation<A>();
+
+    if (annotation == null) {
+      throw new Exception('no fitting annotation present ($A)');
+    }
 
     if (!filterAnnotation(annotation)) {
       throw new Exception('annotation $annotation does not fit');
@@ -55,5 +62,5 @@ abstract class SpecificAnnotationBuilder<D, R, A>
     return buildFromAnnotation(dependency, annotation);
   }
 
-  buildFromAnnotation(Dependency dependency, A annotation);
+  R buildFromAnnotation(Dependency dependency, A annotation);
 }

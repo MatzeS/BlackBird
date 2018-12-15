@@ -21,9 +21,9 @@ class SubModule {
   const SubModule();
 }
 
-class SuperModule {
-  const SuperModule();
-}
+// class SuperModule {
+//   const SuperModule();
+// }
 
 abstract class Device implements RmiTarget {
   Device._();
@@ -63,12 +63,23 @@ class ConstructionInfoException implements Exception {
 class Dependency {
   Device device;
   Symbol name;
-  String type;
-  bool isModule;
-  bool get isRuntime => !isModule;
+  List<String> type;
+  Device module;
+
   List<Object> annotations;
   Dependency(
-      {this.device, this.name, this.type, this.isModule, this.annotations}) {
+      {this.device, this.name, this.type, this.module, this.annotations}) {
     if (annotations == null) annotations = [];
   }
+
+  A findAnnotation<A>([bool filter(A annotation)]) =>
+      annotations.firstWhere((a) => a is A && (filter == null || filter(a)),
+          orElse: () => null);
+
+  bool get isModule => module != null;
+  bool get isRuntime => !isModule;
+  bool get isSuperModule =>
+      module is Device && findAnnotation<SubModule>() == null;
+  bool get isSubModule =>
+      module is Device && findAnnotation<SubModule>() != null;
 }

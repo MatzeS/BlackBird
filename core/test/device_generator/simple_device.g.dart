@@ -49,14 +49,19 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
       ConstructionInfoException info = new ConstructionInfoException();
       info.dependencies.add(new Dependency(
           name: #host,
-          type: "asset:blackbird/lib/device.dart#Host",
-          device: this));
+          type: ["asset:blackbird/lib/device.dart#Host", "dart:core#Object"],
+          device: this,
+          module: null));
       info.dependencies.add(new Dependency(
-          name: #aRuntimeDependency, type: "dart:core#int", device: this));
+          name: #aRuntimeDependency,
+          type: ["dart:core#int", "dart:core#num", "dart:core#Object"],
+          device: this,
+          module: null));
       info.dependencies.add(new Dependency(
           name: #otherDevice,
-          type: "asset:blackbird/lib/device.dart#Device",
-          device: this));
+          type: ["asset:blackbird/lib/device.dart#Device", "dart:core#Object"],
+          device: this,
+          module: otherDevice));
       info[#host].annotations.add(Runtime());
       info[#aRuntimeDependency]
           .annotations
