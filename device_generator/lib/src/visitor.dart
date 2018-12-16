@@ -3,41 +3,34 @@ import 'package:analyzer/dart/element/visitor.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 
-import 'package:source_gen_class_visitor/class_visitor.dart';
-import 'package:source_gen_class_visitor/helper.dart';
-import 'package:source_gen_class_visitor/output_visitor.dart';
-import 'package:source_gen_class_visitor/override_visitor.dart';
+import 'package:source_gen_helpers/class/class_visitor.dart';
+import 'package:source_gen_helpers/class/util.dart';
+import 'package:source_gen_helpers/class/output_visitor.dart';
+import 'package:source_gen_helpers/class/override_visitor.dart';
 import '../member_identifier.dart';
 
 import 'dart:async';
 
 abstract class BasicDeviceVisitor extends ClassVisitor {
-  BasicDeviceVisitor(ClassElement element) : super(element);
-
-  @override
-  bool where(ClassMemberElement e) =>
-      e.enclosingElement.supertype != null &&
-      !TypeChecker.fromUrl('package:blackbird/device.dart#Device')
-          .isExactly(e.enclosingElement) &&
-      !TypeChecker.fromUrl(
-              'package:rmi/remote_method_invocation.dart#RmiTarget')
-          .isExactly(e.enclosingElement) &&
-      !TypeChecker.fromUrl('package:rmi/invoker.dart#Invocable')
-          .isExactly(e.enclosingElement);
-
-  List<Element> get runtimeDependencies => allClassChildren(classElement)
-      .where((e) =>
-          e.isPublic && e is! ConstructorElement && isRuntimeDependency(e))
+  Future<List<Element>> get runtimeDependencies async =>
+      allClassMember(await classElement)
+          .where((e) => e.isPublic && e is! ConstructorElement)
+          .where((e) => isRuntimeDependency(e))
+          .toList();
+  Future<List<Element>> get properties async =>
+      allClassMember(await classElement)
+          .where((e) => e.isPublic && e is! ConstructorElement)
+          .where((e) => isProperty(e))
+          .toList();
+  Future<List<Element>> get modules async => allClassMember(await classElement)
+      .where((e) => e.isPublic && e is! ConstructorElement)
+      .where((e) => isModule(e))
       .toList();
-  List<Element> get properties => allClassChildren(classElement)
-      .where((e) => e.isPublic && e is! ConstructorElement && isProperty(e))
-      .toList();
-  List<Element> get modules => allClassChildren(classElement)
-      .where((e) => e.isPublic && e is! ConstructorElement && isModule(e))
-      .toList();
-  List<Element> get executables => allClassChildren(classElement)
-      .where((e) => e.isPublic && e is! ConstructorElement && isExecutive(e))
-      .toList();
+  Future<List<Element>> get executables async =>
+      allClassMember(await classElement)
+          .where((e) => e.isPublic && e is! ConstructorElement)
+          .where((e) => isExecutive(e))
+          .toList();
 
   @override
   visitFieldElement(FieldElement element) async {

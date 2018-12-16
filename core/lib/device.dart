@@ -59,7 +59,12 @@ abstract class Device implements RmiTarget {
   @Runtime()
   Host get host;
 
+  @Ignore()
   Device implementation(Map<Symbol, Object> dependencies);
+  @Ignore()
+  Provision provideRemote(Context context);
+  @Ignore()
+  Object invoke(Invocation invocation);
 
   //TODO remove
   static Device getRemote(Context context, String uuid) =>

@@ -13,10 +13,6 @@ import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_gen/src/utils.dart';
 
-import 'package:source_gen_class_visitor/class_visitor.dart';
-import 'package:source_gen_class_visitor/helper.dart';
-import 'package:source_gen_class_visitor/output_visitor.dart';
-import 'package:source_gen_class_visitor/override_visitor.dart';
 import 'package:blackbird/src/manager/dependency_builders.dart';
 import 'package:blackbird/device.dart';
 import 'package:blackbird/blackbird.dart';

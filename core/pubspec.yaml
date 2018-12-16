@@ -21,8 +21,8 @@ dev_dependencies:
   build_runner: ^1.1.2
   build_test:
   test:
-  source_gen_class_visitor: 
-    path: ../../dart/source_gen_class_visitor
+  source_gen_helpers: 
+    path: ../../dart/source_gen_helpers
 
 dependency_overrides:
   rmi: 

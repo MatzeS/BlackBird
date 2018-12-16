@@ -6,12 +6,13 @@ import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_gen/src/utils.dart';
 
-import 'package:source_gen_class_visitor/class_visitor.dart';
-import 'package:source_gen_class_visitor/helper.dart';
-import 'package:source_gen_class_visitor/output_visitor.dart';
-import 'package:source_gen_class_visitor/override_visitor.dart';
+import 'package:source_gen_helpers/class/class_visitor.dart';
+import 'package:source_gen_helpers/class/util.dart';
+import 'package:source_gen_helpers/class/output_visitor.dart';
+import 'package:source_gen_helpers/class/override_visitor.dart';
 import 'device_class.dart';
 import 'implementation_class.dart';
+import 'package:source_gen_helpers/util.dart';
 
 //TODO check for no arg construcotr
 
@@ -31,7 +32,7 @@ class DeviceGenerator extends Generator {
     if (TypeChecker.fromUrl("asset:blackbird/lib/device.dart#Device")
         .isAssignableFrom(element)) return true;
 
-    if (isAnnotatedWith(element, 'Device ()')) return true;
+    if (isAnnotatedWithConstant(element, 'Device ()')) return true;
 
     return false;
   }
@@ -47,44 +48,64 @@ class DeviceGenerator extends Generator {
   }
 
   generateForElement(Element pElement) async {
-    ClassElement element = pElement as ClassElement;
+    ClassElement classElement = pElement as ClassElement;
 
     // SuperVisitor superVisitor = SuperVisitor(element);
     // element.visitChildren(superVisitor); //todo replace with sueprvisitor.accept
 
-    DeviceVisitor deviceVisitor = new DeviceVisitor(element);
-    OverrideVisitor deviceOverride = new OverrideVisitor(deviceVisitor);
-    ClassOutputVisitor deviceOutput = new ClassOutputVisitor(deviceOverride);
+    DeviceVisitor deviceVisitor = new DeviceVisitor();
+    OverrideClassVisitor deviceOverride =
+        new OverrideClassVisitor(deviceVisitor);
+    OutputClassVisitor deviceOutput = new OutputClassVisitor(deviceOverride);
 
-    ImplementationVisitor implementationVisitor =
-        new ImplementationVisitor(element);
-    OverrideVisitor implementationOverride =
-        new OverrideVisitor(implementationVisitor);
-    ClassOutputVisitor implementationOutput =
-        new ClassOutputVisitor(implementationOverride);
+    ImplementationVisitor implementationVisitor = new ImplementationVisitor();
+    OverrideClassVisitor implementationOverride =
+        new OverrideClassVisitor(implementationVisitor);
+    OutputClassVisitor implementationOutput =
+        new OutputClassVisitor(implementationOverride);
 
     List<Element> elements = [];
-    elements.add(element);
-    elements.addAll(allClassChildren(element));
-    //TODO expand more subfileds
+    elements.addAll(allClassMember(classElement));
 
-    List<Future<void>> accepted;
+    //TODO refine
+    bool where(ClassMemberElement e) =>
+        e.enclosingElement.supertype != null &&
+        !TypeChecker.fromUrl('package:blackbird/device.dart#Device')
+            .isExactly(e.enclosingElement) &&
+        !TypeChecker.fromUrl(
+                'package:rmi/remote_method_invocation.dart#RmiTarget')
+            .isExactly(e.enclosingElement) &&
+        !TypeChecker.fromUrl('package:rmi/invoker.dart#Invocable')
+            .isExactly(e.enclosingElement);
+    elements = elements
+        .where((e) => e.metadata.every((a) {
+              return a.constantValue != null
+                  ? !TypeChecker.fromUrl(
+                          'asset:blackbird/lib/device.dart#Ignore')
+                      .isAssignableFromType(a.constantValue.type)
+                  : true;
+            }))
+        .toList();
+    elements = elements.where((e) {
+      if (e.enclosingElement is! ClassElement) return true;
+      ClassElement classElement = e.enclosingElement as ClassElement;
+      return !classElement.type.isObject;
+    }).toList();
+    elements =
+        elements.where((e) => e is! ClassMemberElement || where(e)).toList();
 
-    // accepted = elements.map((e) => e.accept(deviceOutput)).toList();
-    await deviceOutput.visitElements(elements);
-    await implementationOutput.visitElements(elements);
-    // accepted = elements.map((e) => e.accept(implementationOutput)).toList();
-    // await Future.wait(accepted);
+    await deviceOutput.visitClassElement(classElement);
+    await implementationOutput.visitClassElement(classElement);
+    await visitElements(deviceOutput, elements);
+    await visitElements(implementationOutput, elements);
 
     // if (!classvisitor.foundNoArgConstructor) {
     //   log.severe('${classElement} must have a no argument constructor');
     // }
 
     StringBuffer output = new StringBuffer();
-    // output.write(await superVisitor.output); TODO remove
     output.write(await deviceOutput.output);
     output.write(await implementationOutput.output);
-    // print(output.toString());
     return output.toString();
   }
 }

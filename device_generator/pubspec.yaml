@@ -12,8 +12,8 @@ dependencies:
     path: ../../dart/remote_method_invocation/rmi
   built_value: ^6.1.6
   built_collection: ^4.1.0
-  source_gen_class_visitor: 
-    path: ../../dart/source_gen_class_visitor
+  source_gen_helpers: 
+    path: ../../dart/source_gen_helpers
   tuple:
 
 dev_dependencies:
@@ -24,10 +24,7 @@ dev_dependencies:
   test:
   build_test:
 
-    
-source_gen_class_visitor: 
-    path: ../../dart/source_gen_class_visitor
-
+  
 dependency_overrides:
   rmi: 
     path: ../../dart/remote_method_invocation/rmi

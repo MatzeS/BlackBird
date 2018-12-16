@@ -4,10 +4,10 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 
-import 'package:source_gen_class_visitor/class_visitor.dart';
-import 'package:source_gen_class_visitor/helper.dart';
-import 'package:source_gen_class_visitor/output_visitor.dart';
-import 'package:source_gen_class_visitor/override_visitor.dart';
+import 'package:source_gen_helpers/class/class_visitor.dart';
+import 'package:source_gen_helpers/class/util.dart';
+import 'package:source_gen_helpers/class/output_visitor.dart';
+import 'package:source_gen_helpers/class/override_visitor.dart';
 import 'visitor.dart';
 import 'package:tuple/tuple.dart';
 import 'type_list.dart';
@@ -17,8 +17,6 @@ import '../member_identifier.dart';
 import 'dart:async';
 
 class ImplementationVisitor extends BasicDeviceVisitor {
-  ImplementationVisitor(ClassElement element) : super(element);
-
   static Tuple2<DartType, String> harmonize(Element e) {
     if (e is ExecutableElement) {
       return Tuple2(e.returnType, e.displayName);
@@ -30,9 +28,9 @@ class ImplementationVisitor extends BasicDeviceVisitor {
   }
 
   visitClassElement(ClassElement element) async {
-    classDeclaration.complete(
+    super.visitClassElement(element);
+    classDeclarationCompleter.complete(
         'class _\$${element.name}Implementation extends ${element.name}');
-
     // construction info
     StringBuffer constructionInfo = new StringBuffer();
     constructionInfo.write('''
@@ -41,8 +39,8 @@ class ImplementationVisitor extends BasicDeviceVisitor {
     ''');
 
     List<Element> list = [];
-    list.addAll(runtimeDependencies);
-    list.addAll(modules);
+    list.addAll(await runtimeDependencies);
+    list.addAll(await modules);
     list.where((e) => !e.isSynthetic).forEach((e) {
       // register dependency
 
@@ -73,34 +71,34 @@ class ImplementationVisitor extends BasicDeviceVisitor {
     constructionInfo.write('}');
 
     // assignment of varaibles on construction
-    String privateVariables = runtimeDependencies
+    String privateVariables = (await runtimeDependencies)
         .where((e) => !e.isSynthetic)
         .map((e) => harmonize(e))
         .map((e) => '${e.item1} _${e.item2};')
         .join(' \n');
 
-    privateVariables += modules
+    privateVariables += (await modules)
         .where((e) => !e.isSynthetic)
         .map((e) => harmonize(e))
         .map((e) => '${e.item1} _${e.item2};')
         .join(' \n');
 
-    String assigns = runtimeDependencies
+    String assigns = (await runtimeDependencies)
         .where((e) => !e.isSynthetic)
         .map((e) => '_${e.displayName} = parameters[#${e.displayName}];')
         .join('\n');
 
-    assigns += modules
+    assigns += (await modules)
         .where((e) => !e.isSynthetic)
         .map((e) => '_${e.displayName} = parameters[#${e.displayName}];')
         .join('\n');
 
-    assigns += properties
+    assigns += (await properties)
         .where((e) => !e.isSynthetic)
         .map((e) => '_${e.displayName} = delegate.${e.displayName};')
         .join('\n');
 
-    String name = classElement.name;
+    String name = await className;
     return '''
       $privateVariables
 

@@ -13,29 +13,28 @@ class _$SimpleDeviceDevice extends SimpleDevice {
       _$SimpleDeviceImplementation(this, dependencies);
   @override
   Object invoke(Invocation invocation) =>
-      _$SimpleDeviceInvoker.invoke(invocation, this);
+      throw new Exception('no invocation on devices');
   Provision provideRemote(Context context) =>
-      _$SimpleDeviceRmi.provideRemote(context, this);
+      throw new Exception('no RMI on devices');
   SimpleDevice getRemote(Context context, String uuid) =>
-      _$SimpleDeviceRmi.getRemote(context, uuid);
-
-  int aProperty;
-
-  Device otherDevice;
+      throw new Exception('no RMI on devices');
 
   Host get host => throw new Exception(
       'cannot get runtime dependencys on device representation');
   void executiveMethod() => blackbird.interfaceDevice(this).executiveMethod();
+
   int get aRuntimeDependency => throw new Exception(
       'cannot get runtime dependencys on device representation');
   int get executiveGetter => blackbird.interfaceDevice(this).executiveGetter;
   set executiveSetter(int value) =>
       blackbird.interfaceDevice(this).executiveSetter = value;
+
+  int aProperty;
+
+  Device otherDevice;
 }
 
 class _$SimpleDeviceImplementation extends SimpleDevice {
-  int _aProperty;
-
   Host _host;
   int _aRuntimeDependency;
   Device _otherDevice;
@@ -90,6 +89,7 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
       _$SimpleDeviceRmi.getRemote(context, uuid);
 
   Host get host => _host;
+
   int get aProperty => _aProperty;
   set aProperty(int _aProperty) => throw new Exception(
       'cannot change device property after implementationconstruction');
@@ -97,6 +97,8 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
   set otherDevice(Device _otherDevice) => throw new Exception(
       "cannot change module after implementation construction");
   int get aRuntimeDependency => _aRuntimeDependency;
+
+  int _aProperty;
 }
 
 class _$EvenSimplerDeviceDevice extends EvenSimplerDevice {
@@ -106,11 +108,11 @@ class _$EvenSimplerDeviceDevice extends EvenSimplerDevice {
       _$EvenSimplerDeviceImplementation(this, dependencies);
   @override
   Object invoke(Invocation invocation) =>
-      _$EvenSimplerDeviceInvoker.invoke(invocation, this);
+      throw new Exception('no invocation on devices');
   Provision provideRemote(Context context) =>
-      _$EvenSimplerDeviceRmi.provideRemote(context, this);
+      throw new Exception('no RMI on devices');
   EvenSimplerDevice getRemote(Context context, String uuid) =>
-      _$EvenSimplerDeviceRmi.getRemote(context, uuid);
+      throw new Exception('no RMI on devices');
 
   Host get host => throw new Exception(
       'cannot get runtime dependencys on device representation');
@@ -203,49 +205,59 @@ class _$EvenSimplerDeviceInvoker {
 // **************************************************************************
 
 class _$SimpleDeviceProxy implements SimpleDevice {
-  InvocationHandlerFunction _handle;
-  _$SimpleDeviceProxy(this._handle) : super();
+  Device implementation(Map dependencies) {
+    List<Object> arguments = [];
+    arguments.add(dependencies);
+    Map<Symbol, Object> namedArguments = {};
 
-  int get aProperty {
-    Invocation invocation = Invocation.getter(#aProperty);
+    Invocation _$invocation =
+        Invocation.method(#implementation, arguments, namedArguments);
 
-    return _handle(invocation);
+    return _handle(_$invocation);
   }
 
-  set aProperty(int _aProperty) {
-    Invocation invocation = Invocation.setter(#aProperty, _aProperty);
+  Provision provideRemote(Context context) {
+    List<Object> arguments = [];
+    arguments.add(context);
+    Map<Symbol, Object> namedArguments = {};
 
-    _handle(invocation);
+    Invocation _$invocation =
+        Invocation.method(#provideRemote, arguments, namedArguments);
+
+    return _handle(_$invocation);
   }
 
-  Device get otherDevice {
-    Invocation invocation = Invocation.getter(#otherDevice);
+  Object invoke(Invocation invocation) {
+    List<Object> arguments = [];
+    arguments.add(invocation);
+    Map<Symbol, Object> namedArguments = {};
 
-    return _handle(invocation);
+    Invocation _$invocation =
+        Invocation.method(#invoke, arguments, namedArguments);
+
+    return _handle(_$invocation);
   }
 
-  set otherDevice(Device _otherDevice) {
-    Invocation invocation = Invocation.setter(#otherDevice, _otherDevice);
+  String toString() {
+    List<Object> arguments = [];
 
-    _handle(invocation);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#toString, arguments, namedArguments);
+
+    return _handle(_$invocation);
   }
 
-  int get aRuntimeDependency {
-    Invocation invocation = Invocation.getter(#aRuntimeDependency);
+  dynamic noSuchMethod(Invocation invocation) {
+    List<Object> arguments = [];
+    arguments.add(invocation);
+    Map<Symbol, Object> namedArguments = {};
 
-    return _handle(invocation);
-  }
+    Invocation _$invocation =
+        Invocation.method(#noSuchMethod, arguments, namedArguments);
 
-  int get executiveGetter {
-    Invocation invocation = Invocation.getter(#executiveGetter);
-
-    return _handle(invocation);
-  }
-
-  set executiveSetter(int value) {
-    Invocation invocation = Invocation.setter(#executiveSetter, value);
-
-    _handle(invocation);
+    return _handle(_$invocation);
   }
 
   void executiveMethod() {
@@ -258,6 +270,9 @@ class _$SimpleDeviceProxy implements SimpleDevice {
 
     _handle(_$invocation);
   }
+
+  InvocationHandlerFunction _handle;
+  _$SimpleDeviceProxy(this._handle) : super();
 
   Blackbird get _blackbird {
     Invocation invocation = Invocation.getter(#_blackbird);
@@ -301,6 +316,50 @@ class _$SimpleDeviceProxy implements SimpleDevice {
     return _handle(invocation);
   }
 
+  int get aProperty {
+    Invocation invocation = Invocation.getter(#aProperty);
+
+    return _handle(invocation);
+  }
+
+  set aProperty(int _aProperty) {
+    Invocation invocation = Invocation.setter(#aProperty, _aProperty);
+
+    _handle(invocation);
+  }
+
+  Device get otherDevice {
+    Invocation invocation = Invocation.getter(#otherDevice);
+
+    return _handle(invocation);
+  }
+
+  set otherDevice(Device _otherDevice) {
+    Invocation invocation = Invocation.setter(#otherDevice, _otherDevice);
+
+    _handle(invocation);
+  }
+
+  int get aRuntimeDependency {
+    Invocation invocation = Invocation.getter(#aRuntimeDependency);
+
+    return _handle(invocation);
+  }
+
+  int get executiveGetter {
+    Invocation invocation = Invocation.getter(#executiveGetter);
+
+    return _handle(invocation);
+  }
+
+  set executiveSetter(int value) {
+    Invocation invocation = Invocation.setter(#executiveSetter, value);
+
+    _handle(invocation);
+  }
+}
+
+class _$EvenSimplerDeviceProxy implements EvenSimplerDevice {
   Device implementation(Map dependencies) {
     List<Object> arguments = [];
     arguments.add(dependencies);
@@ -308,6 +367,28 @@ class _$SimpleDeviceProxy implements SimpleDevice {
 
     Invocation _$invocation =
         Invocation.method(#implementation, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+
+  Provision provideRemote(Context context) {
+    List<Object> arguments = [];
+    arguments.add(context);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#provideRemote, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+
+  Object invoke(Invocation invocation) {
+    List<Object> arguments = [];
+    arguments.add(invocation);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#invoke, arguments, namedArguments);
 
     return _handle(_$invocation);
   }
@@ -334,30 +415,6 @@ class _$SimpleDeviceProxy implements SimpleDevice {
     return _handle(_$invocation);
   }
 
-  Provision provideRemote(Context context) {
-    List<Object> arguments = [];
-    arguments.add(context);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#provideRemote, arguments, namedArguments);
-
-    return _handle(_$invocation);
-  }
-
-  Object invoke(Invocation invocation) {
-    List<Object> arguments = [];
-    arguments.add(invocation);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#invoke, arguments, namedArguments);
-
-    return _handle(_$invocation);
-  }
-}
-
-class _$EvenSimplerDeviceProxy implements EvenSimplerDevice {
   InvocationHandlerFunction _handle;
   _$EvenSimplerDeviceProxy(this._handle) : super();
 
@@ -401,61 +458,6 @@ class _$EvenSimplerDeviceProxy implements EvenSimplerDevice {
     Invocation invocation = Invocation.getter(#runtimeType);
 
     return _handle(invocation);
-  }
-
-  Device implementation(Map dependencies) {
-    List<Object> arguments = [];
-    arguments.add(dependencies);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#implementation, arguments, namedArguments);
-
-    return _handle(_$invocation);
-  }
-
-  String toString() {
-    List<Object> arguments = [];
-
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#toString, arguments, namedArguments);
-
-    return _handle(_$invocation);
-  }
-
-  dynamic noSuchMethod(Invocation invocation) {
-    List<Object> arguments = [];
-    arguments.add(invocation);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#noSuchMethod, arguments, namedArguments);
-
-    return _handle(_$invocation);
-  }
-
-  Provision provideRemote(Context context) {
-    List<Object> arguments = [];
-    arguments.add(context);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#provideRemote, arguments, namedArguments);
-
-    return _handle(_$invocation);
-  }
-
-  Object invoke(Invocation invocation) {
-    List<Object> arguments = [];
-    arguments.add(invocation);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#invoke, arguments, namedArguments);
-
-    return _handle(_$invocation);
   }
 }
 

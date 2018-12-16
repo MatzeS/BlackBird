@@ -3,10 +3,10 @@ import 'package:analyzer/dart/element/visitor.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 
-import 'package:source_gen_class_visitor/class_visitor.dart';
-import 'package:source_gen_class_visitor/helper.dart';
-import 'package:source_gen_class_visitor/output_visitor.dart';
-import 'package:source_gen_class_visitor/override_visitor.dart';
+import 'package:source_gen_helpers/class/class_visitor.dart';
+import 'package:source_gen_helpers/class/util.dart';
+import 'package:source_gen_helpers/class/output_visitor.dart';
+import 'package:source_gen_helpers/class/override_visitor.dart';
 
 import 'dart:mirrors';
 
@@ -15,10 +15,9 @@ import 'visitor.dart';
 import 'dart:async';
 
 class DeviceVisitor extends BasicDeviceVisitor {
-  DeviceVisitor(ClassElement element) : super(element);
-
   visitClassElement(ClassElement element) async {
-    classDeclaration
+    super.visitClassElement(element);
+    classDeclarationCompleter
         .complete('class _\$${element.name}Device extends ${element.name}');
     //TODO generate error when constructor not available
 
@@ -31,11 +30,11 @@ class DeviceVisitor extends BasicDeviceVisitor {
         => _\$${name}Implementation(this,   dependencies);
       @override
       Object invoke(Invocation invocation) =>
-          _\$${name}Invoker.invoke(invocation, this);
+          throw new Exception('no invocation on devices');
       Provision provideRemote(Context context) =>
-          _\$${name}Rmi.provideRemote(context, this);
+          throw new Exception('no RMI on devices');
       $name getRemote(Context context, String uuid) =>
-        _\$${name}Rmi.getRemote(context, uuid);
+          throw new Exception('no RMI on devices');
     ''';
   }
 

@@ -15,10 +15,10 @@ import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_gen/src/utils.dart';
 
-import 'package:source_gen_class_visitor/class_visitor.dart';
-import 'package:source_gen_class_visitor/helper.dart';
-import 'package:source_gen_class_visitor/output_visitor.dart';
-import 'package:source_gen_class_visitor/override_visitor.dart';
+import 'package:source_gen_helpers/class/class_visitor.dart';
+import 'package:source_gen_helpers/class/util.dart';
+import 'package:source_gen_helpers/class/output_visitor.dart';
+import 'package:source_gen_helpers/class/override_visitor.dart';
 import 'dart:io';
 import 'package:blackbird_device_generator/member_identifier.dart';
 //TODO abstract executive getter

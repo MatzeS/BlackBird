@@ -13,11 +13,11 @@ class _$HostDevice extends Host {
       _$HostImplementation(this, dependencies);
   @override
   Object invoke(Invocation invocation) =>
-      _$HostInvoker.invoke(invocation, this);
+      throw new Exception('no invocation on devices');
   Provision provideRemote(Context context) =>
-      _$HostRmi.provideRemote(context, this);
+      throw new Exception('no RMI on devices');
   Host getRemote(Context context, String uuid) =>
-      _$HostRmi.getRemote(context, uuid);
+      throw new Exception('no RMI on devices');
 
   Host get host => throw new Exception(
       'cannot get runtime dependencys on device representation');
@@ -92,6 +92,16 @@ class _$DeviceInvoker {
         positionalArguments[0],
       );
     }
+    if (invocation.isMethod && #provideRemote == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.provideRemote(
+        positionalArguments[0],
+      );
+    }
   }
 }
 
@@ -104,62 +114,6 @@ class _$HostInvoker {
 // **************************************************************************
 
 class _$DeviceProxy implements Device {
-  InvocationHandlerFunction _handle;
-  _$DeviceProxy(this._handle) : super();
-
-  Blackbird get _blackbird {
-    Invocation invocation = Invocation.getter(#_blackbird);
-
-    return _handle(invocation);
-  }
-
-  set _blackbird(Blackbird __blackbird) {
-    Invocation invocation = Invocation.setter(#_blackbird, __blackbird);
-
-    _handle(invocation);
-  }
-
-  Blackbird get blackbird {
-    Invocation invocation = Invocation.getter(#blackbird);
-
-    return _handle(invocation);
-  }
-
-  set blackbird(Blackbird blackbird) {
-    Invocation invocation = Invocation.setter(#blackbird, blackbird);
-
-    _handle(invocation);
-  }
-
-  Host get host {
-    Invocation invocation = Invocation.getter(#host);
-
-    return _handle(invocation);
-  }
-
-  Device implementation(Map dependencies) {
-    List<Object> arguments = [];
-    arguments.add(dependencies);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#implementation, arguments, namedArguments);
-
-    return _handle(_$invocation);
-  }
-
-  int get hashCode {
-    Invocation invocation = Invocation.getter(#hashCode);
-
-    return _handle(invocation);
-  }
-
-  Type get runtimeType {
-    Invocation invocation = Invocation.getter(#runtimeType);
-
-    return _handle(invocation);
-  }
-
   String toString() {
     List<Object> arguments = [];
 
@@ -203,9 +157,120 @@ class _$DeviceProxy implements Device {
 
     return _handle(_$invocation);
   }
+
+  Device implementation(Map dependencies) {
+    List<Object> arguments = [];
+    arguments.add(dependencies);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#implementation, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+
+  InvocationHandlerFunction _handle;
+  _$DeviceProxy(this._handle) : super();
+
+  int get hashCode {
+    Invocation invocation = Invocation.getter(#hashCode);
+
+    return _handle(invocation);
+  }
+
+  Type get runtimeType {
+    Invocation invocation = Invocation.getter(#runtimeType);
+
+    return _handle(invocation);
+  }
+
+  Blackbird get _blackbird {
+    Invocation invocation = Invocation.getter(#_blackbird);
+
+    return _handle(invocation);
+  }
+
+  set _blackbird(Blackbird __blackbird) {
+    Invocation invocation = Invocation.setter(#_blackbird, __blackbird);
+
+    _handle(invocation);
+  }
+
+  Blackbird get blackbird {
+    Invocation invocation = Invocation.getter(#blackbird);
+
+    return _handle(invocation);
+  }
+
+  set blackbird(Blackbird blackbird) {
+    Invocation invocation = Invocation.setter(#blackbird, blackbird);
+
+    _handle(invocation);
+  }
+
+  Host get host {
+    Invocation invocation = Invocation.getter(#host);
+
+    return _handle(invocation);
+  }
 }
 
 class _$HostProxy implements Host {
+  Device implementation(Map dependencies) {
+    List<Object> arguments = [];
+    arguments.add(dependencies);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#implementation, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+
+  Provision provideRemote(Context context) {
+    List<Object> arguments = [];
+    arguments.add(context);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#provideRemote, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+
+  Object invoke(Invocation invocation) {
+    List<Object> arguments = [];
+    arguments.add(invocation);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#invoke, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+
+  String toString() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#toString, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+
+  dynamic noSuchMethod(Invocation invocation) {
+    List<Object> arguments = [];
+    arguments.add(invocation);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#noSuchMethod, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+
   InvocationHandlerFunction _handle;
   _$HostProxy(this._handle) : super();
 
@@ -249,61 +314,6 @@ class _$HostProxy implements Host {
     Invocation invocation = Invocation.getter(#runtimeType);
 
     return _handle(invocation);
-  }
-
-  Device implementation(Map dependencies) {
-    List<Object> arguments = [];
-    arguments.add(dependencies);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#implementation, arguments, namedArguments);
-
-    return _handle(_$invocation);
-  }
-
-  String toString() {
-    List<Object> arguments = [];
-
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#toString, arguments, namedArguments);
-
-    return _handle(_$invocation);
-  }
-
-  dynamic noSuchMethod(Invocation invocation) {
-    List<Object> arguments = [];
-    arguments.add(invocation);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#noSuchMethod, arguments, namedArguments);
-
-    return _handle(_$invocation);
-  }
-
-  Provision provideRemote(Context context) {
-    List<Object> arguments = [];
-    arguments.add(context);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#provideRemote, arguments, namedArguments);
-
-    return _handle(_$invocation);
-  }
-
-  Object invoke(Invocation invocation) {
-    List<Object> arguments = [];
-    arguments.add(invocation);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#invoke, arguments, namedArguments);
-
-    return _handle(_$invocation);
   }
 }
 
