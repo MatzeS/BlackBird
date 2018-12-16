@@ -21,22 +21,53 @@ class SubModule {
   const SubModule();
 }
 
+class Ignore {
+  const Ignore();
+}
+
 // class SuperModule {
 //   const SuperModule();
 // }
 
 abstract class Device implements RmiTarget {
-  Device._();
-  Device implementation(Map<Symbol, Object> dependencies);
-  static Device getRemote(Context context, String uuid) =>
-      _$DeviceRmi.getRemote(context, uuid);
+  Device();
+
+  @Ignore()
+  Blackbird _blackbird;
+
+  @Ignore()
+  Blackbird get blackbird {
+    if (_blackbird == null) {
+      throw new Exception('device is not attached to blackbird instnace');
+    }
+
+    return _blackbird;
+  }
+
+  @Ignore()
+  set blackbird(Blackbird blackbird) {
+    if (blackbird == _blackbird) return;
+
+    if (_blackbird != null) {
+      throw new Exception(
+          'device already attached to another blackbird instance');
+    }
+
+    _blackbird = blackbird;
+  }
 
   @Runtime()
   Host get host;
+
+  Device implementation(Map<Symbol, Object> dependencies);
+
+  //TODO remove
+  static Device getRemote(Context context, String uuid) =>
+      _$DeviceRmi.getRemote(context, uuid);
 }
 
-abstract class Host implements Device {
-  Host._();
+abstract class Host extends Device {
+  Host();
   factory Host.device() => _$HostDevice();
 
   static Host getRemote(Context context, String uuid) =>

@@ -49,7 +49,9 @@ class SomeAnnotation {
   }
 }
 
-abstract class SimpleDevice implements Device {
+abstract class SimpleDevice extends Device {
+  SimpleDevice();
+
   int aProperty;
 
   // @Property() TODO
@@ -64,6 +66,10 @@ abstract class SimpleDevice implements Device {
   int get executiveGetter {}
   set executiveSetter(int value) {}
 
-  SimpleDevice._();
   factory SimpleDevice.device() => new _$SimpleDeviceDevice();
+}
+
+abstract class EvenSimplerDevice extends Device {
+  EvenSimplerDevice();
+  factory EvenSimplerDevice.device() => new _$EvenSimplerDeviceDevice();
 }

@@ -54,7 +54,7 @@ class ImplementationVisitor extends BasicDeviceVisitor {
             name: #${harmonize(e).item2}, 
             type: ["$types"], 
             device: this, 
-            module: ${isModule(e) ? harmonize(e).item2 : 'null'},
+            module: ${isModule(e) ? 'delegate.' + harmonize(e).item2 : 'null'},
             isModule: ${isModule(e)}));
       ''');
     });
@@ -104,7 +104,7 @@ class ImplementationVisitor extends BasicDeviceVisitor {
     return '''
       $privateVariables
 
-      _\$${await className}Implementation(${await className} delegate, Map<Symbol, Object> parameters) : super._(){
+      _\$${await className}Implementation(${await className} delegate, Map<Symbol, Object> parameters){
           $constructionInfo
         
           $assigns

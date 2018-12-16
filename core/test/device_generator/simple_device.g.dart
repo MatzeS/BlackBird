@@ -6,7 +6,7 @@ part of 'simple_device.dart';
 // DeviceGenerator
 // **************************************************************************
 
-class _$SimpleDeviceDevice implements SimpleDevice {
+class _$SimpleDeviceDevice extends SimpleDevice {
   _$SimpleDeviceDevice();
 
   SimpleDevice implementation(Map<Symbol, Object> dependencies) =>
@@ -23,16 +23,14 @@ class _$SimpleDeviceDevice implements SimpleDevice {
 
   Device otherDevice;
 
-  int get hashCode => Blackbird().interfaceDevice(this).hashCode;
-  Type get runtimeType => Blackbird().interfaceDevice(this).runtimeType;
   Host get host => throw new Exception(
       'cannot get runtime dependencys on device representation');
-  void executiveMethod() => Blackbird().interfaceDevice(this).executiveMethod();
+  void executiveMethod() => blackbird.interfaceDevice(this).executiveMethod();
   int get aRuntimeDependency => throw new Exception(
       'cannot get runtime dependencys on device representation');
-  int get executiveGetter => Blackbird().interfaceDevice(this).executiveGetter;
+  int get executiveGetter => blackbird.interfaceDevice(this).executiveGetter;
   set executiveSetter(int value) =>
-      Blackbird().interfaceDevice(this).executiveSetter = value;
+      blackbird.interfaceDevice(this).executiveSetter = value;
 }
 
 class _$SimpleDeviceImplementation extends SimpleDevice {
@@ -43,13 +41,16 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
   Device _otherDevice;
 
   _$SimpleDeviceImplementation(
-      SimpleDevice delegate, Map<Symbol, Object> parameters)
-      : super._() {
+      SimpleDevice delegate, Map<Symbol, Object> parameters) {
     if (parameters == null) {
       ConstructionInfoException info = new ConstructionInfoException();
       info.dependencies.add(new Dependency(
           name: #host,
-          type: ["asset:blackbird/lib/device.dart#Host", "dart:core#Object"],
+          type: [
+            "asset:blackbird/lib/device.dart#Host",
+            "asset:blackbird/lib/device.dart#Device",
+            "dart:core#Object"
+          ],
           device: this,
           module: null,
           isModule: false));
@@ -63,7 +64,7 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
           name: #otherDevice,
           type: ["asset:blackbird/lib/device.dart#Device", "dart:core#Object"],
           device: this,
-          module: otherDevice,
+          module: delegate.otherDevice,
           isModule: true));
       info[#host].annotations.add(Runtime());
       info[#aRuntimeDependency]
@@ -96,6 +97,60 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
   set otherDevice(Device _otherDevice) => throw new Exception(
       "cannot change module after implementation construction");
   int get aRuntimeDependency => _aRuntimeDependency;
+}
+
+class _$EvenSimplerDeviceDevice extends EvenSimplerDevice {
+  _$EvenSimplerDeviceDevice();
+
+  EvenSimplerDevice implementation(Map<Symbol, Object> dependencies) =>
+      _$EvenSimplerDeviceImplementation(this, dependencies);
+  @override
+  Object invoke(Invocation invocation) =>
+      _$EvenSimplerDeviceInvoker.invoke(invocation, this);
+  Provision provideRemote(Context context) =>
+      _$EvenSimplerDeviceRmi.provideRemote(context, this);
+  EvenSimplerDevice getRemote(Context context, String uuid) =>
+      _$EvenSimplerDeviceRmi.getRemote(context, uuid);
+
+  Host get host => throw new Exception(
+      'cannot get runtime dependencys on device representation');
+}
+
+class _$EvenSimplerDeviceImplementation extends EvenSimplerDevice {
+  Host _host;
+
+  _$EvenSimplerDeviceImplementation(
+      EvenSimplerDevice delegate, Map<Symbol, Object> parameters) {
+    if (parameters == null) {
+      ConstructionInfoException info = new ConstructionInfoException();
+      info.dependencies.add(new Dependency(
+          name: #host,
+          type: [
+            "asset:blackbird/lib/device.dart#Host",
+            "asset:blackbird/lib/device.dart#Device",
+            "dart:core#Object"
+          ],
+          device: this,
+          module: null,
+          isModule: false));
+      info[#host].annotations.add(Runtime());
+      throw info;
+    }
+
+    _host = parameters[#host];
+  }
+
+  EvenSimplerDevice implementation(Map<Symbol, Object> dependencies) =>
+      throw Exception('this is already an implementation');
+  @override
+  Object invoke(Invocation invocation) =>
+      _$EvenSimplerDeviceInvoker.invoke(invocation, this);
+  Provision provideRemote(Context context) =>
+      _$EvenSimplerDeviceRmi.provideRemote(context, this);
+  EvenSimplerDevice getRemote(Context context, String uuid) =>
+      _$EvenSimplerDeviceRmi.getRemote(context, uuid);
+
+  Host get host => _host;
 }
 
 // **************************************************************************
@@ -137,6 +192,10 @@ class _$SimpleDeviceInvoker {
       return target.executiveMethod();
     }
   }
+}
+
+class _$EvenSimplerDeviceInvoker {
+  static dynamic invoke(Invocation invocation, EvenSimplerDevice target) {}
 }
 
 // **************************************************************************
@@ -200,6 +259,36 @@ class _$SimpleDeviceProxy implements SimpleDevice {
     _handle(_$invocation);
   }
 
+  Blackbird get _blackbird {
+    Invocation invocation = Invocation.getter(#_blackbird);
+
+    return _handle(invocation);
+  }
+
+  set _blackbird(Blackbird __blackbird) {
+    Invocation invocation = Invocation.setter(#_blackbird, __blackbird);
+
+    _handle(invocation);
+  }
+
+  Blackbird get blackbird {
+    Invocation invocation = Invocation.getter(#blackbird);
+
+    return _handle(invocation);
+  }
+
+  set blackbird(Blackbird blackbird) {
+    Invocation invocation = Invocation.setter(#blackbird, blackbird);
+
+    _handle(invocation);
+  }
+
+  Host get host {
+    Invocation invocation = Invocation.getter(#host);
+
+    return _handle(invocation);
+  }
+
   int get hashCode {
     Invocation invocation = Invocation.getter(#hashCode);
 
@@ -212,10 +301,15 @@ class _$SimpleDeviceProxy implements SimpleDevice {
     return _handle(invocation);
   }
 
-  Host get host {
-    Invocation invocation = Invocation.getter(#host);
+  Device implementation(Map dependencies) {
+    List<Object> arguments = [];
+    arguments.add(dependencies);
+    Map<Symbol, Object> namedArguments = {};
 
-    return _handle(invocation);
+    Invocation _$invocation =
+        Invocation.method(#implementation, arguments, namedArguments);
+
+    return _handle(_$invocation);
   }
 
   String toString() {
@@ -240,6 +334,75 @@ class _$SimpleDeviceProxy implements SimpleDevice {
     return _handle(_$invocation);
   }
 
+  Provision provideRemote(Context context) {
+    List<Object> arguments = [];
+    arguments.add(context);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#provideRemote, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+
+  Object invoke(Invocation invocation) {
+    List<Object> arguments = [];
+    arguments.add(invocation);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#invoke, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+}
+
+class _$EvenSimplerDeviceProxy implements EvenSimplerDevice {
+  InvocationHandlerFunction _handle;
+  _$EvenSimplerDeviceProxy(this._handle) : super();
+
+  Blackbird get _blackbird {
+    Invocation invocation = Invocation.getter(#_blackbird);
+
+    return _handle(invocation);
+  }
+
+  set _blackbird(Blackbird __blackbird) {
+    Invocation invocation = Invocation.setter(#_blackbird, __blackbird);
+
+    _handle(invocation);
+  }
+
+  Blackbird get blackbird {
+    Invocation invocation = Invocation.getter(#blackbird);
+
+    return _handle(invocation);
+  }
+
+  set blackbird(Blackbird blackbird) {
+    Invocation invocation = Invocation.setter(#blackbird, blackbird);
+
+    _handle(invocation);
+  }
+
+  Host get host {
+    Invocation invocation = Invocation.getter(#host);
+
+    return _handle(invocation);
+  }
+
+  int get hashCode {
+    Invocation invocation = Invocation.getter(#hashCode);
+
+    return _handle(invocation);
+  }
+
+  Type get runtimeType {
+    Invocation invocation = Invocation.getter(#runtimeType);
+
+    return _handle(invocation);
+  }
+
   Device implementation(Map dependencies) {
     List<Object> arguments = [];
     arguments.add(dependencies);
@@ -247,6 +410,28 @@ class _$SimpleDeviceProxy implements SimpleDevice {
 
     Invocation _$invocation =
         Invocation.method(#implementation, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+
+  String toString() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#toString, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+
+  dynamic noSuchMethod(Invocation invocation) {
+    List<Object> arguments = [];
+    arguments.add(invocation);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#noSuchMethod, arguments, namedArguments);
 
     return _handle(_$invocation);
   }
@@ -299,6 +484,30 @@ class _$SimpleDeviceRmi {
   }
 
   static Provision provideRemote(Context context, SimpleDevice target) {
+    _registerSerializers();
+    _registerStubConstructors(context);
+    return rmiProvideRemote(context, target);
+  }
+}
+
+class _$EvenSimplerDeviceRmi {
+  static bool _registered = false;
+  static void _registerSerializers() {
+    if (_registered) return;
+    _registered = true;
+
+    rmiRegisterSerializers([]);
+  }
+
+  static void _registerStubConstructors(Context context) {}
+  static EvenSimplerDevice getRemote(Context context, String uuid) {
+    _registerSerializers();
+    _registerStubConstructors(context);
+    RmiProxyHandler handler = RmiProxyHandler(context, uuid);
+    return _$EvenSimplerDeviceProxy(handler.handle);
+  }
+
+  static Provision provideRemote(Context context, EvenSimplerDevice target) {
     _registerSerializers();
     _registerStubConstructors(context);
     return rmiProvideRemote(context, target);

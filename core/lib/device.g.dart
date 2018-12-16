@@ -6,7 +6,7 @@ part of 'device.dart';
 // DeviceGenerator
 // **************************************************************************
 
-class _$HostDevice implements Host {
+class _$HostDevice extends Host {
   _$HostDevice();
 
   Host implementation(Map<Symbol, Object> dependencies) =>
@@ -19,8 +19,6 @@ class _$HostDevice implements Host {
   Host getRemote(Context context, String uuid) =>
       _$HostRmi.getRemote(context, uuid);
 
-  int get hashCode => Blackbird().interfaceDevice(this).hashCode;
-  Type get runtimeType => Blackbird().interfaceDevice(this).runtimeType;
   Host get host => throw new Exception(
       'cannot get runtime dependencys on device representation');
 }
@@ -28,13 +26,16 @@ class _$HostDevice implements Host {
 class _$HostImplementation extends Host {
   Host _host;
 
-  _$HostImplementation(Host delegate, Map<Symbol, Object> parameters)
-      : super._() {
+  _$HostImplementation(Host delegate, Map<Symbol, Object> parameters) {
     if (parameters == null) {
       ConstructionInfoException info = new ConstructionInfoException();
       info.dependencies.add(new Dependency(
           name: #host,
-          type: ["asset:blackbird/lib/device.dart#Host", "dart:core#Object"],
+          type: [
+            "asset:blackbird/lib/device.dart#Host",
+            "asset:blackbird/lib/device.dart#Device",
+            "dart:core#Object"
+          ],
           device: this,
           module: null,
           isModule: false));
@@ -64,6 +65,20 @@ class _$HostImplementation extends Host {
 
 class _$DeviceInvoker {
   static dynamic invoke(Invocation invocation, Device target) {
+    if (invocation.isGetter && #_blackbird == invocation.memberName) {
+      return target._blackbird;
+    }
+    if (invocation.isSetter && #_blackbird == invocation.memberName) {
+      target._blackbird = invocation.positionalArguments[0];
+      return null;
+    }
+    if (invocation.isGetter && #blackbird == invocation.memberName) {
+      return target.blackbird;
+    }
+    if (invocation.isSetter && #blackbird == invocation.memberName) {
+      target.blackbird = invocation.positionalArguments[0];
+      return null;
+    }
     if (invocation.isGetter && #host == invocation.memberName) {
       return target.host;
     }
@@ -91,6 +106,30 @@ class _$HostInvoker {
 class _$DeviceProxy implements Device {
   InvocationHandlerFunction _handle;
   _$DeviceProxy(this._handle) : super();
+
+  Blackbird get _blackbird {
+    Invocation invocation = Invocation.getter(#_blackbird);
+
+    return _handle(invocation);
+  }
+
+  set _blackbird(Blackbird __blackbird) {
+    Invocation invocation = Invocation.setter(#_blackbird, __blackbird);
+
+    _handle(invocation);
+  }
+
+  Blackbird get blackbird {
+    Invocation invocation = Invocation.getter(#blackbird);
+
+    return _handle(invocation);
+  }
+
+  set blackbird(Blackbird blackbird) {
+    Invocation invocation = Invocation.setter(#blackbird, blackbird);
+
+    _handle(invocation);
+  }
 
   Host get host {
     Invocation invocation = Invocation.getter(#host);
@@ -170,6 +209,36 @@ class _$HostProxy implements Host {
   InvocationHandlerFunction _handle;
   _$HostProxy(this._handle) : super();
 
+  Blackbird get _blackbird {
+    Invocation invocation = Invocation.getter(#_blackbird);
+
+    return _handle(invocation);
+  }
+
+  set _blackbird(Blackbird __blackbird) {
+    Invocation invocation = Invocation.setter(#_blackbird, __blackbird);
+
+    _handle(invocation);
+  }
+
+  Blackbird get blackbird {
+    Invocation invocation = Invocation.getter(#blackbird);
+
+    return _handle(invocation);
+  }
+
+  set blackbird(Blackbird blackbird) {
+    Invocation invocation = Invocation.setter(#blackbird, blackbird);
+
+    _handle(invocation);
+  }
+
+  Host get host {
+    Invocation invocation = Invocation.getter(#host);
+
+    return _handle(invocation);
+  }
+
   int get hashCode {
     Invocation invocation = Invocation.getter(#hashCode);
 
@@ -182,10 +251,15 @@ class _$HostProxy implements Host {
     return _handle(invocation);
   }
 
-  Host get host {
-    Invocation invocation = Invocation.getter(#host);
+  Device implementation(Map dependencies) {
+    List<Object> arguments = [];
+    arguments.add(dependencies);
+    Map<Symbol, Object> namedArguments = {};
 
-    return _handle(invocation);
+    Invocation _$invocation =
+        Invocation.method(#implementation, arguments, namedArguments);
+
+    return _handle(_$invocation);
   }
 
   String toString() {
@@ -206,17 +280,6 @@ class _$HostProxy implements Host {
 
     Invocation _$invocation =
         Invocation.method(#noSuchMethod, arguments, namedArguments);
-
-    return _handle(_$invocation);
-  }
-
-  Device implementation(Map dependencies) {
-    List<Object> arguments = [];
-    arguments.add(dependencies);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#implementation, arguments, namedArguments);
 
     return _handle(_$invocation);
   }

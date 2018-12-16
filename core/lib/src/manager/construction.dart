@@ -9,11 +9,12 @@ addDependencyBuilder(DependencyBuilder builder) =>
     dependencyBuilders.add(builder);
 
 abstract class ConstructionManager extends DeviceManager {
-  ConstructionManager(Device device) : super(device);
+  ConstructionManager(Device device, Blackbird blackbird)
+      : super(device, blackbird);
 
   Object constructDependency(Dependency dependency) {
     if (dependency.isSuperModule) {
-      return Blackbird().implementDevice(dependency.module);
+      return blackbird.implementDevice(dependency.module);
     } else if (dependency.isSubModule) {
       throw new Exception('not yet implemented');
     } else if (dependency.isRuntime) {
@@ -43,7 +44,7 @@ abstract class ConstructionManager extends DeviceManager {
   }
 
   Object constructModule(Dependency dependency) {
-    return Blackbird().implementDevice(dependency.module);
+    return blackbird.implementDevice(dependency.module);
   }
 
   Device constructImplementation() {
@@ -58,7 +59,7 @@ abstract class ConstructionManager extends DeviceManager {
     info.dependencies.forEach((d) {
       Object value;
       if (d.name == #host) {
-        value = Blackbird().localDevice;
+        value = blackbird.localDevice;
       } else if (d.isModule) {
         value = constructModule(d);
       } else if (d.isRuntime) {

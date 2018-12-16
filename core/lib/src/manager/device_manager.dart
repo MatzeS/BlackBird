@@ -3,14 +3,15 @@ import 'package:blackbird/device.dart';
 import 'construction.dart';
 
 abstract class DeviceManager {
+  final Blackbird blackbird;
   final Device device;
-  DeviceManager(this.device);
+  DeviceManager(this.device, this.blackbird);
 
   Host get currentHost;
   bool get isRemoteHosted =>
-      currentHost != null && currentHost != Blackbird().localDevice;
+      currentHost != null && currentHost != blackbird.localDevice;
   bool get isLocallyHosted =>
-      currentHost != null && currentHost == Blackbird().localDevice;
+      currentHost != null && currentHost == blackbird.localDevice;
   bool get isAvailable => isRemoteHosted || isLocallyHosted;
 
   Device get interfaceDevice;
@@ -19,7 +20,7 @@ abstract class DeviceManager {
 
 class AgentManager extends ConstructionManager {
   Device localHandle;
-  AgentManager(Device device) : super(device);
+  AgentManager(Device device, Blackbird blackbird) : super(device, blackbird);
 
   Device get remoteHandle {
     //    throw new Exception('not implemented yet'); //TODO
@@ -28,7 +29,7 @@ class AgentManager extends ConstructionManager {
 
   @override
   Host get currentHost {
-    if (localHandle != null) return Blackbird().localDevice;
+    if (localHandle != null) return blackbird.localDevice;
 
     return remoteHandle?.host;
   }
@@ -53,7 +54,7 @@ class AgentManager extends ConstructionManager {
 }
 
 class HostManager extends DeviceManager {
-  HostManager(Host device) : super(device);
+  HostManager(Host device, Blackbird blackbird) : super(device, blackbird);
 
   @override
   Device get implementDevice =>
@@ -74,7 +75,8 @@ class HostManager extends DeviceManager {
 class LocalDeviceManager extends DeviceManager {
   Device localHandle;
 
-  LocalDeviceManager(Host device) : super(device) {
+  LocalDeviceManager(Host device, Blackbird blackbird)
+      : super(device, blackbird) {
     //TODO
   }
 

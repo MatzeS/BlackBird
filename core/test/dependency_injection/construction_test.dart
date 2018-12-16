@@ -21,7 +21,7 @@ singleDependencyBuilder(DependencyBuilder b) {
 }
 
 class Manager extends ConstructionManager {
-  Manager(Device device) : super(device);
+  Manager(Device device, Blackbird blackbird) : super(device, blackbird);
   @override
   Host get currentHost => throw new Exception('not implemented for test');
   @override
@@ -31,13 +31,15 @@ class Manager extends ConstructionManager {
 }
 
 main() {
+  Blackbird blackbird = new Blackbird();
+
   group('builders and filters', () {
     SimpleDevice device;
     ConstructionManager manager;
     Dependency dependency;
     setUp(() {
       device = new SimpleDevice.device();
-      manager = new Manager(device);
+      manager = new Manager(device, blackbird);
       dependency = new Dependency(
           name: #aRuntimeDependency,
           type: ["dart:core#int", "dart:core#num", "dart:core#Object"],
@@ -120,8 +122,9 @@ main() {
   group('automatic construction', () {
     test('construction', () {
       SimpleDevice device = new SimpleDevice.device();
+      device.otherDevice = new EvenSimplerDevice.device();
       addDependencyBuilder(new RuntimeDependencyBuilder(significantNumber));
-      SimpleDevice implementation = Blackbird().implementDevice(device);
+      SimpleDevice implementation = blackbird.implementDevice(device);
       expect(implementation.aRuntimeDependency, significantNumber);
     });
   }, tags: 'current');

@@ -19,10 +19,11 @@ class DeviceVisitor extends BasicDeviceVisitor {
 
   visitClassElement(ClassElement element) async {
     classDeclaration
-        .complete('class _\$${element.name}Device implements ${element.name}');
+        .complete('class _\$${element.name}Device extends ${element.name}');
     //TODO generate error when constructor not available
 
     String name = element.name;
+    // TODO not clean regarding constructor
     return '''
       _\$${await className}Device();
       
@@ -71,16 +72,16 @@ class DeviceVisitor extends BasicDeviceVisitor {
   @override
   FutureOr<String> visitExecutiveMethod(MethodElement element) {
     String arguments = element.parameters.map((p) => p.name).join(',');
-    return '=> Blackbird().interfaceDevice(this).${element.displayName}($arguments);';
+    return '=> blackbird.interfaceDevice(this).${element.displayName}($arguments);';
   }
 
   @override
   FutureOr<String> visitExecutiveSetter(PropertyAccessorElement element) {
     String arguments = element.parameters.map((p) => p.name).first;
-    return '=> Blackbird().interfaceDevice(this).${element.displayName} = $arguments;';
+    return '=> blackbird.interfaceDevice(this).${element.displayName} = $arguments;';
   }
 
   @override
   FutureOr<String> visitExecutiveGetter(PropertyAccessorElement element) =>
-      '=> Blackbird().interfaceDevice(this).${element.displayName};';
+      '=> blackbird.interfaceDevice(this).${element.displayName};';
 }
