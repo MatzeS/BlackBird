@@ -1,5 +1,6 @@
 import 'package:blackbird/blackbird.dart';
 import 'package:blackbird/device.dart';
+import 'construction.dart';
 
 abstract class DeviceManager {
   final Device device;
@@ -16,12 +17,13 @@ abstract class DeviceManager {
   Device get implementDevice;
 }
 
-class AgentManager extends DeviceManager {
+class AgentManager extends ConstructionManager {
   Device localHandle;
   AgentManager(Device device) : super(device);
 
   Device get remoteHandle {
-    throw new Exception('not implemented yet'); //TODO
+    //    throw new Exception('not implemented yet'); //TODO
+    return null;
   }
 
   @override
@@ -40,12 +42,11 @@ class AgentManager extends DeviceManager {
   @override
   Device get implementDevice {
     if (isRemoteHosted)
-      throw new Exception('cannot implement remote hosted device');
+      throw new Exception('cannot implement remote hosted device'); //TODO
+    if (isLocallyHosted) return localHandle;
 
-//CONSTRUCT IT
-    if (localHandle == null) {
-      // localHandle = device.implementativn();
-    }
+    //CONSTRUCT IT
+    localHandle = constructImplementation();
 
     return localHandle;
   }

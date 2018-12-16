@@ -54,7 +54,8 @@ class ImplementationVisitor extends BasicDeviceVisitor {
             name: #${harmonize(e).item2}, 
             type: ["$types"], 
             device: this, 
-            module: ${isModule(e) ? harmonize(e).item2 : 'null'}));
+            module: ${isModule(e) ? harmonize(e).item2 : 'null'},
+            isModule: ${isModule(e)}));
       ''');
     });
     list.where((e) => !e.isSynthetic).forEach((e) {

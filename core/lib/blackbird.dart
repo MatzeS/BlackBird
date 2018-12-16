@@ -15,7 +15,7 @@ class Blackbird {
   }
 
   R implementDevice<R extends Device>(R device) {
-    // return getManager(device).implementDevice;
+    return getManager(device).implementDevice;
   }
 
   List<Device> devices; //TODO
@@ -25,7 +25,7 @@ class Blackbird {
     //TODO
   }
 
-  Map<Device, DeviceManager> _managers;
+  Map<Device, DeviceManager> _managers = {};
 
   DeviceManager getManager(Device device) {
     if (_managers[device] != null) {

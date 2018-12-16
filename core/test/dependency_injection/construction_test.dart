@@ -11,6 +11,7 @@ import 'package:blackbird/src/manager/dependency_builders.dart';
 import 'package:blackbird/src/manager/construction.dart';
 import 'builders.dart';
 import 'package:blackbird/src/manager/construction.dart';
+import 'package:blackbird/blackbird.dart';
 
 int significantNumber = 123456789;
 
@@ -30,7 +31,7 @@ class Manager extends ConstructionManager {
 }
 
 main() {
-  group('dependency injection', () {
+  group('builders and filters', () {
     SimpleDevice device;
     ConstructionManager manager;
     Dependency dependency;
@@ -41,6 +42,7 @@ main() {
           name: #aRuntimeDependency,
           type: ["dart:core#int", "dart:core#num", "dart:core#Object"],
           device: device,
+          isModule: false,
           module: null);
       dependency.annotations.add(SomeAnnotation('text', const {'asdf': 123}));
     });
@@ -114,4 +116,13 @@ main() {
       checkNotTriggered(b);
     });
   });
+
+  group('automatic construction', () {
+    test('construction', () {
+      SimpleDevice device = new SimpleDevice.device();
+      addDependencyBuilder(new RuntimeDependencyBuilder(significantNumber));
+      SimpleDevice implementation = Blackbird().implementDevice(device);
+      expect(implementation.aRuntimeDependency, significantNumber);
+    });
+  }, tags: 'current');
 }

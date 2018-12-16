@@ -51,17 +51,20 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
           name: #host,
           type: ["asset:blackbird/lib/device.dart#Host", "dart:core#Object"],
           device: this,
-          module: null));
+          module: null,
+          isModule: false));
       info.dependencies.add(new Dependency(
           name: #aRuntimeDependency,
           type: ["dart:core#int", "dart:core#num", "dart:core#Object"],
           device: this,
-          module: null));
+          module: null,
+          isModule: false));
       info.dependencies.add(new Dependency(
           name: #otherDevice,
           type: ["asset:blackbird/lib/device.dart#Device", "dart:core#Object"],
           device: this,
-          module: otherDevice));
+          module: otherDevice,
+          isModule: true));
       info[#host].annotations.add(Runtime());
       info[#aRuntimeDependency]
           .annotations

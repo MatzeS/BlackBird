@@ -65,10 +65,16 @@ class Dependency {
   Symbol name;
   List<String> type;
   Device module;
+  bool isModule;
 
   List<Object> annotations;
   Dependency(
-      {this.device, this.name, this.type, this.module, this.annotations}) {
+      {this.device,
+      this.name,
+      this.type,
+      this.module,
+      this.isModule,
+      this.annotations}) {
     if (annotations == null) annotations = [];
   }
 
@@ -76,7 +82,6 @@ class Dependency {
       annotations.firstWhere((a) => a is A && (filter == null || filter(a)),
           orElse: () => null);
 
-  bool get isModule => module != null;
   bool get isRuntime => !isModule;
   bool get isSuperModule =>
       module is Device && findAnnotation<SubModule>() == null;

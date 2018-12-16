@@ -36,7 +36,8 @@ class _$HostImplementation extends Host {
           name: #host,
           type: ["asset:blackbird/lib/device.dart#Host", "dart:core#Object"],
           device: this,
-          module: null));
+          module: null,
+          isModule: false));
       info[#host].annotations.add(Runtime());
       throw info;
     }

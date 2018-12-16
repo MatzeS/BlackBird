@@ -36,13 +36,17 @@ abstract class ConstructionManager extends DeviceManager {
     }
 
     if (result == null) {
-      throw new Exception('no builder succeeded');
+      throw new Exception('no builder succeeded for ${dependency.name}');
     }
 
     return result;
   }
 
-  Device constructDevice() {
+  Object constructModule(Dependency dependency) {
+    return Blackbird().implementDevice(dependency.module);
+  }
+
+  Device constructImplementation() {
     ConstructionInfoException info;
     try {
       device.implementation(null);
@@ -52,7 +56,14 @@ abstract class ConstructionManager extends DeviceManager {
 
     Map<Symbol, Object> dependencies = {};
     info.dependencies.forEach((d) {
-      Object value = constructDependency(d);
+      Object value;
+      if (d.name == #host) {
+        value = Blackbird().localDevice;
+      } else if (d.isModule) {
+        value = constructModule(d);
+      } else if (d.isRuntime) {
+        value = constructDependency(d);
+      }
       dependencies.putIfAbsent(d.name, () => value);
     });
 
