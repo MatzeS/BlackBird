@@ -1,25 +1,27 @@
 import 'dart:async';
 
-abstract class Connection {}
-
-abstract class PacketConnection<P> {
+abstract class Connection {
   Stream<String> get input;
   StreamSink<String> get output;
+}
 
-  Stream<P> packetInput;
-  StreamSink<P> packetOutput;
+abstract class PacketConnection<P> extends Connection {
+  StreamController<P> _packetInput = new StreamController();
+  Stream<P> _buffer;
+  Stream<P> get packetInput => _buffer;
 
   PacketConnection() {
-    StreamController<P> inputStreamController = new StreamController();
-    packetInput = inputStreamController.stream.asBroadcastStream();
+    _buffer = _packetInput.stream.asBroadcastStream();
 
     input.listen((data) {
       //TODO try catch
-      inputStreamController.sink.add(decode(data));
+      decode(data);
+      // print(data);
     });
   }
 
-  P decode(String data);
+  fireReceivedPacket(P packet) => _packetInput.sink.add(packet);
+  decode(String data);
   String encode(P packet);
 
   void send(P packet) {
@@ -27,7 +29,8 @@ abstract class PacketConnection<P> {
     output.add(encode(packet));
   }
 
-  Future<R> receive<R extends P>({bool filter(R packet), Duration timeout}) {
+  Future<R> receive<R extends P>(
+      {bool filter(R packet), Duration timeout}) async {
     if (filter == null) filter = (p) => true;
 
     var future = packetInput
@@ -45,14 +48,13 @@ abstract class PacketConnection<P> {
     R receivedPacket;
     for (int i = 0; i < tries; i++) {
       try {
-        packetOutput.add(request);
+        send(request);
         receivedPacket = await receiver;
       } on TimeoutException {
         continue;
       }
       break;
     }
-
     if (receivedPacket == null)
       throw new TimeoutException('no packet received');
 

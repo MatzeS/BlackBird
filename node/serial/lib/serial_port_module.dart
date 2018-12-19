@@ -5,15 +5,16 @@ import 'package:js/js.dart';
 
 import 'package:node_interop/node.dart';
 import 'package:node_interop/node_interop.dart';
+import 'package:blackbird/ontario/serial_port.dart';
 
 dynamic get serialPortModule => _serialPortModule ??= require('serialport');
 dynamic _serialPortModule;
 
-SerialPort newSerialPort(String path) => serialPortModule(path);
+NodeSerialPortJS newSerialPort(String path) => serialPortModule(path);
 
 @JS()
 @anonymous
-class SerialPort {
+class NodeSerialPortJS {
   external num get baudRate;
   external set baudRate(num v);
   external BaseBinding get binding;
@@ -35,9 +36,9 @@ class SerialPort {
   external void JS$get([ModemBitsCallback callback]);
   external void flush([ErrorCallback callback]);
   external void drain([ErrorCallback callback]);
-  external SerialPort pause();
-  external SerialPort resume();
-  external SerialPort on(String event, void callback([dynamic data]));
+  external NodeSerialPortJS pause();
+  external NodeSerialPortJS resume();
+  external NodeSerialPortJS on(String event, void callback([dynamic data]));
   external static BaseBinding get Binding;
   external static set Binding(BaseBinding v);
   external static Future<List<PortInfo>> list([ListCallback callback]);
