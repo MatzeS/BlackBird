@@ -22,7 +22,7 @@ bool isExecutive(Element e) => identify(e) == DeviceMemberType.executive;
 DeviceMemberType identify(Element element) {
   if (element.isPrivate)
     throw new Exception(
-        'element is not consumed by the device generator [$element]');
+        'element is not consumed by the device generator [$element] , ${element.runtimeType}');
   if (element is ConstructorElement)
     throw new Exception(
         'element is not consumed by the device generator [$element]');

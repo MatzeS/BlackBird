@@ -32,8 +32,19 @@ abstract class BasicDeviceVisitor extends ClassVisitor {
           .where((e) => isExecutive(e))
           .toList();
 
+  List<String> _visited = [];
+  bool _visitOnce(Element element) {
+    String key = '$element ${element.displayName}';
+    bool result = _visited.contains(key);
+    _visited.add(key);
+    if (result) print('got doub $element with $key');
+    return result;
+  }
+
   @override
   visitFieldElement(FieldElement element) async {
+    if (_visitOnce(element)) return '';
+
     switch (identify(element)) {
       case DeviceMemberType.property:
         return visitPropertyField(element);
@@ -49,7 +60,9 @@ abstract class BasicDeviceVisitor extends ClassVisitor {
 
   @override
   visitPropertyAccessorElement(PropertyAccessorElement element) async {
+    if (_visitOnce(element)) return '';
     if (element.isPrivate) return '';
+
     switch (identify(element)) {
       case DeviceMemberType.property:
         return visitPropertyAccessor(element);
@@ -85,6 +98,7 @@ abstract class BasicDeviceVisitor extends ClassVisitor {
 
   @override
   visitMethodElement(MethodElement element) async {
+    if (_visitOnce(element)) return '';
     if (element.isStatic) return '';
     if (element.isOperator) return '';
     if (element.isPrivate) return '';

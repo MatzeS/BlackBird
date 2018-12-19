@@ -6,6 +6,7 @@ import 'device.dart';
 class Blackbird {
   R interfaceDevice<R extends Device>(R device) {
     // return getManager(device).interfaceDevice;
+    return implementDevice<R>(device);
   }
 
   R implementDevice<R extends Device>(R device) {

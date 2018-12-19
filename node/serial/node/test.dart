@@ -4,6 +4,28 @@ import 'package:dart_node_serialport/impl.dart';
 import 'package:blackbird/ontario/serial_port.dart';
 import 'package:blackbird/ontario/connection.dart';
 import 'package:blackbird/ontario/functions/device_identification.dart';
+import 'package:blackbird/ontario/functions/rc_socket.dart';
+import 'package:blackbird/src/manager/dependency_builders.dart';
+import 'package:blackbird/device.dart';
+import 'package:blackbird/blackbird.dart';
+import 'package:blackbird/src/manager/construction.dart';
+import 'package:blackbird/devices/socket.dart';
+import 'package:blackbird/ontario/functions/rc_socket.dart';
+import 'package:blackbird/ontario/functions/rc_socket.dart';
+
+part 'test.g.dart';
+
+class StubBuilder extends FilteredDependencyBuilder<RCSocket, AVRConnection> {
+  AVRConnection con;
+  StubBuilder(this.con);
+  @override
+  List<String> get producedTypes => _$StubBuilderTypes;
+
+  @override
+  Object buildFiltered(Dependency dependency) {
+    return con;
+  }
+}
 
 main() async {
   // SerialPort port = newSerialPort('/dev/ttyUSB0');
@@ -40,8 +62,21 @@ main() async {
   // print(new String.fromCharCodes(sequence));
 
   AVRConnection avr = new AVRConnection(port);
-  print((await avr.sendAndReceive<DeviceIdentificationResponse>(
-          new DeviceIdentificationQuery()))
-      .avrID);
+  // print((await avr.sendAndReceive<DeviceIdentificationResponse>(
+  //         new DeviceIdentificationQuery()))
+  //     .avrID);
   // port.
+  // avr.send(new RCSwitchQuery(528, true));
+
+  StubBuilder builder = new StubBuilder(avr);
+
+  Blackbird blackbird = new Blackbird();
+
+  RCSocket socket = new RCSocket.device();
+  socket.address = 528;
+  socket.blackbird = blackbird;
+
+  addDependencyBuilder(builder);
+
+  socket.turnOn();
 }

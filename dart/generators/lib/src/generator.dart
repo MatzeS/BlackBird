@@ -66,6 +66,7 @@ class DeviceGenerator extends Generator {
 
     List<Element> elements = [];
     elements.addAll(allClassMember(classElement));
+    elements = elements.where((e) => e.isPublic).toList();
 
     //TODO refine
     bool where(ClassMemberElement e) =>

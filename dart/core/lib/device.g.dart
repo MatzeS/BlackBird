@@ -190,22 +190,10 @@ class _$DeviceProxy implements Device {
     return _handle(invocation);
   }
 
-  set _blackbird(Blackbird __blackbird) {
-    Invocation invocation = Invocation.setter(#_blackbird, __blackbird);
-
-    _handle(invocation);
-  }
-
   Blackbird get blackbird {
     Invocation invocation = Invocation.getter(#blackbird);
 
     return _handle(invocation);
-  }
-
-  set blackbird(Blackbird blackbird) {
-    Invocation invocation = Invocation.setter(#blackbird, blackbird);
-
-    _handle(invocation);
   }
 
   Host get host {
@@ -280,22 +268,10 @@ class _$HostProxy implements Host {
     return _handle(invocation);
   }
 
-  set _blackbird(Blackbird __blackbird) {
-    Invocation invocation = Invocation.setter(#_blackbird, __blackbird);
-
-    _handle(invocation);
-  }
-
   Blackbird get blackbird {
     Invocation invocation = Invocation.getter(#blackbird);
 
     return _handle(invocation);
-  }
-
-  set blackbird(Blackbird blackbird) {
-    Invocation invocation = Invocation.setter(#blackbird, blackbird);
-
-    _handle(invocation);
   }
 
   Host get host {

@@ -5,7 +5,7 @@ abstract class DependencyBuilder {
 }
 
 abstract class FilteredDependencyBuilder<D, R> extends DependencyBuilder {
-  List<String> producedTypes;
+  List<String> get producedTypes;
 
   bool filterDevice(D device) => true;
   bool filterType(List<String> type) => true;

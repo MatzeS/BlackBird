@@ -280,22 +280,10 @@ class _$SimpleDeviceProxy implements SimpleDevice {
     return _handle(invocation);
   }
 
-  set _blackbird(Blackbird __blackbird) {
-    Invocation invocation = Invocation.setter(#_blackbird, __blackbird);
-
-    _handle(invocation);
-  }
-
   Blackbird get blackbird {
     Invocation invocation = Invocation.getter(#blackbird);
 
     return _handle(invocation);
-  }
-
-  set blackbird(Blackbird blackbird) {
-    Invocation invocation = Invocation.setter(#blackbird, blackbird);
-
-    _handle(invocation);
   }
 
   Host get host {
@@ -322,22 +310,10 @@ class _$SimpleDeviceProxy implements SimpleDevice {
     return _handle(invocation);
   }
 
-  set aProperty(int _aProperty) {
-    Invocation invocation = Invocation.setter(#aProperty, _aProperty);
-
-    _handle(invocation);
-  }
-
   Device get otherDevice {
     Invocation invocation = Invocation.getter(#otherDevice);
 
     return _handle(invocation);
-  }
-
-  set otherDevice(Device _otherDevice) {
-    Invocation invocation = Invocation.setter(#otherDevice, _otherDevice);
-
-    _handle(invocation);
   }
 
   int get aRuntimeDependency {
@@ -424,22 +400,10 @@ class _$EvenSimplerDeviceProxy implements EvenSimplerDevice {
     return _handle(invocation);
   }
 
-  set _blackbird(Blackbird __blackbird) {
-    Invocation invocation = Invocation.setter(#_blackbird, __blackbird);
-
-    _handle(invocation);
-  }
-
   Blackbird get blackbird {
     Invocation invocation = Invocation.getter(#blackbird);
 
     return _handle(invocation);
-  }
-
-  set blackbird(Blackbird blackbird) {
-    Invocation invocation = Invocation.setter(#blackbird, blackbird);
-
-    _handle(invocation);
   }
 
   Host get host {
