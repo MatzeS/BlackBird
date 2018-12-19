@@ -1,7 +1,7 @@
 {
-  "name": "app",
-  "productName": "Your Product Name Here",
-  "version": "1.0.0",
+  "name": "blackbird",
+  "productName": "blackbird",
+  "version": "0.0.1",
   "main": "entry.js",
   "scripts": {
     "build": "electron-packager . --icon icon",

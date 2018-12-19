@@ -1,9 +1,6 @@
-# dart_electron_starter_kit
-Boilerplate project for building Electron apps with Dart.
-This starter kit is minimal, and only contains what you need to get started
-right away.
+Initial project boilerplate by thosakwe (https://github.com/thosakwe/dart_electron_starter_kit).
 
-![Screenshot](screenshots/main.png)
+
 
 ## Setup
 Assuming you have both `npm` (or `yarn`) and the Dart SDK installed, setup is simple:

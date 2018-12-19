@@ -1,6 +1,5 @@
 name: blackbird_electron
-description: A cross-platform desktop app built with Dart and Electron.
-publish_to: none
+description: TODO
 environment:
   sdk: ">=2.0.0-dev <=3.0.0"
 dependencies:

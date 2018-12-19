@@ -1,7 +1,8 @@
 {
-  "name": "app",
-  "version": "1.0.0",
-  "description": "Build Electron apps using Dart.",
+  "_comment": "Also consider changing the web/package.json",
+  "name": "blackbird",
+  "version": "0.0.1",
+  "description": "TODO",
   "main": "web/dev_entry.js",
   "scripts": {
     "build": "npm run icons && pub run build_runner build --config=release -o build",
