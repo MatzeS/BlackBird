@@ -8,7 +8,7 @@ import 'package:node_interop/node.dart' hide require;
 import 'package:node_interop/path.dart';
 import 'package:js/js.dart';
 import 'package:angular/angular.dart';
-import 'package:blackbird_electron/app_component.template.dart' as ng;
+import 'app/app_component.template.dart' as ng;
 
 void main() {
   runApp(ng.AppComponentNgFactory);

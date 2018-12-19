@@ -7,6 +7,7 @@ dependencies:
   node_interop: ^1.0.0
   angular: ^5.1.0
   angular_components: ^0.10.1
+  bootstrap_sass: 
 dev_dependencies:
   build_runner: ^1.0.0
   build_web_compilers: ^0.4.0
@@ -14,3 +15,4 @@ dev_dependencies:
   angular_test: ^2.1.0
   build_test: ^0.10.3
   test: ^1.5.1
+  sass_builder: ^2.1.2
