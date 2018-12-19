@@ -1,0 +1,17 @@
+name: dart_node_serialport
+version: 0.0.1
+description: >
+authors:
+- Matthias Sokolowski <matthias.sokolowski@googlemail.com>
+
+environment:
+  sdk: '>=2.0.0-dev <3.0.0'
+
+dependencies:
+  js: ^0.6.0
+  node_interop: ^1.0.0
+  build_runner: 
+  build_node_compilers:
+  
+dev_dependencies:
+  test:

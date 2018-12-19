@@ -1,0 +1,34 @@
+{
+      "folders": [
+            {
+                  "path": "."
+            },
+            {
+                  "path": "/home/matthias/development/dart/remote_method_invocation"
+            },
+            {
+                  "path": "/home/matthias/development/dart/source_gen_helpers"
+            },
+            {
+                  "path": "/home/matthias/development/dart/native_test"
+            },
+            {
+                  "path": "/home/matthias/development/dart/serial_port"
+            },
+            {
+                  "path": "/home/matthias/development/dart/angular"
+            },
+            {
+                  "path": "/home/matthias/development/archive/blackbird_tests/tscore"
+            }
+      ],
+      "settings": {
+            "files.exclude": {
+                  "**/.git": true,
+                  "**/node_modules": true,
+                  "**/.history": true,
+                  "**/.dart_tool": true,
+                  "**/.packages": true,
+            }
+      }
+}
