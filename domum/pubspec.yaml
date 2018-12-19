@@ -1,0 +1,23 @@
+name: domum
+version: 0.0.1
+description: >
+authors:
+- Matthias Sokolowski <matthias.sokolowski@googlemail.com>
+
+environment:
+  sdk: '>=2.0.0-dev <3.0.0'
+
+dependencies:
+  blackbird:
+    path: ../dart/core
+  blackbird_ontario:
+    path: ../dart/ontario
+  dart_node_serialport:
+    path: ../node/serial
+  
+dev_dependencies: 
+  build_runner: 
+  build_node_compilers:
+  test:
+  blackbird_generators:
+    path: ../dart/generators

@@ -9,9 +9,7 @@ import 'package:node_interop/node_interop.dart';
 dynamic get serialPortModule => _serialPortModule ??= require('serialport');
 dynamic _serialPortModule;
 
-// @JS()
-// @anonymous
-// abstract class SerialPortModule {}
+SerialPort newSerialPort(String path) => serialPortModule(path);
 
 @JS()
 @anonymous

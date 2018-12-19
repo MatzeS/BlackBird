@@ -20,7 +20,7 @@ import 'package:source_gen_helpers/class/util.dart';
 import 'package:source_gen_helpers/class/output_visitor.dart';
 import 'package:source_gen_helpers/class/override_visitor.dart';
 import 'dart:io';
-import 'package:blackbird_device_generator/member_identifier.dart';
+import 'package:blackbird_generators/member_identifier.dart';
 //TODO abstract executive getter
 
 //todo load

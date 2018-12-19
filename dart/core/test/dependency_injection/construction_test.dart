@@ -127,5 +127,5 @@ main() {
       SimpleDevice implementation = blackbird.implementDevice(device);
       expect(implementation.aRuntimeDependency, significantNumber);
     });
-  }, tags: 'current');
+  });
 }

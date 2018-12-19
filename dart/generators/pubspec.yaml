@@ -1,4 +1,4 @@
-name: blackbird
+name: blackbird_generators
 version: 0.0.1
 description: >
 authors:
@@ -8,22 +8,17 @@ environment:
   sdk: '>=2.0.0-dev <3.0.0'
 
 dependencies:
-  rmi: ^0.0.3
   tuple:
-  built_value: ^6.1.6
-  built_collection: ^4.1.0
-  
+
 dev_dependencies:
-  built_value_generator: ^6.1.6
-  build_runner: ^1.1.2
-  build_test:
   test:
-  rmi_generator: ^0.0.3
-  blackbird_generators:
-    path: ../generators
+  source_gen: 
   source_gen_helpers: 
     path: ../../../dart/source_gen_helpers
+  build_runner: ^1.1.2
+  build_test:
 
+  
 dependency_overrides:
   rmi: 
     path: ../../../dart/remote_method_invocation/rmi
