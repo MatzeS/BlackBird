@@ -1,0 +1,10 @@
+<span class="switch" [class.checked]="checked" [class.disabled]="disabled" [class.switch-large]="size === 'large'"
+      [class.switch-medium]="size == 'medium'" [class.switch-small]="size == 'small'" [style.background-color]="switchColor"
+      [style.border-color]="borderColor">
+      <span class="switch-pane" *ngIf="checkedLabel.isNotEmpty || uncheckedLabel.isNotEmpty">
+            <span class="switch-label-checked">{{ checkedLabel }}</span>
+            <span class="switch-label-unchecked">{{ uncheckedLabel }}</span>
+      </span>
+      <small [style.background-color]="dotColor">
+      </small>
+</span>

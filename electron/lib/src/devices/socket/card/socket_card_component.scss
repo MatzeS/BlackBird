@@ -1,0 +1,55 @@
+@import 'package:angular_components/css/material/material';
+@import 'package:blackbird_electron/src/common';
+
+$mdc-card-image: 'http://material-components-web.appspot.com/images/16-9.jpg';
+
+:host {
+}
+
+// Provide a size for the card. Cards normally take up the complete space of
+// their parent.
+.demo-size {
+      width: $mat-grid * 44;
+      
+      margin-top: $content-padding;
+      margin-left: $content-padding;
+
+      position: relative;
+      img{
+            position: absolute;
+            float: right;
+            right: 30px;
+            top: 30px;
+            width: 60px;
+            opacity: 0.5;
+      }
+}
+
+// Provide material styling for the title.
+.demo-card__title {
+  @include mat-font-title;
+  line-height: 1em; // legacy setting
+  margin: 0;
+}
+
+// Provider material styling for the subtitle.
+.demo-card__subtitle {
+  @include mat-font-subhead;
+  margin: 0;
+}
+
+.demo-card__media {
+}
+
+.demo-card__primary {
+  padding: $mat-grid * 2;
+}
+
+.demo-card__secondary {
+  @include mat-font-body;
+  padding: 0 $mat-grid * 2 $mat-grid;
+}
+
+.switch{
+      margin-left: 2 * $mat-grid;
+}

@@ -3,10 +3,13 @@ import 'dart:async';
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import '../test.dart';
+import 'package:blackbird_electron/src/devices/socket/card/socket_card_component.dart';
 
 @Component(
   selector: 'socket-control',
-  styleUrls: ['socket_component.css'],
+  styleUrls: [
+    'socket_component.css',
+  ],
   templateUrl: 'socket_component.html',
   directives: [
     MaterialCheckboxComponent,
@@ -16,6 +19,7 @@ import '../test.dart';
     NgFor,
     NgIf,
     MaterialToggleComponent,
+    SocketCardComponent,
   ],
 )
 class SocketComponent implements OnInit {

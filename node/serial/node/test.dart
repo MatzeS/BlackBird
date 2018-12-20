@@ -36,11 +36,11 @@ main() async {
 
   Blackbird blackbird = new Blackbird();
 
+  addDependencyBuilder(builder);
+
   RCSocket socket = new RCSocket.device();
   socket.address = 528;
   socket.blackbird = blackbird;
-
-  addDependencyBuilder(builder);
 
   socket.turnOn();
 }
