@@ -1,3 +1,6 @@
+@JS()
+library test;
+
 import 'package:dart_node_serialport/serial_port_module.dart';
 import 'package:test/test.dart';
 import 'package:dart_node_serialport/impl.dart';
@@ -12,6 +15,10 @@ import 'package:blackbird/src/manager/construction.dart';
 import 'package:blackbird/devices/socket.dart';
 import 'package:blackbird/ontario/functions/rc_socket.dart';
 import 'package:blackbird/ontario/functions/rc_socket.dart';
+import 'dart:html';
+import 'package:node_interop/node.dart' hide require;
+import 'package:node_interop/path.dart';
+import 'package:js/js.dart';
 
 part 'test.g.dart';
 
@@ -27,8 +34,20 @@ class StubBuilder extends FilteredDependencyBuilder<RCSocket, AVRConnection> {
   }
 }
 
-main() async {
-  SerialPort port = NodeSerialPort('/dev/ttyUSB0');
+@JS('handover')
+external dynamic get serialport;
+
+RCSocket socket;
+load() async {
+  print(serialport);
+  // dynamic serialport = window.sessionStorage['serialport'];
+  // print(serialport);<
+  // print(serialport('a'));
+
+  // var x = window.sessionStorage['somefunc'];
+  // print(x('a'));
+
+  SerialPort port = NodeSerialPort('/dev/ttyUSB0', serialport('/dev/ttyUSB0'));
 
   AVRConnection avr = new AVRConnection(port);
 
@@ -36,11 +55,19 @@ main() async {
 
   Blackbird blackbird = new Blackbird();
 
-  RCSocket socket = new RCSocket.device();
+  socket = new RCSocket.device();
   socket.address = 528;
   socket.blackbird = blackbird;
 
   addDependencyBuilder(builder);
 
-  socket.turnOn();
+  socket = blackbird.implementDevice(socket);
+  socket.turnOff();
+  return;
+}
+
+toggle() {
+  print(socket.state);
+  socket.toggle();
+  // socket.toggle();
 }

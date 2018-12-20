@@ -5,8 +5,9 @@ import 'dart:async';
 class NodeSerialPort implements SerialPort {
   NodeSerialPortJS port;
 
-  NodeSerialPort(String path) {
-    port = newSerialPort(path);
+  NodeSerialPort(String path, [dynamic port]) {
+    // port = newSerialPort(path);
+    this.port = port;
 
     port.on('data', ([dynamic data]) {
       print('received $data');

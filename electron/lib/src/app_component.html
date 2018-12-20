@@ -1,0 +1,51 @@
+<material-drawer persistent #drawer="drawer" id='nav-drawer'>
+      <div id="flag" style="z-index: 200;">
+            <img src='assets/shield.svg'>
+            <p>BLACKBIRD</p>
+      </div>
+      <material-list *deferredContent id='nav-drawer-links'>
+            <div group>
+                  <material-list-item [routerLink]="RoutePaths.socket.toUrl()" [routerLinkActive]="'active'">
+                        <material-icon icon="inbox"></material-icon>Inbox
+                  </material-list-item>
+                  <material-list-item>
+                        <material-icon icon="star"></material-icon>Star
+                  </material-list-item>
+                  <material-list-item>
+                        <material-icon icon="send"></material-icon>Sent Mail
+                  </material-list-item>
+                  <material-list-item>
+                        <material-icon icon="drafts"></material-icon>Drafts
+                  </material-list-item>
+            </div>
+            <div group class='group'>
+                  <div label class='label'>Tags</div>
+                  <material-list-item>
+                        <material-icon icon="star"></material-icon>Favorites
+                  </material-list-item>
+            </div>
+      </material-list>
+</material-drawer>
+<div class="material-content">
+      <header class="material-header" style="z-index: 100;">
+            <div class="material-header-row">
+                  <material-button icon class="material-drawer-button" (trigger)="drawer.toggle()">
+                        <material-icon icon="menu"></material-icon>
+                  </material-button>
+                  <span class="material-header-title">Simple Layout</span>
+                  <div class="material-spacer"></div>
+                  <nav class="material-navigation">
+                        <a>stable</a>
+                  </nav>
+                  <nav class="material-navigation">
+                        <a>login: domum/matthias</a>
+                  </nav>
+                  <nav class="material-navigation">
+                        <a>logout</a>
+                  </nav>
+            </div>
+      </header>
+      <div id='content'>
+            <router-outlet [routes]="Routes.all"></router-outlet>
+      </div>
+</div>
