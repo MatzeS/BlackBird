@@ -21,13 +21,15 @@ class _$SimpleDeviceDevice extends SimpleDevice {
 
   Host get host => throw new Exception(
       'cannot get runtime dependencys on device representation');
-  void executiveMethod() => blackbird.interfaceDevice(this).executiveMethod();
+  void executiveMethod() =>
+      blackbird.interfaceDevice<SimpleDevice>(this).executiveMethod();
 
   int get aRuntimeDependency => throw new Exception(
       'cannot get runtime dependencys on device representation');
-  int get executiveGetter => blackbird.interfaceDevice(this).executiveGetter;
+  int get executiveGetter =>
+      blackbird.interfaceDevice<SimpleDevice>(this).executiveGetter;
   set executiveSetter(int value) =>
-      blackbird.interfaceDevice(this).executiveSetter = value;
+      blackbird.interfaceDevice<SimpleDevice>(this).executiveSetter = value;
 
   int aProperty;
 

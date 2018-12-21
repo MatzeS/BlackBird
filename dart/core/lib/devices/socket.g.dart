@@ -10,7 +10,7 @@ class _$SocketDevice extends Socket {
   _$SocketDevice();
 
   Socket implementation(Map<Symbol, Object> dependencies) =>
-      throw new Exception('no invocation on devices');
+      throw new Exception("cannot implement abstract device");
   @override
   Object invoke(Invocation invocation) =>
       throw new Exception('no invocation on devices');
@@ -19,23 +19,21 @@ class _$SocketDevice extends Socket {
   Socket getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
 
-  Blackbird get blackbird => blackbird.interfaceDevice(this).blackbird;
-  set blackbird(Blackbird blackbird) =>
-      blackbird.interfaceDevice(this).blackbird = blackbird;
   Host get host => throw new Exception(
       'cannot get runtime dependencys on device representation');
-  void toggle() => blackbird.interfaceDevice(this).toggle();
-  void turnOff() => blackbird.interfaceDevice(this).turnOff();
-  void turnOn() => blackbird.interfaceDevice(this).turnOn();
-  bool get state => blackbird.interfaceDevice(this).state;
-  set state(bool state) => blackbird.interfaceDevice(this).state = state;
+  void toggle() => blackbird.interfaceDevice<Socket>(this).toggle();
+  void turnOff() => blackbird.interfaceDevice<Socket>(this).turnOff();
+  void turnOn() => blackbird.interfaceDevice<Socket>(this).turnOn();
+  bool get state => blackbird.interfaceDevice<Socket>(this).state;
+  set state(bool state) =>
+      blackbird.interfaceDevice<Socket>(this).state = state;
 }
 
 class _$RemoteSocketDevice extends RemoteSocket {
   _$RemoteSocketDevice();
 
   RemoteSocket implementation(Map<Symbol, Object> dependencies) =>
-      throw new Exception('no invocation on devices');
+      throw new Exception("cannot implement abstract device");
   @override
   Object invoke(Invocation invocation) =>
       throw new Exception('no invocation on devices');
@@ -44,19 +42,16 @@ class _$RemoteSocketDevice extends RemoteSocket {
   RemoteSocket getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
 
-  bool get state => blackbird.interfaceDevice(this).state;
-  set state(bool state) => blackbird.interfaceDevice(this).state = state;
-  Blackbird get blackbird => blackbird.interfaceDevice(this).blackbird;
-  set blackbird(Blackbird blackbird) =>
-      blackbird.interfaceDevice(this).blackbird = blackbird;
   Host get host => throw new Exception(
       'cannot get runtime dependencys on device representation');
-  void toggle() => blackbird.interfaceDevice(this).toggle();
-  void turnOff() => blackbird.interfaceDevice(this).turnOff();
-  void turnOn() => blackbird.interfaceDevice(this).turnOn();
-
+  void toggle() => blackbird.interfaceDevice<RemoteSocket>(this).toggle();
+  void turnOff() => blackbird.interfaceDevice<RemoteSocket>(this).turnOff();
+  void turnOn() => blackbird.interfaceDevice<RemoteSocket>(this).turnOn();
+  bool get state => blackbird.interfaceDevice<RemoteSocket>(this).state;
+  set state(bool state) =>
+      blackbird.interfaceDevice<RemoteSocket>(this).state = state;
   set remoteState(bool state) =>
-      blackbird.interfaceDevice(this).remoteState = state;
+      blackbird.interfaceDevice<RemoteSocket>(this).remoteState = state;
 }
 
 // **************************************************************************

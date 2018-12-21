@@ -95,18 +95,78 @@ class DeviceGenerator extends Generator {
     elements =
         elements.where((e) => e is! ClassMemberElement || where(e)).toList();
 
-    await deviceOutput.visitClassElement(classElement);
-    await implementationOutput.visitClassElement(classElement);
-    await visitElements(deviceOutput, elements);
-    await visitElements(implementationOutput, elements);
+    var c = classElement;
+    elements = filterConcreteElements(classElement, elements);
+    // elements.where((e) {
+    //   if (e.displayName != 'remoteState') return false;
+    //   if (e.displayName == 'implementation') return false;
+    //   if (e.displayName == 'provideRemote') return false;
+    //   if (e.displayName == 'getRemote') return false;
+    //   if (e.displayName == 'invoke') return false;
+    //   // print('$e on $c gives ${e.enclosingElement}');
+    //   if (e is PropertyAccessorElement) {
+    //     print('$e on $c is ${e.isAbstract}  ${e.getAncestor((a) => true)}');
+    //     return e.isAbstract;
+    //   }
+    //   if (e is MethodElement) {
+    //     print('$e on $c is ${e.isAbstract} ${e.getAncestor((a) => true)}');
+    //     return e.isAbstract;
+    //   }
+    //   if (e is FieldElement) {
+    //     bool r =
+    //         (e.getter?.isAbstract ?? false) || (e.setter?.isAbstract ?? false);
+    //     print('$e on $c is ${r} ${e.getAncestor((a) => true)}   ');
+    //     return r;
+    //   }
+    //   throw new Exception('unknown executable $e/${e.runtimeType} on ${c}');
+    // }).forEach((e) {});
 
+    await deviceOutput.visitClassElement(classElement);
+    await visitElements(deviceOutput, elements);
+
+    if (!await deviceVisitor.isAbstract) {
+      await implementationOutput.visitClassElement(classElement);
+      await visitElements(implementationOutput, elements);
+    }
     // if (!classvisitor.foundNoArgConstructor) {
     //   log.severe('${classElement} must have a no argument constructor');
     // }
 
     StringBuffer output = new StringBuffer();
     output.write(await deviceOutput.output);
-    output.write(await implementationOutput.output);
+    if (!await deviceVisitor.isAbstract) {
+      output.write(await implementationOutput.output);
+    }
     return output.toString();
   }
+}
+
+List<Element> filterConcreteElements(
+    ClassElement classElement, List<Element> elements) {
+  return elements.where((e) {
+    List<Element> equalDeclarations =
+        elements.where((e2) => e.toString() == e2.toString()).toList();
+    if (equalDeclarations.isEmpty) return true;
+
+    if (e.displayName == 'aProperty') print(equalDeclarations);
+
+    equalDeclarations.sort((a, b) {
+      var c = a.getAncestor((a) => true);
+      var d = b.getAncestor((a) => true);
+      if (c is ClassElement) {
+        if (d is ClassElement) {
+          if (c.type == d.type) return 0;
+          return c.type.isAssignableTo(d.type) ? 1 : -1;
+        }
+      }
+      throw new Exception('$c or $d are not class elements');
+    });
+
+    print(
+        'first: ${equalDeclarations.first} from ${equalDeclarations.first.getAncestor((a) => true)}');
+    // print(
+    //     'last: ${equalDeclarations.last} from ${equalDeclarations.last.getAncestor((a) => true)}');
+
+    return equalDeclarations.first == e;
+  }).toList();
 }

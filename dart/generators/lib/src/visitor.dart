@@ -37,7 +37,6 @@ abstract class BasicDeviceVisitor extends ClassVisitor {
     String key = '$element ${element.displayName}';
     bool result = _visited.contains(key);
     _visited.add(key);
-    if (result) print('got doub $element with $key');
     return result;
   }
 

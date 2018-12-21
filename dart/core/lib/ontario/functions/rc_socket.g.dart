@@ -10,7 +10,7 @@ class _$RCSocketDevice extends RCSocket {
   _$RCSocketDevice();
 
   RCSocket implementation(Map<Symbol, Object> dependencies) =>
-      _$RCSocketImplementation(this, dependencies);
+      throw new Exception("cannot implement abstract device");
   @override
   Object invoke(Invocation invocation) =>
       throw new Exception('no invocation on devices');
@@ -19,11 +19,9 @@ class _$RCSocketDevice extends RCSocket {
   RCSocket getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
 
-  bool get state => blackbird.interfaceDevice(this).state;
-  set state(bool state) => blackbird.interfaceDevice(this).state = state;
-  set remoteState(bool state) =>
-      blackbird.interfaceDevice(this).remoteState = state;
-
+  bool get state => blackbird.interfaceDevice<RCSocket>(this).state;
+  set state(bool state) =>
+      blackbird.interfaceDevice<RCSocket>(this).state = state;
   Host get host => throw new Exception(
       'cannot get runtime dependencys on device representation');
   void toggle() => blackbird.interfaceDevice<RCSocket>(this).toggle();
@@ -32,66 +30,10 @@ class _$RCSocketDevice extends RCSocket {
 
   AVRConnection get connection => throw new Exception(
       'cannot get runtime dependencys on device representation');
+  set remoteState(bool state) =>
+      blackbird.interfaceDevice<RCSocket>(this).remoteState = state;
 
   int address;
-}
-
-class _$RCSocketImplementation extends RCSocket {
-  Host _host;
-  AVRConnection _connection;
-
-  _$RCSocketImplementation(RCSocket delegate, Map<Symbol, Object> parameters) {
-    if (parameters == null) {
-      ConstructionInfoException info = new ConstructionInfoException();
-      info.dependencies.add(new Dependency(
-          name: #host,
-          type: [
-            "asset:blackbird/lib/device.dart#Host",
-            "asset:blackbird/lib/device.dart#Device",
-            "dart:core#Object"
-          ],
-          device: this,
-          module: null,
-          isModule: false));
-      info.dependencies.add(new Dependency(
-          name: #connection,
-          type: [
-            "asset:blackbird/lib/ontario/connection.dart#AVRConnection",
-            "asset:blackbird/lib/src/connection.dart#PacketConnection",
-            "asset:blackbird/lib/src/connection.dart#Connection",
-            "dart:core#Object"
-          ],
-          device: this,
-          module: null,
-          isModule: false));
-      info[#host].annotations.add(Runtime());
-      info[#connection].annotations.add(Runtime());
-      throw info;
-    }
-
-    _host = parameters[#host];
-    _connection = parameters[#connection];
-    _address = delegate.address;
-  }
-
-  RCSocket implementation(Map<Symbol, Object> dependencies) =>
-      throw Exception('this is already an implementation');
-  @override
-  Object invoke(Invocation invocation) =>
-      _$RCSocketInvoker.invoke(invocation, this);
-  Provision provideRemote(Context context) =>
-      _$RCSocketRmi.provideRemote(context, this);
-  RCSocket getRemote(Context context, String uuid) =>
-      _$RCSocketRmi.getRemote(context, uuid);
-
-  Host get host => _host;
-
-  int get address => _address;
-  set address(int _address) => throw new Exception(
-      'cannot change device property after implementationconstruction');
-  AVRConnection get connection => _connection;
-
-  int _address;
 }
 
 // **************************************************************************

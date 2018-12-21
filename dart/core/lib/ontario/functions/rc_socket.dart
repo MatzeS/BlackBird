@@ -17,6 +17,7 @@ abstract class RCSocket extends RemoteSocket {
   int address;
 
   @override
+  @Executive()
   set remoteState(bool state) {
     connection.send(new RCSwitchQuery(address, state));
   }
