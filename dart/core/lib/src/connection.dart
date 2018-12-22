@@ -5,14 +5,12 @@ abstract class Connection {
   StreamSink<String> get output;
 }
 
+//TODO better architecture with stream decoder
 abstract class PacketConnection<P> extends Connection {
-  StreamController<P> _packetInput = new StreamController();
-  Stream<P> _buffer;
-  Stream<P> get packetInput => _buffer;
+  StreamController<P> _packetInput = new StreamController.broadcast();
+  Stream<P> get packetInput => _packetInput.stream;
 
   PacketConnection() {
-    _buffer = _packetInput.stream.asBroadcastStream();
-
     input.listen((data) {
       //TODO try catch
       decode(data);
@@ -20,8 +18,9 @@ abstract class PacketConnection<P> extends Connection {
     });
   }
 
+  void decode(String data);
   fireReceivedPacket(P packet) => _packetInput.sink.add(packet);
-  decode(String data);
+
   String encode(P packet);
 
   void send(P packet) {

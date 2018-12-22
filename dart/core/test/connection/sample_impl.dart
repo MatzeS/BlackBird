@@ -18,11 +18,11 @@ class SampleConnection extends PacketConnection<SamplePacket> {
   }
 
   @override
-  SamplePacket decode(String data) {
+  void decode(String data) {
     if (data == 'another')
-      return new AnotherPacket();
+      fireReceivedPacket(new AnotherPacket());
     else
-      return new SamplePacket(data);
+      fireReceivedPacket(SamplePacket(data));
   }
 
   Stream<String> _input;
