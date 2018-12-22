@@ -1,8 +1,5 @@
-import 'package:blackbird/device.dart';
 import 'package:blackbird/blackbird.dart';
-import 'package:rmi/remote_method_invocation.dart';
-import 'package:rmi/invoker.dart';
-import 'package:rmi/proxy.dart';
+import 'package:rmi/rmi.dart';
 
 part 'socket.g.dart';
 

@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:blackbird/device.dart';
+import 'package:blackbird/blackbird.dart';
 import 'simple_device.dart';
 
 int significantNumber = 123456789;

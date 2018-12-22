@@ -19,3 +19,7 @@ serial?
 
 
 domum =  my home implementation
+
+
+## TODO
+ - precommit scripts

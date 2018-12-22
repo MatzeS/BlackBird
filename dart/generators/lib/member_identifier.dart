@@ -55,9 +55,9 @@ DeviceMemberType identify(Element element) {
   }
 
   DeviceMemberType _checkAnnotations() {
-    bool p = _annotatedAs('package:blackbird/device.dart#Property');
-    bool r = _annotatedAs('package:blackbird/device.dart#Runtime');
-    bool e = _annotatedAs('package:blackbird/device.dart#Executive');
+    bool p = _annotatedAs('asset:blackbird/lib/src/device.dart#Property');
+    bool r = _annotatedAs('asset:blackbird/lib/src/device.dart#Runtime');
+    bool e = _annotatedAs('asset:blackbird/lib/src/device.dart#Executive');
 
     int s = (p ? 1 : 0) + (r ? 1 : 0) + (e ? 1 : 0);
     if (s > 1)
@@ -118,6 +118,6 @@ DeviceMemberType identify(Element element) {
 }
 
 bool _isDevice(DartType type) {
-  return TypeChecker.fromUrl('package:blackbird/device.dart#Device')
+  return TypeChecker.fromUrl('asset:blackbird/lib/src/device.dart#Device')
       .isAssignableFromType(type);
 }

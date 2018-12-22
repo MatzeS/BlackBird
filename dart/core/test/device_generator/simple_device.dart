@@ -1,20 +1,4 @@
-import 'dart:async';
-import 'package:test/test.dart';
-import 'package:rmi/proxy.dart';
-import 'package:rmi/remote_method_invocation.dart';
-
-import 'package:source_gen/source_gen.dart';
-import 'package:build/build.dart';
-import 'package:build_test/build_test.dart';
-
-import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/visitor.dart';
-import 'package:build/build.dart';
-import 'package:source_gen/source_gen.dart';
-import 'package:source_gen/src/utils.dart';
-
-import 'package:blackbird/src/manager/dependency_builders.dart';
-import 'package:blackbird/device.dart';
+import 'package:rmi/rmi.dart';
 import 'package:blackbird/blackbird.dart';
 
 part 'simple_device.g.dart';

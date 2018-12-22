@@ -48,8 +48,8 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
       info.dependencies.add(new Dependency(
           name: #host,
           type: [
-            "asset:blackbird/lib/device.dart#Host",
-            "asset:blackbird/lib/device.dart#Device",
+            "asset:blackbird/lib/src/device.dart#Host",
+            "asset:blackbird/lib/src/device.dart#Device",
             "dart:core#Object"
           ],
           device: this,
@@ -63,7 +63,10 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
           isModule: false));
       info.dependencies.add(new Dependency(
           name: #otherDevice,
-          type: ["asset:blackbird/lib/device.dart#Device", "dart:core#Object"],
+          type: [
+            "asset:blackbird/lib/src/device.dart#Device",
+            "dart:core#Object"
+          ],
           device: this,
           module: delegate.otherDevice,
           isModule: true));
@@ -130,8 +133,8 @@ class _$EvenSimplerDeviceImplementation extends EvenSimplerDevice {
       info.dependencies.add(new Dependency(
           name: #host,
           type: [
-            "asset:blackbird/lib/device.dart#Host",
-            "asset:blackbird/lib/device.dart#Device",
+            "asset:blackbird/lib/src/device.dart#Host",
+            "asset:blackbird/lib/src/device.dart#Device",
             "dart:core#Object"
           ],
           device: this,

@@ -24,15 +24,13 @@ class DeviceGenerator extends Generator {
   DeviceGenerator(this.options);
 
   bool elementFilter(Element element) {
-    if (TypeChecker.fromUrl("asset:blackbird/lib/device.dart#Device")
+    if (TypeChecker.fromUrl("asset:blackbird/lib/src/device.dart#Device")
         .isExactly(element)) return false;
 
     // if (isAnnotatedWith<Device>(element)) return true;
 
-    if (TypeChecker.fromUrl("asset:blackbird/lib/device.dart#Device")
+    if (TypeChecker.fromUrl("asset:blackbird/lib/src/device.dart#Device")
         .isAssignableFrom(element)) return true;
-
-    if (isAnnotatedWithConstant(element, 'Device ()')) return true;
 
     return false;
   }
@@ -71,7 +69,7 @@ class DeviceGenerator extends Generator {
     //TODO refine
     bool where(ClassMemberElement e) =>
         e.enclosingElement.supertype != null &&
-        !TypeChecker.fromUrl('package:blackbird/device.dart#Device')
+        !TypeChecker.fromUrl('asset:blackbird/lib/src/device.dart#Device')
             .isExactly(e.enclosingElement) &&
         !TypeChecker.fromUrl(
                 'package:rmi/remote_method_invocation.dart#RmiTarget')
@@ -82,7 +80,7 @@ class DeviceGenerator extends Generator {
         .where((e) => e.metadata.every((a) {
               return a.constantValue != null
                   ? !TypeChecker.fromUrl(
-                          'asset:blackbird/lib/device.dart#Ignore')
+                          'asset:blackbird/lib/src/device.dart#Ignore')
                       .isAssignableFromType(a.constantValue.type)
                   : true;
             }))
@@ -95,31 +93,7 @@ class DeviceGenerator extends Generator {
     elements =
         elements.where((e) => e is! ClassMemberElement || where(e)).toList();
 
-    var c = classElement;
     elements = filterConcreteElements(classElement, elements);
-    // elements.where((e) {
-    //   if (e.displayName != 'remoteState') return false;
-    //   if (e.displayName == 'implementation') return false;
-    //   if (e.displayName == 'provideRemote') return false;
-    //   if (e.displayName == 'getRemote') return false;
-    //   if (e.displayName == 'invoke') return false;
-    //   // print('$e on $c gives ${e.enclosingElement}');
-    //   if (e is PropertyAccessorElement) {
-    //     print('$e on $c is ${e.isAbstract}  ${e.getAncestor((a) => true)}');
-    //     return e.isAbstract;
-    //   }
-    //   if (e is MethodElement) {
-    //     print('$e on $c is ${e.isAbstract} ${e.getAncestor((a) => true)}');
-    //     return e.isAbstract;
-    //   }
-    //   if (e is FieldElement) {
-    //     bool r =
-    //         (e.getter?.isAbstract ?? false) || (e.setter?.isAbstract ?? false);
-    //     print('$e on $c is ${r} ${e.getAncestor((a) => true)}   ');
-    //     return r;
-    //   }
-    //   throw new Exception('unknown executable $e/${e.runtimeType} on ${c}');
-    // }).forEach((e) {});
 
     await deviceOutput.visitClassElement(classElement);
     await visitElements(deviceOutput, elements);
@@ -148,8 +122,6 @@ List<Element> filterConcreteElements(
         elements.where((e2) => e.toString() == e2.toString()).toList();
     if (equalDeclarations.isEmpty) return true;
 
-    if (e.displayName == 'aProperty') print(equalDeclarations);
-
     equalDeclarations.sort((a, b) {
       var c = a.getAncestor((a) => true);
       var d = b.getAncestor((a) => true);
@@ -161,11 +133,6 @@ List<Element> filterConcreteElements(
       }
       throw new Exception('$c or $d are not class elements');
     });
-
-    print(
-        'first: ${equalDeclarations.first} from ${equalDeclarations.first.getAncestor((a) => true)}');
-    // print(
-    //     'last: ${equalDeclarations.last} from ${equalDeclarations.last.getAncestor((a) => true)}');
 
     return equalDeclarations.first == e;
   }).toList();

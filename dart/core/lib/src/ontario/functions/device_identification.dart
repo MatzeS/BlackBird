@@ -1,4 +1,4 @@
-import 'package:blackbird/ontario/connection.dart';
+import 'package:blackbird/src/ontario/connection.dart';
 import 'command_bytes.dart';
 
 class DeviceIdentificationQuery extends ConstructionPacket {

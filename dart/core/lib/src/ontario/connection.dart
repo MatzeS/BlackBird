@@ -1,6 +1,6 @@
 import 'package:js/js.dart';
 import 'package:blackbird/src/connection.dart';
-import 'package:blackbird/ontario/serial_port.dart';
+import 'package:blackbird/src/ontario/serial_port.dart';
 import 'dart:async';
 import 'package:tuple/tuple.dart';
 import 'functions/device_identification.dart';

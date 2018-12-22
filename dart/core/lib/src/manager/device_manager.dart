@@ -1,5 +1,4 @@
 import 'package:blackbird/blackbird.dart';
-import 'package:blackbird/device.dart';
 import 'construction.dart';
 
 abstract class DeviceManager {

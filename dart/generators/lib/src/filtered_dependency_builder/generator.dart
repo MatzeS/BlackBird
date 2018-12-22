@@ -28,17 +28,6 @@ class FilteredDependencyBuilderTypeGenerator extends Generator {
 
     if (element is! ClassElement) return false;
 
-    // print((element as ClassElement).allSupertypes);
-
-    // print((element as ClassElement)
-    //     .allSupertypes
-    //     .map((t) => t.displayName)
-    //     .any((t) => t.contains('FilteredDependencyBuilder')));
-
-//TypeChecker.fromUrl(
-    //     "asset:blackbird/lib/manager/dependency_builders.dart#FilteredDependencyBuilder")
-    // .isExactlyType(t)
-
     return (element as ClassElement)
         .allSupertypes
         .map((t) => t.displayName)

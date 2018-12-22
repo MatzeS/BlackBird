@@ -1,24 +1,14 @@
 import 'dart:async';
 import 'package:test/test.dart';
-import 'package:blackbird/device.dart';
-import 'package:rmi/proxy.dart';
-import 'package:rmi/remote_method_invocation.dart';
 
 import 'package:source_gen/source_gen.dart';
 import 'package:build/build.dart';
-import 'package:blackbird/blackbird.dart';
 import 'package:build_test/build_test.dart';
 
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/visitor.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
-import 'package:source_gen/src/utils.dart';
 
-import 'package:source_gen_helpers/class/class_visitor.dart';
-import 'package:source_gen_helpers/class/util.dart';
-import 'package:source_gen_helpers/class/output_visitor.dart';
-import 'package:source_gen_helpers/class/override_visitor.dart';
 import 'dart:io';
 import 'package:blackbird_generators/member_identifier.dart';
 //TODO abstract executive getter
@@ -26,7 +16,7 @@ import 'package:blackbird_generators/member_identifier.dart';
 //todo load
 
 String source = '''
-import 'package:blackbird/device.dart';
+import 'package:blackbird/blackbird.dart';
 abstract class SimpleDevice implements Device {
   int aProperty;
 
@@ -114,8 +104,10 @@ final String pkgName = 'pkg';
 generate(String source) async {
   final srcs = <String, String>{
     '$pkgName|lib/sometestfile.dart': source,
-    'blackbird|lib/device.dart':
-        await new File('lib/device.dart').readAsString(),
+    'blackbird|lib/blackbird.dart':
+        await new File('lib/blackbird.dart').readAsString(),
+    'blackbird|lib/src/device.dart':
+        await new File('lib/src/device.dart').readAsString(),
   };
 
   final writer = new InMemoryAssetWriter();

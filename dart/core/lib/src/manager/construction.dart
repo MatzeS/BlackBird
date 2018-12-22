@@ -1,7 +1,6 @@
-import 'device_manager.dart';
-import 'package:blackbird/device.dart';
-import 'dependency_builders.dart';
 import 'package:blackbird/blackbird.dart';
+import 'device_manager.dart';
+import 'dependency_builders.dart';
 
 List<DependencyBuilder> dependencyBuilders = [];
 
@@ -70,4 +69,52 @@ abstract class ConstructionManager extends DeviceManager {
 
     return device.implementation(dependencies);
   }
+}
+
+/// Collects the dependency information for a device implementation
+class ConstructionInfoException implements Exception {
+  List<Dependency> dependencies;
+  ConstructionInfoException([this.dependencies]) {
+    if (dependencies == null) dependencies = [];
+  }
+
+  @override
+  String toString() {
+    return 'ConstructionInfoException';
+  }
+
+  @override
+  Dependency operator [](Object key) {
+    return dependencies.firstWhere((d) => d.name == key);
+  }
+}
+
+/// Information on a device implementation dependency
+class Dependency {
+  Device device;
+  Symbol name;
+  List<String> type;
+  Device module;
+  bool isModule;
+
+  List<Object> annotations;
+  Dependency(
+      {this.device,
+      this.name,
+      this.type,
+      this.module,
+      this.isModule,
+      this.annotations}) {
+    if (annotations == null) annotations = [];
+  }
+
+  A findAnnotation<A>([bool filter(A annotation)]) =>
+      annotations.firstWhere((a) => a is A && (filter == null || filter(a)),
+          orElse: () => null);
+
+  bool get isRuntime => !isModule;
+  bool get isSuperModule =>
+      module is Device && findAnnotation<SubModule>() == null;
+  bool get isSubModule =>
+      module is Device && findAnnotation<SubModule>() != null;
 }

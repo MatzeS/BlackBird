@@ -32,8 +32,8 @@ class _$HostImplementation extends Host {
       info.dependencies.add(new Dependency(
           name: #host,
           type: [
-            "asset:blackbird/lib/device.dart#Host",
-            "asset:blackbird/lib/device.dart#Device",
+            "asset:blackbird/lib/src/device.dart#Host",
+            "asset:blackbird/lib/src/device.dart#Device",
             "dart:core#Object"
           ],
           device: this,

@@ -1,17 +1,9 @@
 import 'package:test/test.dart';
-import 'package:blackbird/device.dart';
-import '../device_generator/simple_device.dart';
-
-import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/visitor.dart';
-import 'package:analyzer/dart/element/type.dart';
-import 'package:build/build.dart';
-import 'package:source_gen/source_gen.dart';
+import 'package:blackbird/blackbird.dart';
 import 'package:blackbird/src/manager/dependency_builders.dart';
 import 'package:blackbird/src/manager/construction.dart';
 import 'builders.dart';
-import 'package:blackbird/src/manager/construction.dart';
-import 'package:blackbird/blackbird.dart';
+import '../device_generator/simple_device.dart';
 
 int significantNumber = 123456789;
 

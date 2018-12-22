@@ -1,4 +1,4 @@
-import 'package:blackbird/device.dart';
+import 'package:blackbird/blackbird.dart';
 
 abstract class DependencyBuilder {
   Object build(Dependency dependency);

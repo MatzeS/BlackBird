@@ -24,17 +24,14 @@ class DeviceVisitor extends BasicDeviceVisitor {
       if (e.displayName == 'getRemote') return false;
       if (e.displayName == 'invoke') return false;
       if (e is PropertyAccessorElement) {
-        // if (e.isAbstract) print('$e on $c gives ${e.enclosingElement}');
         return e.isAbstract;
       }
       if (e is MethodElement) {
-        // if (e.isAbstract) print('$e on $c');
         return e.isAbstract;
       }
       if (e is FieldElement) {
         bool r =
             (e.getter?.isAbstract ?? false) || (e.setter?.isAbstract ?? false);
-        // if (r) print('$e on $c');
         return r;
       }
       throw new Exception('unknown executable $e/${e.runtimeType} on ${c}');

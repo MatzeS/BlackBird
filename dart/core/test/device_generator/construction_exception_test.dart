@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:blackbird/device.dart';
+import 'package:blackbird/blackbird.dart';
 import 'simple_device.dart';
 
 int significantNumber = 123456789;
@@ -21,10 +21,11 @@ main() {
       expect(info.dependencies.length, 3);
     });
     test('has correct dependencyTypes', () {
-      expect(info[#host].type.first, 'asset:blackbird/lib/device.dart#Host');
+      expect(
+          info[#host].type.first, 'asset:blackbird/lib/src/device.dart#Host');
       expect(info[#aRuntimeDependency].type.first, 'dart:core#int');
       expect(info[#otherDevice].type.first,
-          'asset:blackbird/lib/device.dart#Device');
+          'asset:blackbird/lib/src/device.dart#Device');
     });
     test('has correct dependencyAnnotations', () {
       expect(info[#host].annotations.length, 1);
