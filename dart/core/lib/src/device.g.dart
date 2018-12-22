@@ -110,6 +110,16 @@ class _$HostInvoker {
 }
 
 // **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Host _$HostFromJson(Map<String, dynamic> json) {
+  return Host.device();
+}
+
+Map<String, dynamic> _$HostToJson(Host instance) => <String, dynamic>{};
+
+// **************************************************************************
 // ProxyGenerator
 // **************************************************************************
 

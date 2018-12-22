@@ -68,6 +68,16 @@ class _$OntarioInvoker {
 }
 
 // **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Ontario _$OntarioFromJson(Map<String, dynamic> json) {
+  return Ontario.device();
+}
+
+Map<String, dynamic> _$OntarioToJson(Ontario instance) => <String, dynamic>{};
+
+// **************************************************************************
 // ProxyGenerator
 // **************************************************************************
 

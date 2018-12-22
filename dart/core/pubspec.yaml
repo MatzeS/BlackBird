@@ -8,12 +8,17 @@ environment:
   sdk: '>=2.0.0-dev <3.0.0'
 
 dependencies:
+  blackbird_common:
+    path: ../common
   rmi: ^0.0.3
   tuple:
   built_value: ^6.1.6
   built_collection: ^4.1.0
-  
+  json_annotation:
+
 dev_dependencies:
+  json_serializable:
+    path: ../../../dart/json_serializable/json_serializable
   built_value_generator: ^6.1.6
   build_runner: ^1.1.2
   build_test:

@@ -8,6 +8,7 @@ import 'package:source_gen_helpers/class/util.dart';
 import 'package:source_gen_helpers/class/output_visitor.dart';
 import 'package:source_gen_helpers/class/override_visitor.dart';
 
+import 'package:blackbird_common/member_identifier.dart';
 import 'dart:mirrors';
 
 import 'visitor.dart';
@@ -15,28 +16,8 @@ import 'visitor.dart';
 import 'dart:async';
 
 class DeviceVisitor extends BasicDeviceVisitor {
-  Future<bool> get isAbstract async {
-    var c = await classElement;
-
-    return (await executables).any((e) {
-      if (e.displayName == 'implementation') return false;
-      if (e.displayName == 'provideRemote') return false;
-      if (e.displayName == 'getRemote') return false;
-      if (e.displayName == 'invoke') return false;
-      if (e is PropertyAccessorElement) {
-        return e.isAbstract;
-      }
-      if (e is MethodElement) {
-        return e.isAbstract;
-      }
-      if (e is FieldElement) {
-        bool r =
-            (e.getter?.isAbstract ?? false) || (e.setter?.isAbstract ?? false);
-        return r;
-      }
-      throw new Exception('unknown executable $e/${e.runtimeType} on ${c}');
-    });
-  }
+  Future<bool> get isAbstract async =>
+      await deviceClassIsAbstract(await classElement);
 
   visitClassElement(ClassElement element) async {
     super.visitClassElement(element);

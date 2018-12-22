@@ -1,23 +1,15 @@
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/visitor.dart';
 import 'package:analyzer/dart/element/type.dart';
-import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
-import 'package:source_gen/src/utils.dart';
-
-import 'package:source_gen_helpers/class/class_visitor.dart';
 import 'package:source_gen_helpers/class/util.dart';
-import 'package:source_gen_helpers/class/output_visitor.dart';
-import 'package:source_gen_helpers/class/override_visitor.dart';
-import 'src/device_class.dart';
-import 'src/implementation_class.dart';
 
-enum DeviceMemberType { property, runtime, executive, module }
+enum DeviceMemberType { property, runtime, executive, module, ignored }
 
 bool isRuntimeDependency(Element e) => identify(e) == DeviceMemberType.runtime;
 bool isProperty(Element e) => identify(e) == DeviceMemberType.property;
 bool isModule(Element e) => identify(e) == DeviceMemberType.module;
 bool isExecutive(Element e) => identify(e) == DeviceMemberType.executive;
+bool isIgnored(Element e) => identify(e) == DeviceMemberType.ignored;
 
 DeviceMemberType identify(Element element) {
   if (element.isPrivate)
@@ -26,6 +18,10 @@ DeviceMemberType identify(Element element) {
   if (element is ConstructorElement)
     throw new Exception(
         'element is not consumed by the device generator [$element]');
+
+  if (TypeChecker.fromUrl('asset:blackbird/lib/src/device.dart#Ignore')
+      .annotationsOf(element)
+      .isNotEmpty) return DeviceMemberType.ignored;
 
   if (element is MethodElement) {
     return DeviceMemberType.executive;
@@ -58,8 +54,9 @@ DeviceMemberType identify(Element element) {
     bool p = _annotatedAs('asset:blackbird/lib/src/device.dart#Property');
     bool r = _annotatedAs('asset:blackbird/lib/src/device.dart#Runtime');
     bool e = _annotatedAs('asset:blackbird/lib/src/device.dart#Executive');
+    bool i = _annotatedAs('asset:blackbird/lib/src/device.dart#Ignore');
 
-    int s = (p ? 1 : 0) + (r ? 1 : 0) + (e ? 1 : 0);
+    int s = (p ? 1 : 0) + (r ? 1 : 0) + (e ? 1 : 0) + (i ? 1 : 0);
     if (s > 1)
       throw new Exception(
           'A classmember must be a distinct device member type [$element]');
@@ -67,6 +64,7 @@ DeviceMemberType identify(Element element) {
     if (p) return DeviceMemberType.property;
     if (r) return DeviceMemberType.runtime;
     if (e) return DeviceMemberType.executive;
+    if (i) return DeviceMemberType.ignored;
     return null;
   }
 
@@ -120,4 +118,49 @@ DeviceMemberType identify(Element element) {
 bool _isDevice(DartType type) {
   return TypeChecker.fromUrl('asset:blackbird/lib/src/device.dart#Device')
       .isAssignableFromType(type);
+}
+
+List<Element> getRuntimeDependencies(ClassElement classElement) =>
+    allClassMember(classElement)
+        .where((e) => e.isPublic && e is! ConstructorElement)
+        .where((e) => isRuntimeDependency(e))
+        .toList();
+List<Element> getProperties(ClassElement classElement) =>
+    allClassMember(classElement)
+        .where((e) => e.isPublic && e is! ConstructorElement)
+        .where((e) => isProperty(e))
+        .toList();
+List<Element> getModules(ClassElement classElement) =>
+    allClassMember(classElement)
+        .where((e) => e.isPublic && e is! ConstructorElement)
+        .where((e) => isModule(e))
+        .toList();
+List<Element> getExecutables(ClassElement classElement) =>
+    allClassMember(classElement)
+        .where((e) => e.isPublic && e is! ConstructorElement)
+        .where((e) => isExecutive(e))
+        .toList();
+
+bool deviceClassIsAbstract(ClassElement classElement) {
+  var c = classElement;
+
+  if (getExecutables(classElement).isEmpty) return false;
+  return (getExecutables(classElement)).any((e) {
+    if (e.displayName == 'implementation') return false;
+    if (e.displayName == 'provideRemote') return false;
+    if (e.displayName == 'getRemote') return false;
+    if (e.displayName == 'invoke') return false;
+    if (e is PropertyAccessorElement) {
+      return e.isAbstract;
+    }
+    if (e is MethodElement) {
+      return e.isAbstract;
+    }
+    if (e is FieldElement) {
+      bool r =
+          (e.getter?.isAbstract ?? false) || (e.setter?.isAbstract ?? false);
+      return r;
+    }
+    throw new Exception('unknown executable $e/${e.runtimeType} on ${c}');
+  });
 }

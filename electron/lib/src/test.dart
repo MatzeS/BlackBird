@@ -9,7 +9,7 @@ import 'package:blackbird/ontario/connection.dart';
 import 'package:blackbird/ontario/functions/device_identification.dart';
 import 'package:blackbird/ontario/functions/rc_socket.dart';
 import 'package:blackbird/src/manager/dependency_builders.dart';
-import 'package:blackbird/device.dart';
+import 'package:blackbird/src/device.dart';
 import 'package:blackbird/blackbird.dart';
 import 'package:blackbird/src/manager/construction.dart';
 import 'package:blackbird/devices/socket.dart';

@@ -111,6 +111,8 @@ abstract class Device implements RmiTarget {
   /// This is required for RMI
   static Device getRemote(Context context, String uuid) =>
       _$DeviceRmi.getRemote(context, uuid);
+
+//  get hashCode → int, get runtimeType → Type, getRemote(Context context, String uuid) → Device, ==(dynamic other) → bool, toString() → String, noSuchMethod(Invocation invocation) → dynamic, provideRemote(Context context) → Provision, invoke(Invocation invocation) → Object
 }
 
 /// A host is a device running a blackbird instance and possibly hosting implementation objects

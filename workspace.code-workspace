@@ -8,6 +8,9 @@
             },
             {
                   "path": "/home/matthias/development/dart/source_gen_helpers"
+            },
+            {
+                  "path": "/home/matthias/development/dart/json_serializable"
             }
       ],
       "settings": {

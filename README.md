@@ -23,3 +23,4 @@ domum =  my home implementation
 
 ## TODO
  - precommit scripts
+ - device serialization

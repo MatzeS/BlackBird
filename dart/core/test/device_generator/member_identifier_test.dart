@@ -9,8 +9,9 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 
+import 'package:blackbird/blackbird.dart';
+import 'package:blackbird_common/member_identifier.dart';
 import 'dart:io';
-import 'package:blackbird_generators/member_identifier.dart';
 //TODO abstract executive getter
 
 //todo load
@@ -34,6 +35,8 @@ abstract class SimpleDevice implements Device {
   int annotationRuntimeDependency;
   @Executive()
   int get annotationExecutive;
+  @Ignore()
+  int get annotationIgnored{return 2;}
 }
 ''';
 
@@ -80,6 +83,11 @@ main() async {
   group('module', () {
     test('simple', () {
       check('otherDevice', DeviceMemberType.module);
+    });
+  });
+  group('ignored', () {
+    test('annotation', () {
+      check('annotationIgnored', DeviceMemberType.ignored);
     });
   });
 }

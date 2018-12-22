@@ -7,30 +7,18 @@ import 'package:source_gen_helpers/class/class_visitor.dart';
 import 'package:source_gen_helpers/class/util.dart';
 import 'package:source_gen_helpers/class/output_visitor.dart';
 import 'package:source_gen_helpers/class/override_visitor.dart';
-import '../member_identifier.dart';
 
+import 'package:blackbird_common/member_identifier.dart';
 import 'dart:async';
 
 abstract class BasicDeviceVisitor extends ClassVisitor {
   Future<List<Element>> get runtimeDependencies async =>
-      allClassMember(await classElement)
-          .where((e) => e.isPublic && e is! ConstructorElement)
-          .where((e) => isRuntimeDependency(e))
-          .toList();
+      getRuntimeDependencies(await classElement);
   Future<List<Element>> get properties async =>
-      allClassMember(await classElement)
-          .where((e) => e.isPublic && e is! ConstructorElement)
-          .where((e) => isProperty(e))
-          .toList();
-  Future<List<Element>> get modules async => allClassMember(await classElement)
-      .where((e) => e.isPublic && e is! ConstructorElement)
-      .where((e) => isModule(e))
-      .toList();
+      getProperties(await classElement);
+  Future<List<Element>> get modules async => getModules(await classElement);
   Future<List<Element>> get executables async =>
-      allClassMember(await classElement)
-          .where((e) => e.isPublic && e is! ConstructorElement)
-          .where((e) => isExecutive(e))
-          .toList();
+      getExecutables(await classElement);
 
   List<String> _visited = [];
   bool _visitOnce(Element element) {
@@ -71,6 +59,8 @@ abstract class BasicDeviceVisitor extends ClassVisitor {
         return visitExecutiveAccessor(element);
       case DeviceMemberType.module:
         return visitModuleAccessor(element);
+      case DeviceMemberType.ignored:
+        return '';
     }
   }
 

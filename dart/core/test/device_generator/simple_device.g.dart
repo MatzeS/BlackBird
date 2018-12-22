@@ -206,6 +206,24 @@ class _$EvenSimplerDeviceInvoker {
 }
 
 // **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+SimpleDevice _$SimpleDeviceFromJson(Map<String, dynamic> json) {
+  return SimpleDevice.device()..aProperty = json['aProperty'] as int;
+}
+
+Map<String, dynamic> _$SimpleDeviceToJson(SimpleDevice instance) =>
+    <String, dynamic>{'aProperty': instance.aProperty};
+
+EvenSimplerDevice _$EvenSimplerDeviceFromJson(Map<String, dynamic> json) {
+  return EvenSimplerDevice.device();
+}
+
+Map<String, dynamic> _$EvenSimplerDeviceToJson(EvenSimplerDevice instance) =>
+    <String, dynamic>{};
+
+// **************************************************************************
 // ProxyGenerator
 // **************************************************************************
 

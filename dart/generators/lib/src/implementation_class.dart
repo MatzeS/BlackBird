@@ -11,9 +11,7 @@ import 'package:source_gen_helpers/class/override_visitor.dart';
 import 'visitor.dart';
 import 'package:tuple/tuple.dart';
 import 'type_list.dart';
-
-import '../member_identifier.dart';
-
+import 'package:blackbird_common/member_identifier.dart';
 import 'dart:async';
 
 class ImplementationVisitor extends BasicDeviceVisitor {

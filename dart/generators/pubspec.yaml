@@ -11,6 +11,8 @@ dependencies:
   tuple:
 
 dev_dependencies:
+  blackbird_common:
+    path: ../common
   test:
   source_gen: 
   source_gen_helpers: 
