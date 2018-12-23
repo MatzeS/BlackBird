@@ -14,7 +14,7 @@ import 'device_class.dart';
 import 'implementation_class.dart';
 import 'package:source_gen_helpers/util.dart';
 import 'package:blackbird_common/member_identifier.dart';
-
+import 'package:tuple/tuple.dart';
 //TODO check for no arg construcotr
 
 Builder builder(BuilderOptions options) =>
@@ -47,10 +47,41 @@ class DeviceGenerator extends Generator {
   }
 
   generateForElement(Element pElement) async {
-    ClassElement classElement = pElement as ClassElement;
+    ClassElement ce = pElement as ClassElement;
 
-    // SuperVisitor superVisitor = SuperVisitor(element);
-    // element.visitChildren(superVisitor); //todo replace with sueprvisitor.accept
+    List<ExecutableElement> executables = <ExecutableElement>[]
+        .followedBy(ce.accessors)
+        .followedBy(ce.methods)
+        .followedBy(ce.allSupertypes.expand((e) => e.accessors))
+        .followedBy(ce.allSupertypes.expand((e) => e.methods))
+        .where((e) => e.isPublic && !e.isStatic)
+        .where((e) {
+          var c = e.enclosingElement as ClassElement;
+          return c.supertype != null &&
+              !TypeChecker.fromUrl('asset:blackbird/lib/src/device.dart#Device')
+                  .isExactly(c) &&
+              !TypeChecker.fromUrl(
+                      'package:rmi/remote_method_invocation.dart#RmiTarget')
+                  .isExactly(c) &&
+              !TypeChecker.fromUrl('package:rmi/invoker.dart#Invocable')
+                  .isExactly(c);
+        })
+        .where((e) => e.metadata.every((a) {
+              return a.constantValue != null
+                  ? !TypeChecker.fromUrl(
+                          'asset:blackbird/lib/src/device.dart#Ignore')
+                      .isAssignableFromType(a.constantValue.type)
+                  : true;
+            }))
+        .where((e) {
+          if (e.enclosingElement is! ClassElement) return true;
+          ClassElement classElement = e.enclosingElement as ClassElement;
+          return !classElement.type.isObject;
+        })
+        .where((e) => e == lookUp(e, ce))
+        .toList();
+
+    var fields = ce.fields.where((e) => e.isPublic && !e.isStatic).toList();
 
     DeviceVisitor deviceVisitor = new DeviceVisitor();
     OverrideClassVisitor deviceOverride =
@@ -63,46 +94,16 @@ class DeviceGenerator extends Generator {
     OutputClassVisitor implementationOutput =
         new OutputClassVisitor(implementationOverride);
 
-    List<Element> elements = [];
-    elements.addAll(allClassMember(classElement));
-    elements = elements.where((e) => e.isPublic).toList();
-
-    //TODO refine
-    bool where(ClassMemberElement e) =>
-        e.enclosingElement.supertype != null &&
-        !TypeChecker.fromUrl('asset:blackbird/lib/src/device.dart#Device')
-            .isExactly(e.enclosingElement) &&
-        !TypeChecker.fromUrl(
-                'package:rmi/remote_method_invocation.dart#RmiTarget')
-            .isExactly(e.enclosingElement) &&
-        !TypeChecker.fromUrl('package:rmi/invoker.dart#Invocable')
-            .isExactly(e.enclosingElement);
-    elements = elements
-        .where((e) => e.metadata.every((a) {
-              return a.constantValue != null
-                  ? !TypeChecker.fromUrl(
-                          'asset:blackbird/lib/src/device.dart#Ignore')
-                      .isAssignableFromType(a.constantValue.type)
-                  : true;
-            }))
-        .toList();
-    elements = elements.where((e) {
-      if (e.enclosingElement is! ClassElement) return true;
-      ClassElement classElement = e.enclosingElement as ClassElement;
-      return !classElement.type.isObject;
-    }).toList();
-    elements =
-        elements.where((e) => e is! ClassMemberElement || where(e)).toList();
-
-    elements = filterConcreteElements(classElement, elements);
-
-    await deviceOutput.visitClassElement(classElement);
-    await visitElements(deviceOutput, elements);
+    await deviceOutput.visitClassElement(ce);
+    await visitElements(deviceOutput, executables);
+    await visitElements(deviceOutput, fields);
 
     if (!await deviceVisitor.isAbstract) {
-      await implementationOutput.visitClassElement(classElement);
-      await visitElements(implementationOutput, elements);
+      await implementationOutput.visitClassElement(ce);
+      await visitElements(implementationOutput, executables);
+      await visitElements(implementationOutput, fields);
     }
+    // TODO constructor handling
     // if (!classvisitor.foundNoArgConstructor) {
     //   log.severe('${classElement} must have a no argument constructor');
     // }

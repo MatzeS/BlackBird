@@ -15,31 +15,39 @@ import 'visitor.dart';
 
 import 'dart:async';
 
-class DeviceVisitor extends BasicDeviceVisitor {
+class DeviceVisitor extends BasicDeviceVisitor<String> {
   Future<bool> get isAbstract async =>
       await deviceClassIsAbstract(await classElement);
 
   visitClassElement(ClassElement element) async {
     super.visitClassElement(element);
-    classDeclarationCompleter
-        .complete('class _\$${element.name}Device extends ${element.name}');
+    classDeclarationCompleter.complete((await isAbstract ? 'abstract ' : '') +
+        'class _\$${element.name}Device extends ${element.name}');
     //TODO generate error when constructor not available
 
     String name = element.name;
 
-    // await allVisited.future;
     String implementation;
+    String serialization;
     if (await isAbstract) {
       implementation =
           'throw new Exception("cannot implement abstract device");';
+      serialization = '';
     } else {
       implementation = '_\$${name}Implementation(this,   dependencies);';
+      serialization = '''
+        @override
+        Map<String, dynamic> serialize() => _\$${name}ToJson(this);
+        static ${name} deserialize(Map json) => _\$${name}FromJson(json);
+      ''';
     }
 
     // TODO not clean regarding constructor
     return '''
       _\$${await className}Device();
-      
+
+      Host get host => throw new Exception('only implementation objects are hosted');
+
       $name implementation(Map<Symbol, Object> dependencies) 
         => $implementation
       @override
@@ -49,19 +57,17 @@ class DeviceVisitor extends BasicDeviceVisitor {
           throw new Exception('no RMI on devices');
       $name getRemote(Context context, String uuid) =>
           throw new Exception('no RMI on devices');
-      @override
-      Map<String, dynamic> serialize() => _\$${name}ToJson(this);
-      static ${name} deserialize(Map json) => _\$${name}FromJson(json);
+      $serialization
     ''';
   }
 
   @override
-  FutureOr<String> visitConstructorElement(ConstructorElement element) => '';
+  FutureOr<String> visitConstructorElement(ConstructorElement element) => null;
 
   @override
-  FutureOr<String> visitPropertySetter(PropertyAccessorElement element) => '';
+  FutureOr<String> visitPropertySetter(PropertyAccessorElement element) => null;
   @override
-  FutureOr<String> visitPropertyGetter(PropertyAccessorElement element) => '';
+  FutureOr<String> visitPropertyGetter(PropertyAccessorElement element) => null;
   @override
   FutureOr<String> visitPropertyField(FieldElement element) {
     return '''
@@ -77,9 +83,9 @@ class DeviceVisitor extends BasicDeviceVisitor {
   }
 
   @override
-  FutureOr<String> visitModuleGetter(PropertyAccessorElement element) => '';
+  FutureOr<String> visitModuleGetter(PropertyAccessorElement element) => null;
   @override
-  FutureOr<String> visitModuleSetter(PropertyAccessorElement element) => '';
+  FutureOr<String> visitModuleSetter(PropertyAccessorElement element) => null;
   @override
   FutureOr<String> visitRuntimeGetter(PropertyAccessorElement element) {
     return "=> throw new Exception('cannot get runtime dependencys on device representation');";

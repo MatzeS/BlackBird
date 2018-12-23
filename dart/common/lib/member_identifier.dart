@@ -152,6 +152,7 @@ bool deviceClassIsAbstract(ClassElement classElement) {
     if (e.displayName == 'invoke') return false;
 
     if (e is FieldElement) return false;
+    if (!isConcrete(e, c)) print(e);
     return !isConcrete(e, c);
   });
 }

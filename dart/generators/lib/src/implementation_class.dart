@@ -14,7 +14,7 @@ import 'type_list.dart';
 import 'package:blackbird_common/member_identifier.dart';
 import 'dart:async';
 
-class ImplementationVisitor extends BasicDeviceVisitor {
+class ImplementationVisitor extends BasicDeviceVisitor<String> {
   static Tuple2<DartType, String> harmonize(Element e) {
     if (e is ExecutableElement) {
       return Tuple2(e.returnType, e.displayName);
@@ -106,6 +106,8 @@ class ImplementationVisitor extends BasicDeviceVisitor {
           $assigns
         }
 
+      Host get host => _host;
+
       $name implementation(Map<Symbol, Object> dependencies) 
         => throw Exception('this is already an implementation');
       @override
@@ -121,7 +123,7 @@ class ImplementationVisitor extends BasicDeviceVisitor {
   }
 
   @override
-  FutureOr<String> visitConstructorElement(ConstructorElement element) => '';
+  FutureOr<String> visitConstructorElement(ConstructorElement element) => null;
 
   @override
   FutureOr<String> visitPropertySetter(PropertyAccessorElement element) =>
@@ -138,11 +140,13 @@ class ImplementationVisitor extends BasicDeviceVisitor {
       "=> _${element.name};";
 
   @override
-  FutureOr<String> visitExecutiveMethod(MethodElement element) => '';
+  FutureOr<String> visitExecutiveMethod(MethodElement element) => null;
   @override
-  FutureOr<String> visitExecutiveSetter(PropertyAccessorElement element) => '';
+  FutureOr<String> visitExecutiveSetter(PropertyAccessorElement element) =>
+      null;
   @override
-  FutureOr<String> visitExecutiveGetter(PropertyAccessorElement element) => '';
+  FutureOr<String> visitExecutiveGetter(PropertyAccessorElement element) =>
+      null;
 
   @override
   FutureOr<String> visitModuleGetter(PropertyAccessorElement e) =>
@@ -151,5 +155,5 @@ class ImplementationVisitor extends BasicDeviceVisitor {
   FutureOr<String> visitModuleSetter(PropertyAccessorElement element) =>
       '=> throw new Exception("cannot change module after implementation construction");';
   @override
-  FutureOr<String> visitModuleField(FieldElement element) => '';
+  FutureOr<String> visitModuleField(FieldElement element) => null;
 }

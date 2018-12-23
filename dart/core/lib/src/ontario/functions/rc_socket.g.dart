@@ -9,6 +9,9 @@ part of 'rc_socket.dart';
 class _$RCSocketDevice extends RCSocket {
   _$RCSocketDevice();
 
+  Host get host =>
+      throw new Exception('only implementation objects are hosted');
+
   RCSocket implementation(Map<Symbol, Object> dependencies) =>
       _$RCSocketImplementation(this, dependencies);
   @override
@@ -22,20 +25,16 @@ class _$RCSocketDevice extends RCSocket {
   Map<String, dynamic> serialize() => _$RCSocketToJson(this);
   static RCSocket deserialize(Map json) => _$RCSocketFromJson(json);
 
-  bool get state => blackbird.interfaceDevice<RCSocket>(this).state;
-  set state(bool state) =>
-      blackbird.interfaceDevice<RCSocket>(this).state = state;
-  Host get host => throw new Exception(
-      'cannot get runtime dependencys on device representation');
-  void toggle() => blackbird.interfaceDevice<RCSocket>(this).toggle();
-  void turnOff() => blackbird.interfaceDevice<RCSocket>(this).turnOff();
-  void turnOn() => blackbird.interfaceDevice<RCSocket>(this).turnOn();
-
   AVRConnection get connection => throw new Exception(
       'cannot get runtime dependencys on device representation');
   set remoteState(bool state) =>
       blackbird.interfaceDevice<RCSocket>(this).remoteState = state;
-
+  bool get state => blackbird.interfaceDevice<RCSocket>(this).state;
+  set state(bool state) =>
+      blackbird.interfaceDevice<RCSocket>(this).state = state;
+  void toggle() => blackbird.interfaceDevice<RCSocket>(this).toggle();
+  void turnOff() => blackbird.interfaceDevice<RCSocket>(this).turnOff();
+  void turnOn() => blackbird.interfaceDevice<RCSocket>(this).turnOn();
   int address;
 }
 
@@ -77,6 +76,8 @@ class _$RCSocketImplementation extends RCSocket {
     _address = delegate.address;
   }
 
+  Host get host => _host;
+
   RCSocket implementation(Map<Symbol, Object> dependencies) =>
       throw Exception('this is already an implementation');
   @override
@@ -88,8 +89,6 @@ class _$RCSocketImplementation extends RCSocket {
       _$RCSocketRmi.getRemote(context, uuid);
   @override
   Map<String, dynamic> serialize() => _$RCSocketToJson(this);
-
-  Host get host => _host;
 
   int get address => _address;
   set address(int _address) => throw new Exception(

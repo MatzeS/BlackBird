@@ -9,6 +9,9 @@ part of 'device.dart';
 class _$HostDevice extends Host {
   _$HostDevice();
 
+  Host get host =>
+      throw new Exception('only implementation objects are hosted');
+
   Host implementation(Map<Symbol, Object> dependencies) =>
       _$HostImplementation(this, dependencies);
   @override
@@ -21,9 +24,6 @@ class _$HostDevice extends Host {
   @override
   Map<String, dynamic> serialize() => _$HostToJson(this);
   static Host deserialize(Map json) => _$HostFromJson(json);
-
-  Host get host => throw new Exception(
-      'cannot get runtime dependencys on device representation');
 }
 
 class _$HostImplementation extends Host {
@@ -49,6 +49,8 @@ class _$HostImplementation extends Host {
     _host = parameters[#host];
   }
 
+  Host get host => _host;
+
   Host implementation(Map<Symbol, Object> dependencies) =>
       throw Exception('this is already an implementation');
   @override
@@ -60,8 +62,6 @@ class _$HostImplementation extends Host {
       _$HostRmi.getRemote(context, uuid);
   @override
   Map<String, dynamic> serialize() => _$HostToJson(this);
-
-  Host get host => _host;
 }
 
 // **************************************************************************

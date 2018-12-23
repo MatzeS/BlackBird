@@ -30,17 +30,17 @@ main() {
     test('number of children, FullClass', () async {
       ClassElement ce = classElements['PartiallyImplemented'];
 
-      // print(ce.constructors);
-      // print(ce.type);
-      // print(ce.accessors);
-      // print(ce.fields);
-      // print('///////');
-      // print(ce.type.constructors);
-      // print(ce.type.methods);
-      // print(ce.type.accessors);
-      // print('///////');
-      // print(ce.lookUpInheritedConcreteMethod('simpleMethod', ce.library));
-      // print(ce.lookUpInheritedConcreteMethod('otherMethod', ce.library));
+      print(ce.constructors);
+      print(ce.type);
+      print(ce.accessors);
+      print(ce.fields);
+      print('///////');
+      print(ce.type.constructors);
+      print(ce.type.methods);
+      print(ce.type.accessors);
+      print('///////');
+      print(ce.lookUpMethod('simpleMethod', ce.library).isAbstract);
+      print(ce.lookUpMethod('otherMethod', ce.library).isAbstract);
 
       // list.forEach((e) => print('${e.name} ${isAbstract(e)}'));
     });

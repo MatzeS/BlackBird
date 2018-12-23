@@ -9,6 +9,9 @@ part of 'simple_device.dart';
 class _$SimpleDeviceDevice extends SimpleDevice {
   _$SimpleDeviceDevice();
 
+  Host get host =>
+      throw new Exception('only implementation objects are hosted');
+
   SimpleDevice implementation(Map<Symbol, Object> dependencies) =>
       _$SimpleDeviceImplementation(this, dependencies);
   @override
@@ -22,18 +25,14 @@ class _$SimpleDeviceDevice extends SimpleDevice {
   Map<String, dynamic> serialize() => _$SimpleDeviceToJson(this);
   static SimpleDevice deserialize(Map json) => _$SimpleDeviceFromJson(json);
 
-  Host get host => throw new Exception(
-      'cannot get runtime dependencys on device representation');
-  void executiveMethod() =>
-      blackbird.interfaceDevice<SimpleDevice>(this).executiveMethod();
-
   int get aRuntimeDependency => throw new Exception(
       'cannot get runtime dependencys on device representation');
   int get executiveGetter =>
       blackbird.interfaceDevice<SimpleDevice>(this).executiveGetter;
   set executiveSetter(int value) =>
       blackbird.interfaceDevice<SimpleDevice>(this).executiveSetter = value;
-
+  void executiveMethod() =>
+      blackbird.interfaceDevice<SimpleDevice>(this).executiveMethod();
   int aProperty;
 
   Device otherDevice;
@@ -86,6 +85,8 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
     _aProperty = delegate.aProperty;
   }
 
+  Host get host => _host;
+
   SimpleDevice implementation(Map<Symbol, Object> dependencies) =>
       throw Exception('this is already an implementation');
   @override
@@ -97,8 +98,6 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
       _$SimpleDeviceRmi.getRemote(context, uuid);
   @override
   Map<String, dynamic> serialize() => _$SimpleDeviceToJson(this);
-
-  Host get host => _host;
 
   int get aProperty => _aProperty;
   set aProperty(int _aProperty) => throw new Exception(
@@ -114,6 +113,9 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
 class _$EvenSimplerDeviceDevice extends EvenSimplerDevice {
   _$EvenSimplerDeviceDevice();
 
+  Host get host =>
+      throw new Exception('only implementation objects are hosted');
+
   EvenSimplerDevice implementation(Map<Symbol, Object> dependencies) =>
       _$EvenSimplerDeviceImplementation(this, dependencies);
   @override
@@ -127,9 +129,6 @@ class _$EvenSimplerDeviceDevice extends EvenSimplerDevice {
   Map<String, dynamic> serialize() => _$EvenSimplerDeviceToJson(this);
   static EvenSimplerDevice deserialize(Map json) =>
       _$EvenSimplerDeviceFromJson(json);
-
-  Host get host => throw new Exception(
-      'cannot get runtime dependencys on device representation');
 }
 
 class _$EvenSimplerDeviceImplementation extends EvenSimplerDevice {
@@ -156,6 +155,8 @@ class _$EvenSimplerDeviceImplementation extends EvenSimplerDevice {
     _host = parameters[#host];
   }
 
+  Host get host => _host;
+
   EvenSimplerDevice implementation(Map<Symbol, Object> dependencies) =>
       throw Exception('this is already an implementation');
   @override
@@ -167,8 +168,6 @@ class _$EvenSimplerDeviceImplementation extends EvenSimplerDevice {
       _$EvenSimplerDeviceRmi.getRemote(context, uuid);
   @override
   Map<String, dynamic> serialize() => _$EvenSimplerDeviceToJson(this);
-
-  Host get host => _host;
 }
 
 // **************************************************************************

@@ -9,6 +9,9 @@ part of 'ontario.dart';
 class _$OntarioDevice extends Ontario {
   _$OntarioDevice();
 
+  Host get host =>
+      throw new Exception('only implementation objects are hosted');
+
   Ontario implementation(Map<Symbol, Object> dependencies) =>
       _$OntarioImplementation(this, dependencies);
   @override
@@ -21,9 +24,6 @@ class _$OntarioDevice extends Ontario {
   @override
   Map<String, dynamic> serialize() => _$OntarioToJson(this);
   static Ontario deserialize(Map json) => _$OntarioFromJson(json);
-
-  Host get host => throw new Exception(
-      'cannot get runtime dependencys on device representation');
 }
 
 class _$OntarioImplementation extends Ontario {
@@ -49,6 +49,8 @@ class _$OntarioImplementation extends Ontario {
     _host = parameters[#host];
   }
 
+  Host get host => _host;
+
   Ontario implementation(Map<Symbol, Object> dependencies) =>
       throw Exception('this is already an implementation');
   @override
@@ -60,8 +62,6 @@ class _$OntarioImplementation extends Ontario {
       _$OntarioRmi.getRemote(context, uuid);
   @override
   Map<String, dynamic> serialize() => _$OntarioToJson(this);
-
-  Host get host => _host;
 }
 
 // **************************************************************************

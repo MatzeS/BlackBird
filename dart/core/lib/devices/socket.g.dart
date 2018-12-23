@@ -6,8 +6,11 @@ part of 'socket.dart';
 // DeviceGenerator
 // **************************************************************************
 
-class _$SocketDevice extends Socket {
+abstract class _$SocketDevice extends Socket {
   _$SocketDevice();
+
+  Host get host =>
+      throw new Exception('only implementation objects are hosted');
 
   Socket implementation(Map<Symbol, Object> dependencies) =>
       throw new Exception("cannot implement abstract device");
@@ -18,22 +21,20 @@ class _$SocketDevice extends Socket {
       throw new Exception('no RMI on devices');
   Socket getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
-  @override
-  Map<String, dynamic> serialize() => _$SocketToJson(this);
-  static Socket deserialize(Map json) => _$SocketFromJson(json);
 
-  Host get host => throw new Exception(
-      'cannot get runtime dependencys on device representation');
-  void toggle() => blackbird.interfaceDevice<Socket>(this).toggle();
-  void turnOff() => blackbird.interfaceDevice<Socket>(this).turnOff();
-  void turnOn() => blackbird.interfaceDevice<Socket>(this).turnOn();
   bool get state => blackbird.interfaceDevice<Socket>(this).state;
   set state(bool state) =>
       blackbird.interfaceDevice<Socket>(this).state = state;
+  void toggle() => blackbird.interfaceDevice<Socket>(this).toggle();
+  void turnOff() => blackbird.interfaceDevice<Socket>(this).turnOff();
+  void turnOn() => blackbird.interfaceDevice<Socket>(this).turnOn();
 }
 
-class _$RemoteSocketDevice extends RemoteSocket {
+abstract class _$RemoteSocketDevice extends RemoteSocket {
   _$RemoteSocketDevice();
+
+  Host get host =>
+      throw new Exception('only implementation objects are hosted');
 
   RemoteSocket implementation(Map<Symbol, Object> dependencies) =>
       throw new Exception("cannot implement abstract device");
@@ -44,20 +45,15 @@ class _$RemoteSocketDevice extends RemoteSocket {
       throw new Exception('no RMI on devices');
   RemoteSocket getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
-  @override
-  Map<String, dynamic> serialize() => _$RemoteSocketToJson(this);
-  static RemoteSocket deserialize(Map json) => _$RemoteSocketFromJson(json);
 
-  Host get host => throw new Exception(
-      'cannot get runtime dependencys on device representation');
-  void toggle() => blackbird.interfaceDevice<RemoteSocket>(this).toggle();
-  void turnOff() => blackbird.interfaceDevice<RemoteSocket>(this).turnOff();
-  void turnOn() => blackbird.interfaceDevice<RemoteSocket>(this).turnOn();
   bool get state => blackbird.interfaceDevice<RemoteSocket>(this).state;
   set state(bool state) =>
       blackbird.interfaceDevice<RemoteSocket>(this).state = state;
   set remoteState(bool state) =>
       blackbird.interfaceDevice<RemoteSocket>(this).remoteState = state;
+  void toggle() => blackbird.interfaceDevice<RemoteSocket>(this).toggle();
+  void turnOff() => blackbird.interfaceDevice<RemoteSocket>(this).turnOff();
+  void turnOn() => blackbird.interfaceDevice<RemoteSocket>(this).turnOn();
 }
 
 // **************************************************************************
