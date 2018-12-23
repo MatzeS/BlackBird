@@ -150,22 +150,9 @@ bool deviceClassIsAbstract(ClassElement classElement) {
     if (e.displayName == 'provideRemote') return false;
     if (e.displayName == 'getRemote') return false;
     if (e.displayName == 'invoke') return false;
-    if (e is PropertyAccessorElement) {
-      if (classElement.name.contains('RC') && e.isAbstract)
-        print('$e ${e.enclosingElement}');
-      return e.isAbstract;
-    }
-    if (e is MethodElement) {
-      if (classElement.name.contains('RC') && e.isAbstract) print(e);
-      return e.isAbstract;
-    }
-    if (e is FieldElement) {
-      bool r =
-          (e.getter?.isAbstract ?? false) || (e.setter?.isAbstract ?? false);
-      if (classElement.name.contains('RC') && r) print(e);
-      return r;
-    }
-    throw new Exception('unknown executable $e/${e.runtimeType} on ${c}');
+
+    if (e is FieldElement) return false;
+    return !isConcrete(e, c);
   });
 }
 
