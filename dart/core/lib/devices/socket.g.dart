@@ -18,6 +18,9 @@ class _$SocketDevice extends Socket {
       throw new Exception('no RMI on devices');
   Socket getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
+  @override
+  Map<String, dynamic> serialize() => _$SocketToJson(this);
+  static Socket deserialize(Map json) => _$SocketFromJson(json);
 
   Host get host => throw new Exception(
       'cannot get runtime dependencys on device representation');
@@ -41,6 +44,9 @@ class _$RemoteSocketDevice extends RemoteSocket {
       throw new Exception('no RMI on devices');
   RemoteSocket getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
+  @override
+  Map<String, dynamic> serialize() => _$RemoteSocketToJson(this);
+  static RemoteSocket deserialize(Map json) => _$RemoteSocketFromJson(json);
 
   Host get host => throw new Exception(
       'cannot get runtime dependencys on device representation');
@@ -151,6 +157,17 @@ class _$SocketProxy implements Socket {
 
     Invocation _$invocation =
         Invocation.method(#invoke, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+
+  Map<String, dynamic> serialize() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#serialize, arguments, namedArguments);
 
     return _handle(_$invocation);
   }
@@ -313,6 +330,17 @@ class _$RemoteSocketProxy implements RemoteSocket {
 
     Invocation _$invocation =
         Invocation.method(#invoke, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+
+  Map<String, dynamic> serialize() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#serialize, arguments, namedArguments);
 
     return _handle(_$invocation);
   }

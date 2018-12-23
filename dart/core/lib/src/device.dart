@@ -112,6 +112,10 @@ abstract class Device implements RmiTarget {
   static Device getRemote(Context context, String uuid) =>
       _$DeviceRmi.getRemote(context, uuid);
 
+  ///
+  @Ignore()
+  Map<String, dynamic> serialize();
+
 //  get hashCode → int, get runtimeType → Type, getRemote(Context context, String uuid) → Device, ==(dynamic other) → bool, toString() → String, noSuchMethod(Invocation invocation) → dynamic, provideRemote(Context context) → Provision, invoke(Invocation invocation) → Object
 }
 

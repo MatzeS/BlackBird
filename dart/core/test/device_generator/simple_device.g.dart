@@ -18,6 +18,9 @@ class _$SimpleDeviceDevice extends SimpleDevice {
       throw new Exception('no RMI on devices');
   SimpleDevice getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
+  @override
+  Map<String, dynamic> serialize() => _$SimpleDeviceToJson(this);
+  static SimpleDevice deserialize(Map json) => _$SimpleDeviceFromJson(json);
 
   Host get host => throw new Exception(
       'cannot get runtime dependencys on device representation');
@@ -92,6 +95,8 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
       _$SimpleDeviceRmi.provideRemote(context, this);
   SimpleDevice getRemote(Context context, String uuid) =>
       _$SimpleDeviceRmi.getRemote(context, uuid);
+  @override
+  Map<String, dynamic> serialize() => _$SimpleDeviceToJson(this);
 
   Host get host => _host;
 
@@ -118,6 +123,10 @@ class _$EvenSimplerDeviceDevice extends EvenSimplerDevice {
       throw new Exception('no RMI on devices');
   EvenSimplerDevice getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
+  @override
+  Map<String, dynamic> serialize() => _$EvenSimplerDeviceToJson(this);
+  static EvenSimplerDevice deserialize(Map json) =>
+      _$EvenSimplerDeviceFromJson(json);
 
   Host get host => throw new Exception(
       'cannot get runtime dependencys on device representation');
@@ -156,6 +165,8 @@ class _$EvenSimplerDeviceImplementation extends EvenSimplerDevice {
       _$EvenSimplerDeviceRmi.provideRemote(context, this);
   EvenSimplerDevice getRemote(Context context, String uuid) =>
       _$EvenSimplerDeviceRmi.getRemote(context, uuid);
+  @override
+  Map<String, dynamic> serialize() => _$EvenSimplerDeviceToJson(this);
 
   Host get host => _host;
 }
@@ -257,6 +268,17 @@ class _$SimpleDeviceProxy implements SimpleDevice {
 
     Invocation _$invocation =
         Invocation.method(#invoke, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+
+  Map<String, dynamic> serialize() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#serialize, arguments, namedArguments);
 
     return _handle(_$invocation);
   }
@@ -388,6 +410,17 @@ class _$EvenSimplerDeviceProxy implements EvenSimplerDevice {
 
     Invocation _$invocation =
         Invocation.method(#invoke, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+
+  Map<String, dynamic> serialize() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#serialize, arguments, namedArguments);
 
     return _handle(_$invocation);
   }

@@ -18,6 +18,9 @@ class _$OntarioDevice extends Ontario {
       throw new Exception('no RMI on devices');
   Ontario getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
+  @override
+  Map<String, dynamic> serialize() => _$OntarioToJson(this);
+  static Ontario deserialize(Map json) => _$OntarioFromJson(json);
 
   Host get host => throw new Exception(
       'cannot get runtime dependencys on device representation');
@@ -55,6 +58,8 @@ class _$OntarioImplementation extends Ontario {
       _$OntarioRmi.provideRemote(context, this);
   Ontario getRemote(Context context, String uuid) =>
       _$OntarioRmi.getRemote(context, uuid);
+  @override
+  Map<String, dynamic> serialize() => _$OntarioToJson(this);
 
   Host get host => _host;
 }
@@ -111,6 +116,17 @@ class _$OntarioProxy implements Ontario {
 
     Invocation _$invocation =
         Invocation.method(#invoke, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+
+  Map<String, dynamic> serialize() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#serialize, arguments, namedArguments);
 
     return _handle(_$invocation);
   }

@@ -13,6 +13,7 @@ import 'package:source_gen_helpers/class/override_visitor.dart';
 import 'device_class.dart';
 import 'implementation_class.dart';
 import 'package:source_gen_helpers/util.dart';
+import 'package:blackbird_common/member_identifier.dart';
 
 //TODO check for no arg construcotr
 
@@ -113,27 +114,4 @@ class DeviceGenerator extends Generator {
     }
     return output.toString();
   }
-}
-
-List<Element> filterConcreteElements(
-    ClassElement classElement, List<Element> elements) {
-  return elements.where((e) {
-    List<Element> equalDeclarations =
-        elements.where((e2) => e.toString() == e2.toString()).toList();
-    if (equalDeclarations.isEmpty) return true;
-
-    equalDeclarations.sort((a, b) {
-      var c = a.getAncestor((a) => true);
-      var d = b.getAncestor((a) => true);
-      if (c is ClassElement) {
-        if (d is ClassElement) {
-          if (c.type == d.type) return 0;
-          return c.type.isAssignableTo(d.type) ? 1 : -1;
-        }
-      }
-      throw new Exception('$c or $d are not class elements');
-    });
-
-    return equalDeclarations.first == e;
-  }).toList();
 }

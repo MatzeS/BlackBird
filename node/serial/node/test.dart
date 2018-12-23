@@ -1,16 +1,11 @@
 import 'package:dart_node_serialport/serial_port_module.dart';
 import 'package:test/test.dart';
 import 'package:dart_node_serialport/impl.dart';
-import 'package:blackbird/ontario/serial_port.dart';
-import 'package:blackbird/ontario/connection.dart';
-import 'package:blackbird/ontario/functions/device_identification.dart';
-import 'package:blackbird/ontario/functions/rc_socket.dart';
+import 'package:blackbird/devices/ontario.dart';
 import 'package:blackbird/src/manager/dependency_builders.dart';
 import 'package:blackbird/blackbird.dart';
 import 'package:blackbird/src/manager/construction.dart';
 import 'package:blackbird/devices/socket.dart';
-import 'package:blackbird/ontario/functions/rc_socket.dart';
-import 'package:blackbird/ontario/functions/rc_socket.dart';
 
 part 'test.g.dart';
 

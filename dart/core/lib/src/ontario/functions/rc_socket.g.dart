@@ -10,7 +10,7 @@ class _$RCSocketDevice extends RCSocket {
   _$RCSocketDevice();
 
   RCSocket implementation(Map<Symbol, Object> dependencies) =>
-      throw new Exception("cannot implement abstract device");
+      _$RCSocketImplementation(this, dependencies);
   @override
   Object invoke(Invocation invocation) =>
       throw new Exception('no invocation on devices');
@@ -18,6 +18,9 @@ class _$RCSocketDevice extends RCSocket {
       throw new Exception('no RMI on devices');
   RCSocket getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
+  @override
+  Map<String, dynamic> serialize() => _$RCSocketToJson(this);
+  static RCSocket deserialize(Map json) => _$RCSocketFromJson(json);
 
   bool get state => blackbird.interfaceDevice<RCSocket>(this).state;
   set state(bool state) =>
@@ -34,6 +37,66 @@ class _$RCSocketDevice extends RCSocket {
       blackbird.interfaceDevice<RCSocket>(this).remoteState = state;
 
   int address;
+}
+
+class _$RCSocketImplementation extends RCSocket {
+  Host _host;
+  AVRConnection _connection;
+
+  _$RCSocketImplementation(RCSocket delegate, Map<Symbol, Object> parameters) {
+    if (parameters == null) {
+      ConstructionInfoException info = new ConstructionInfoException();
+      info.dependencies.add(new Dependency(
+          name: #host,
+          type: [
+            "asset:blackbird/lib/src/device.dart#Host",
+            "asset:blackbird/lib/src/device.dart#Device",
+            "dart:core#Object"
+          ],
+          device: this,
+          module: null,
+          isModule: false));
+      info.dependencies.add(new Dependency(
+          name: #connection,
+          type: [
+            "asset:blackbird/lib/src/ontario/connection.dart#AVRConnection",
+            "asset:blackbird/lib/src/connection.dart#PacketConnection",
+            "asset:blackbird/lib/src/connection.dart#Connection",
+            "dart:core#Object"
+          ],
+          device: this,
+          module: null,
+          isModule: false));
+      info[#host].annotations.add(Runtime());
+      info[#connection].annotations.add(Runtime());
+      throw info;
+    }
+
+    _host = parameters[#host];
+    _connection = parameters[#connection];
+    _address = delegate.address;
+  }
+
+  RCSocket implementation(Map<Symbol, Object> dependencies) =>
+      throw Exception('this is already an implementation');
+  @override
+  Object invoke(Invocation invocation) =>
+      _$RCSocketInvoker.invoke(invocation, this);
+  Provision provideRemote(Context context) =>
+      _$RCSocketRmi.provideRemote(context, this);
+  RCSocket getRemote(Context context, String uuid) =>
+      _$RCSocketRmi.getRemote(context, uuid);
+  @override
+  Map<String, dynamic> serialize() => _$RCSocketToJson(this);
+
+  Host get host => _host;
+
+  int get address => _address;
+  set address(int _address) => throw new Exception(
+      'cannot change device property after implementationconstruction');
+  AVRConnection get connection => _connection;
+
+  int _address;
 }
 
 // **************************************************************************
@@ -58,6 +121,17 @@ class _$RCSocketInvoker {
     }
   }
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+RCSocket _$RCSocketFromJson(Map<String, dynamic> json) {
+  return RCSocket.device()..address = json['address'] as int;
+}
+
+Map<String, dynamic> _$RCSocketToJson(RCSocket instance) =>
+    <String, dynamic>{'address': instance.address};
 
 // **************************************************************************
 // ProxyGenerator
@@ -126,6 +200,17 @@ class _$RCSocketProxy implements RCSocket {
 
     Invocation _$invocation =
         Invocation.method(#invoke, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+
+  Map<String, dynamic> serialize() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#serialize, arguments, namedArguments);
 
     return _handle(_$invocation);
   }

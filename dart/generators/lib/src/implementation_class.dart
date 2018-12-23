@@ -115,6 +115,8 @@ class ImplementationVisitor extends BasicDeviceVisitor {
           _\$${name}Rmi.provideRemote(context, this);
       $name getRemote(Context context, String uuid) =>
         _\$${name}Rmi.getRemote(context, uuid);
+      @override
+      Map<String, dynamic> serialize() => _\$${name}ToJson(this);
     ''';
   }
 

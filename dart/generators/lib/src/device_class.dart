@@ -49,6 +49,9 @@ class DeviceVisitor extends BasicDeviceVisitor {
           throw new Exception('no RMI on devices');
       $name getRemote(Context context, String uuid) =>
           throw new Exception('no RMI on devices');
+      @override
+      Map<String, dynamic> serialize() => _\$${name}ToJson(this);
+      static ${name} deserialize(Map json) => _\$${name}FromJson(json);
     ''';
   }
 

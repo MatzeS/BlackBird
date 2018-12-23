@@ -5,7 +5,7 @@ import 'package:js/js.dart';
 
 import 'package:node_interop/node.dart';
 import 'package:node_interop/node_interop.dart';
-import 'package:blackbird/ontario/serial_port.dart';
+import 'package:blackbird/devices/ontario.dart';
 
 dynamic get serialPortModule => _serialPortModule ??= require('serialport');
 dynamic _serialPortModule;

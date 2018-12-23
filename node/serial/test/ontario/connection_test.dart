@@ -1,6 +1,6 @@
 import 'package:test/test.dart';
 import 'package:dart_node_serialport/impl.dart';
-import 'package:blackbird/ontario/serial_port.dart';
+import 'package:blackbird/devices/ontario.dart';
 
 main() {
   test('', () {});

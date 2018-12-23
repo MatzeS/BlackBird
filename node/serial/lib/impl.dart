@@ -1,5 +1,5 @@
 import 'serial_port_module.dart';
-import 'package:blackbird/ontario/serial_port.dart';
+import 'package:blackbird/devices/ontario.dart';
 import 'dart:async';
 
 class NodeSerialPort implements SerialPort {

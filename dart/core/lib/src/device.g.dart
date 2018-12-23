@@ -18,6 +18,9 @@ class _$HostDevice extends Host {
       throw new Exception('no RMI on devices');
   Host getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
+  @override
+  Map<String, dynamic> serialize() => _$HostToJson(this);
+  static Host deserialize(Map json) => _$HostFromJson(json);
 
   Host get host => throw new Exception(
       'cannot get runtime dependencys on device representation');
@@ -55,6 +58,8 @@ class _$HostImplementation extends Host {
       _$HostRmi.provideRemote(context, this);
   Host getRemote(Context context, String uuid) =>
       _$HostRmi.getRemote(context, uuid);
+  @override
+  Map<String, dynamic> serialize() => _$HostToJson(this);
 
   Host get host => _host;
 }
@@ -101,6 +106,14 @@ class _$DeviceInvoker {
       return target.provideRemote(
         positionalArguments[0],
       );
+    }
+    if (invocation.isMethod && #serialize == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 0; i++)
+        positionalArguments.add(null);
+
+      return target.serialize();
     }
   }
 }
@@ -179,6 +192,17 @@ class _$DeviceProxy implements Device {
     return _handle(_$invocation);
   }
 
+  Map<String, dynamic> serialize() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#serialize, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+
   InvocationHandlerFunction _handle;
   _$DeviceProxy(this._handle) : super();
 
@@ -243,6 +267,17 @@ class _$HostProxy implements Host {
 
     Invocation _$invocation =
         Invocation.method(#invoke, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+
+  Map<String, dynamic> serialize() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#serialize, arguments, namedArguments);
 
     return _handle(_$invocation);
   }
