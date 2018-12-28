@@ -92,7 +92,10 @@ class ImplementationVisitor extends BasicDeviceVisitor<String> {
         .join('\n');
 
     assigns += (await properties)
-        .where((e) => !e.isSynthetic)
+        .where((e) => e is PropertyAccessorElement)
+        .map((e) => e as PropertyAccessorElement)
+        .where((e) => e.isGetter)
+        .where((e) => e.isSynthetic)
         .map((e) => '_${e.displayName} = delegate.${e.displayName};')
         .join('\n');
 
@@ -129,11 +132,18 @@ class ImplementationVisitor extends BasicDeviceVisitor<String> {
   FutureOr<String> visitPropertySetter(PropertyAccessorElement element) =>
       "=> throw new Exception('cannot change device property after implementationconstruction');";
   @override
-  FutureOr<String> visitPropertyGetter(PropertyAccessorElement element) =>
-      "=> _${element.name};";
+  FutureOr<String> visitPropertyGetter(PropertyAccessorElement element) {
+    if ((element.correspondingGetter ?? element).isSynthetic)
+      return "=> _${element.name};";
+  }
+
   @override
-  FutureOr<String> visitPropertyField(FieldElement e) =>
-      '${e.type} _${e.displayName};';
+  FutureOr<String> visitPropertyField(FieldElement element) {
+    if (element.getter.isSynthetic)
+      return '''
+      ${element.type.name} _${element.displayName};
+    ''';
+  }
 
   /// In fact a property method can do anythign and violate the DI concept,
   /// however, some very specific methods are reasonable, eg. a getter and an argument passing a format.

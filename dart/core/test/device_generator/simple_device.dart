@@ -34,8 +34,8 @@ abstract class SimpleDevice extends Device {
 
   int aProperty;
 
-  // @Property() TODO
-  // int get calculatedProperty => aProperty + 1;
+  @Property()
+  int get calculatedProperty => aProperty * 2;
 
   Device otherDevice;
 

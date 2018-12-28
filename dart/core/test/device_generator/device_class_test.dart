@@ -28,6 +28,9 @@ main() {
         (device as dynamic).aRuntimeDependency = 1;
       }, throwsNoSuchMethodError);
     });
+    test('property permutation works', () {
+      expect(device.calculatedProperty, significantNumber * 2);
+    });
   });
 
   group('runtime', () {

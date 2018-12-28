@@ -33,7 +33,6 @@ class _$SimpleDeviceDevice extends SimpleDevice {
       blackbird.interfaceDevice<SimpleDevice>(this).executiveSetter = value;
   void executiveMethod() =>
       blackbird.interfaceDevice<SimpleDevice>(this).executiveMethod();
-  int aProperty;
 
   Device otherDevice;
 }
@@ -105,6 +104,7 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
   Device get otherDevice => _otherDevice;
   set otherDevice(Device _otherDevice) => throw new Exception(
       "cannot change module after implementation construction");
+
   int get aRuntimeDependency => _aRuntimeDependency;
 
   int _aProperty;
@@ -189,6 +189,9 @@ class _$SimpleDeviceInvoker {
     if (invocation.isSetter && #otherDevice == invocation.memberName) {
       target.otherDevice = invocation.positionalArguments[0];
       return null;
+    }
+    if (invocation.isGetter && #calculatedProperty == invocation.memberName) {
+      return target.calculatedProperty;
     }
     if (invocation.isGetter && #aRuntimeDependency == invocation.memberName) {
       return target.aRuntimeDependency;
@@ -356,6 +359,12 @@ class _$SimpleDeviceProxy implements SimpleDevice {
 
   Device get otherDevice {
     Invocation invocation = Invocation.getter(#otherDevice);
+
+    return _handle(invocation);
+  }
+
+  int get calculatedProperty {
+    Invocation invocation = Invocation.getter(#calculatedProperty);
 
     return _handle(invocation);
   }

@@ -35,7 +35,6 @@ class _$RCSocketDevice extends RCSocket {
   void toggle() => blackbird.interfaceDevice<RCSocket>(this).toggle();
   void turnOff() => blackbird.interfaceDevice<RCSocket>(this).turnOff();
   void turnOn() => blackbird.interfaceDevice<RCSocket>(this).turnOn();
-  int address;
 }
 
 class _$RCSocketImplementation extends RCSocket {

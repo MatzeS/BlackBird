@@ -160,7 +160,7 @@ DeviceMemberType identify(Element element) {
   // not annotated, assume type
 
   if (isSubmodule) {
-    log.warning('$element is not annotated, assuming submodule');
+    log.fine('$element is not annotated, assuming submodule');
 
     if (element is MethodElement)
       throw Exception(
@@ -177,7 +177,7 @@ DeviceMemberType identify(Element element) {
   }
 
   if (element is MethodElement) {
-    log.warning('Method $element is not annotated, assuming executive');
+    log.fine('Method $element is not annotated, assuming executive');
     return DeviceMemberType.executive;
   }
 
@@ -185,17 +185,17 @@ DeviceMemberType identify(Element element) {
 
   // abstract getter without setter => runtime
   if (accessor.isGetter && accessor.isAbstract && corresponding == null) {
-    log.warning('$element is not annotated, assuming runtime');
+    log.fine('$element is not annotated, assuming runtime');
     return DeviceMemberType.runtime;
   }
 
   if (!executable.isSynthetic && !executable.isAbstract) {
-    log.warning('$element is not annotated, assuming executive');
+    log.fine('$element is not annotated, assuming executive');
     return DeviceMemberType.executive;
   }
 
   if (accessor != null && corresponding != null) {
-    log.warning('Method $element is not annotated, assuming property');
+    log.fine('Method $element is not annotated, assuming property');
     return DeviceMemberType.property;
   }
 
@@ -237,13 +237,7 @@ bool deviceClassIsAbstract(ClassElement classElement) {
 
   if (getExecutables(classElement).isEmpty) return false;
   return (getExecutables(classElement)).any((e) {
-    if (e.displayName == 'implementation') return false;
-    if (e.displayName == 'provideRemote') return false;
-    if (e.displayName == 'getRemote') return false;
-    if (e.displayName == 'invoke') return false;
-
-    if (e is FieldElement) return false;
-    if (!isConcrete(e, c)) print(e);
+    // if (!isConcrete(e, c)) print(e);
     return !isConcrete(e, c);
   });
 }
