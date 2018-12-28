@@ -25,7 +25,8 @@ class Property {
 /// They are provided by a [DependencyBuilder] and may be used by
 /// executive methods. A typical example is a connection interface.
 class Runtime {
-  const Runtime();
+  final bool isAbstract;
+  const Runtime({this.isAbstract = false});
 }
 
 /// Declares a class member as a executive element

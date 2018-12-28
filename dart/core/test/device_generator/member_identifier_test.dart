@@ -32,7 +32,7 @@ abstract class SimpleDevice implements Device {
   @Property()
   int get annotationProperty => aProperty + 1;
   @Runtime()
-  int annotationRuntimeDependency;
+  int get annotationRuntimeDependency;
   @Executive()
   int get annotationExecutive;
   @Ignore()
@@ -80,9 +80,9 @@ main() async {
       check('annotationExecutive', DeviceMemberType.executive);
     });
   });
-  group('module', () {
+  group('submodule', () {
     test('simple', () {
-      check('otherDevice', DeviceMemberType.module);
+      check('otherDevice', DeviceMemberType.submodule);
     });
   });
   group('ignored', () {

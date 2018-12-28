@@ -16,23 +16,21 @@ abstract class BasicDeviceVisitor<T> extends ClassVisitor<FutureOr<T>> {
       getRuntimeDependencies(await classElement);
   Future<List<Element>> get properties async =>
       getProperties(await classElement);
-  Future<List<Element>> get modules async => getModules(await classElement);
+  Future<List<Element>> get modules async => getSubModules(await classElement);
   Future<List<Element>> get executables async =>
       getExecutables(await classElement);
 
   @override
   visitFieldElement(FieldElement element) async {
-    switch (identify(element)) {
-      case DeviceMemberType.property:
-        return visitPropertyField(element);
-      case DeviceMemberType.module:
-        return visitModuleField(element);
-      default:
-        print('this is a unvisited field $element');
-        if (!element.isSynthetic)
-          throw new Exception('error in identify or visitor');
-        else
+    if (!element.isSynthetic) {
+      switch (identify(element)) {
+        case DeviceMemberType.property:
+          return visitPropertyField(element);
+        case DeviceMemberType.submodule:
+          return visitModuleField(element);
+        default:
           return null;
+      }
     }
   }
 
@@ -45,7 +43,7 @@ abstract class BasicDeviceVisitor<T> extends ClassVisitor<FutureOr<T>> {
         return visitRuntimeAccessor(element);
       case DeviceMemberType.executive:
         return visitExecutiveAccessor(element);
-      case DeviceMemberType.module:
+      case DeviceMemberType.submodule:
         return visitModuleAccessor(element);
       case DeviceMemberType.ignored:
         return null;
@@ -83,6 +81,8 @@ abstract class BasicDeviceVisitor<T> extends ClassVisitor<FutureOr<T>> {
     switch (identify(element)) {
       case DeviceMemberType.executive:
         return visitExecutiveMethod(element);
+      case DeviceMemberType.property:
+        return visitPropertyMethod(element);
       default:
         throw new Exception('error in identify or visitor');
     }
@@ -90,6 +90,7 @@ abstract class BasicDeviceVisitor<T> extends ClassVisitor<FutureOr<T>> {
 
   FutureOr<T> visitPropertyGetter(PropertyAccessorElement element);
   FutureOr<T> visitPropertySetter(PropertyAccessorElement element);
+  FutureOr<T> visitPropertyMethod(MethodElement element);
   FutureOr<T> visitPropertyField(FieldElement element);
 
   FutureOr<T> visitRuntimeGetter(PropertyAccessorElement element);

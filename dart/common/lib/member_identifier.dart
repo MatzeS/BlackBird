@@ -1,118 +1,205 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:analyzer/dart/constant/value.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_gen_helpers/class/util.dart';
+import 'package:build/build.dart';
 
-enum DeviceMemberType { property, runtime, executive, module, ignored }
-
-bool isRuntimeDependency(Element e) => identify(e) == DeviceMemberType.runtime;
 bool isProperty(Element e) => identify(e) == DeviceMemberType.property;
-bool isModule(Element e) => identify(e) == DeviceMemberType.module;
+bool isRuntimeDependency(Element e) => identify(e) == DeviceMemberType.runtime;
+bool isSubModule(Element e) => identify(e) == DeviceMemberType.submodule;
 bool isExecutive(Element e) => identify(e) == DeviceMemberType.executive;
 bool isIgnored(Element e) => identify(e) == DeviceMemberType.ignored;
 
-DeviceMemberType identify(Element element) {
-  if (element.isPrivate)
-    throw new Exception(
-        'element is not consumed by the device generator [$element] , ${element.runtimeType}');
-  if (element is ConstructorElement)
-    throw new Exception(
-        'element is not consumed by the device generator [$element]');
+enum DeviceMemberType { property, runtime, executive, submodule, ignored }
 
-  if (TypeChecker.fromUrl('asset:blackbird/lib/src/device.dart#Ignore')
-      .annotationsOf(element)
-      .isNotEmpty) return DeviceMemberType.ignored;
+class AnnotationUrl {
+  static const String property = 'asset:blackbird/lib/src/device.dart#Property';
+  static const String runtime = 'asset:blackbird/lib/src/device.dart#Runtime';
+  static const String executive =
+      'asset:blackbird/lib/src/device.dart#Executive';
+  static const String submodule =
+      'asset:blackbird/lib/src/device.dart#SubModule';
+  static const String ignore = 'asset:blackbird/lib/src/device.dart#Ignore';
+}
+
+List<DartObject> _getAnnotations(Element element, String url) =>
+    TypeChecker.fromUrl(url).annotationsOf(element).toList();
+
+List<DartObject> _getAllAnnotations(Element element) {
+  List<DartObject> list = [];
+  list.addAll(_getAnnotations(element, AnnotationUrl.property));
+  list.addAll(_getAnnotations(element, AnnotationUrl.runtime));
+  list.addAll(_getAnnotations(element, AnnotationUrl.executive));
+  list.addAll(_getAnnotations(element, AnnotationUrl.submodule));
+  list.addAll(_getAnnotations(element, AnnotationUrl.ignore));
+  return list;
+}
+
+bool _annotationIs(DartObject annotation, String url) =>
+    annotation != null &&
+    TypeChecker.fromUrl(url).isAssignableFromType(annotation.type);
+
+DeviceMemberType _typeByAnnotation(Element element) {
+  var annotation = _getAllAnnotations(element).single;
+  return _mapAnnotationToType(annotation);
+}
+
+DeviceMemberType _mapAnnotationToType(DartObject annotation) {
+  if (_annotationIs(annotation, AnnotationUrl.property))
+    return DeviceMemberType.property;
+  if (_annotationIs(annotation, AnnotationUrl.runtime))
+    return DeviceMemberType.runtime;
+  if (_annotationIs(annotation, AnnotationUrl.executive))
+    return DeviceMemberType.executive;
+  if (_annotationIs(annotation, AnnotationUrl.submodule))
+    return DeviceMemberType.submodule;
+  if (_annotationIs(annotation, AnnotationUrl.ignore))
+    return DeviceMemberType.ignored;
+
+  throw new Exception('cannot identify element by annotation: $annotation');
+}
+
+DeviceMemberType identify(Element element) {
+  if (element is! MethodElement &&
+      element is! PropertyAccessorElement &&
+      element is! FieldElement)
+    throw new Exception(
+        'element is not consumed by the device generator [$element], expect field, method or proeprty accessor');
+  if (element.isPrivate)
+    throw new Exception('element is not public [$element]');
+  if (element is ExecutableElement && element.isStatic)
+    throw new Exception('element is static [$element]');
+
+  MethodElement method;
+  ExecutableElement executable;
+  FieldElement field;
+  PropertyAccessorElement accessor;
+  PropertyAccessorElement corresponding;
+
+  if (element is MethodElement) method = element;
+  if (element is FieldElement) field = element;
+  if (element is PropertyAccessorElement) accessor = element;
+
+  // fill corresponders
+  if (element is FieldElement) accessor = element.getter ?? element.setter;
+  if (element is PropertyAccessorElement) {
+    field = (element.enclosingElement as ClassElement)
+        .getField(element.displayName);
+  }
+
+  if (accessor != null) {
+    if (accessor.isSetter) corresponding = accessor.correspondingGetter;
+    if (accessor.isGetter) corresponding = accessor.correspondingSetter;
+  }
+
+  // check annotation consistency between accessor and corresponding
+  if (corresponding != null &&
+      _getAllAnnotations(accessor).isNotEmpty &&
+      _typeByAnnotation(accessor) != _typeByAnnotation(corresponding)) {
+    throw Exception(
+        '$element and corresponding $corresponding are illegaly, differently annotated');
+  }
+
+  executable = accessor ?? method;
+
+  // Sort out ignore
+  var annotations = [];
+  if (field != null) annotations.addAll(_getAllAnnotations(field));
+  if (executable != null) annotations.addAll(_getAllAnnotations(executable));
+
+  if (annotations.length > 1) {
+    throw new Exception('device member $element cannot be multiply annotated');
+  }
+  var annotation = annotations.firstWhere((x) => true, orElse: () => null);
+
+  if (_annotationIs(annotation, AnnotationUrl.ignore)) {
+    return DeviceMemberType.ignored;
+  }
+
+  // if annotated check for consistency
+
+  // sort out module stuff
+  bool deviceParameter = executable.parameters
+      .where((p) =>
+          TypeChecker.fromUrl('asset:blackbird/lib/src/device.dart#Device')
+              .isAssignableFromType(p.type))
+      .isNotEmpty;
+  bool returnsDevice = !executable.returnType.isVoid &&
+      TypeChecker.fromUrl('asset:blackbird/lib/src/device.dart#Device')
+          .isAssignableFromType(executable.returnType);
+  bool isSubmodule = deviceParameter || returnsDevice;
+
+  if (annotation != null) {
+    DeviceMemberType type = _mapAnnotationToType(annotation);
+    if (type == DeviceMemberType.submodule) {
+      if (executable.returnType.isVoid)
+        throw new Exception('submodule accessor/method cannot be void');
+
+      return DeviceMemberType.submodule;
+    } else if (isSubmodule && element.displayName != 'host') {
+      throw new Exception('Devices have to be passed as module, $element');
+    } else if (type == DeviceMemberType.property) {
+      // property basically allows everything
+      return DeviceMemberType.property;
+    } else if (type == DeviceMemberType.runtime) {
+      if (executable.returnType.isVoid)
+        throw new Exception('runtime dependencies cannot be void');
+      if (element is PropertyAccessorElement &&
+          (element.isSetter || element.correspondingSetter != null))
+        throw new Exception(
+            'there exists a setter for runtime dependency $element');
+
+      return DeviceMemberType.runtime;
+    } else if (type == DeviceMemberType.executive) {
+      // executive basically allows everything
+      return DeviceMemberType.executive;
+    }
+  }
+
+  // not annotated, assume type
+
+  if (isSubmodule) {
+    log.warning('$element is not annotated, assuming submodule');
+
+    if (element is MethodElement)
+      throw Exception(
+          'submodules cannot be passed by methods, only by property accessors [$element]');
+    if (accessor == null || corresponding == null)
+      throw new Exception(
+          'submodules must be settable and gettable [$element]');
+    if ((!accessor.isSynthetic && !accessor.isAbstract) ||
+        (!corresponding.isSynthetic && !corresponding.isAbstract))
+      throw new Exception(
+          'submodules is solely implemented by source generation and must be abstract [$element]');
+
+    return DeviceMemberType.submodule;
+  }
 
   if (element is MethodElement) {
+    log.warning('Method $element is not annotated, assuming executive');
     return DeviceMemberType.executive;
   }
 
-  FieldElement field;
-  if (element is FieldElement) {
-    field = element;
-  } else {
-    ClassElement classElement = element.enclosingElement as ClassElement;
-    field = classElement.fields.firstWhere(
-        (f) => f.displayName == element.displayName,
-        orElse: () => null);
+  // element is property accessor, already available in accessor variable
+
+  // abstract getter without setter => runtime
+  if (accessor.isGetter && accessor.isAbstract && corresponding == null) {
+    log.warning('$element is not annotated, assuming runtime');
+    return DeviceMemberType.runtime;
   }
 
-  PropertyAccessorElement getter = field.getter;
-  PropertyAccessorElement setter = field.setter;
-  bool hasGetter = field.getter != null;
-  bool hasSetter = field.setter != null;
-
-  bool _annotatedAs(String url) {
-    check(Element e) => TypeChecker.fromUrl(url).annotationsOf(e).isNotEmpty;
-    bool result = check(field);
-    if (hasGetter) result |= check(getter);
-    if (hasSetter) result |= check(setter);
-    return result;
+  if (!executable.isSynthetic && !executable.isAbstract) {
+    log.warning('$element is not annotated, assuming executive');
+    return DeviceMemberType.executive;
   }
 
-  DeviceMemberType _checkAnnotations() {
-    bool p = _annotatedAs('asset:blackbird/lib/src/device.dart#Property');
-    bool r = _annotatedAs('asset:blackbird/lib/src/device.dart#Runtime');
-    bool e = _annotatedAs('asset:blackbird/lib/src/device.dart#Executive');
-    bool i = _annotatedAs('asset:blackbird/lib/src/device.dart#Ignore');
-
-    int s = (p ? 1 : 0) + (r ? 1 : 0) + (e ? 1 : 0) + (i ? 1 : 0);
-    if (s > 1)
-      throw new Exception(
-          'A classmember must be a distinct device member type [$element]');
-
-    if (p) return DeviceMemberType.property;
-    if (r) return DeviceMemberType.runtime;
-    if (e) return DeviceMemberType.executive;
-    if (i) return DeviceMemberType.ignored;
-    return null;
+  if (accessor != null && corresponding != null) {
+    log.warning('Method $element is not annotated, assuming property');
+    return DeviceMemberType.property;
   }
 
-  if (_checkAnnotations() != null) return _checkAnnotations();
-
-  if (field != null && !field.isSynthetic) {
-    if (_isDevice(field.type)) {
-      if (field.getter == null || field.setter == null) {
-        throw new Exception('modules must be read/write [$element]');
-      }
-
-      return DeviceMemberType.module;
-    }
-
-    if (field.getter != null && field.setter != null) {
-      return DeviceMemberType.property;
-    }
-
-    if (field.getter != null && field.getter.isAbstract) {
-      return DeviceMemberType.runtime;
-    }
-
-    if (field.setter != null && !field.setter.isAbstract) {
-      return DeviceMemberType.executive;
-    }
-  }
-
-  if (element is FieldElement) {
-    element = field.getter ?? field.setter; // TODO ambigious
-  }
-
-  if (element is PropertyAccessorElement) {
-    PropertyAccessorElement property = element;
-    if (property.isGetter && _isDevice(property.returnType)) {
-      throw new Exception(
-          'provide device modules only by field, not by manual getter or setters [$element]');
-    }
-
-    //TODO property getter
-    if (property.isGetter && property.isAbstract)
-      return DeviceMemberType.runtime;
-    if (property.isGetter && !property.isAbstract)
-      return DeviceMemberType.executive;
-    if (property.isSetter)
-      return DeviceMemberType.executive; // untypical but only reasonable
-  }
-
-  throw new Exception('not identifiable $element');
+  throw new Exception('not identifiable $element, ${element.enclosingElement}');
 }
 
 bool _isDevice(DartType type) {
@@ -123,21 +210,25 @@ bool _isDevice(DartType type) {
 List<Element> getRuntimeDependencies(ClassElement classElement) =>
     filterConcreteElements(classElement, allClassMember(classElement))
         .where((e) => e.isPublic && e is! ConstructorElement)
+        .where((e) => e is FieldElement || !(e as ExecutableElement).isStatic)
         .where((e) => isRuntimeDependency(e))
         .toList();
 List<Element> getProperties(ClassElement classElement) =>
     filterConcreteElements(classElement, allClassMember(classElement))
         .where((e) => e.isPublic && e is! ConstructorElement)
+        .where((e) => e is FieldElement || !(e as ExecutableElement).isStatic)
         .where((e) => isProperty(e))
         .toList();
-List<Element> getModules(ClassElement classElement) =>
+List<Element> getSubModules(ClassElement classElement) =>
     filterConcreteElements(classElement, allClassMember(classElement))
         .where((e) => e.isPublic && e is! ConstructorElement)
-        .where((e) => isModule(e))
+        .where((e) => e is FieldElement || !(e as ExecutableElement).isStatic)
+        .where((e) => isSubModule(e))
         .toList();
 List<Element> getExecutables(ClassElement classElement) =>
-    filterConcreteElements(classElement, allClassMember(classElement))
+    filterConcreteElements(classElement, allExecutables(classElement))
         .where((e) => e.isPublic && e is! ConstructorElement)
+        .where((e) => !e.isStatic)
         .where((e) => isExecutive(e))
         .toList();
 

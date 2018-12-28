@@ -29,6 +29,9 @@ class DeviceGenerator extends Generator {
         .isExactly(element)) return false;
 
     // if (isAnnotatedWith<Device>(element)) return true;
+    if (TypeChecker.fromUrl("asset:blackbird/lib/src/device.dart#Ignore")
+        .annotationsOf(element)
+        .isNotEmpty) return false;
 
     if (TypeChecker.fromUrl("asset:blackbird/lib/src/device.dart#Device")
         .isAssignableFrom(element)) return true;

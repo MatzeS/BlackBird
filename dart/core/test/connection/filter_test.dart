@@ -73,5 +73,5 @@ main() {
       result = await receiver.timeout(Duration(seconds: 1), onTimeout: null);
       expect(result.payload, 'another');
     });
-  }, tags: 'current');
+  });
 }

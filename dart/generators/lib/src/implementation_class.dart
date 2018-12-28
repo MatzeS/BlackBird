@@ -50,8 +50,8 @@ class ImplementationVisitor extends BasicDeviceVisitor<String> {
             name: #${harmonize(e).item2}, 
             type: ["$types"], 
             device: this, 
-            module: ${isModule(e) ? 'delegate.' + harmonize(e).item2 : 'null'},
-            isModule: ${isModule(e)}));
+            module: ${isSubModule(e) ? 'delegate.' + harmonize(e).item2 : 'null'},
+            isModule: ${isSubModule(e)}));
       ''');
     });
     list.where((e) => !e.isSynthetic).forEach((e) {
@@ -134,6 +134,11 @@ class ImplementationVisitor extends BasicDeviceVisitor<String> {
   @override
   FutureOr<String> visitPropertyField(FieldElement e) =>
       '${e.type} _${e.displayName};';
+
+  /// In fact a property method can do anythign and violate the DI concept,
+  /// however, some very specific methods are reasonable, eg. a getter and an argument passing a format.
+  @override
+  FutureOr<String> visitPropertyMethod(MethodElement element) => null;
 
   @override
   FutureOr<String> visitRuntimeGetter(PropertyAccessorElement element) =>

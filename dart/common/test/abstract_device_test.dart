@@ -44,5 +44,5 @@ main() {
 
       // list.forEach((e) => print('${e.name} ${isAbstract(e)}'));
     });
-  }, tags: 'current');
+  });
 }
