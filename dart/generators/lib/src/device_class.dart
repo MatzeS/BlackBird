@@ -71,12 +71,7 @@ class DeviceVisitor extends BasicDeviceVisitor<String> {
   @override
   FutureOr<String> visitPropertyMethod(MethodElement element) => null;
   @override
-  FutureOr<String> visitPropertyField(FieldElement element) {
-    if (element.getter.isAbstract)
-      return '''
-      ${element.type.name} ${element.displayName};
-    ''';
-  }
+  FutureOr<String> visitPropertyField(FieldElement element) => null;
 
   @override
   FutureOr<String> visitModuleField(FieldElement element) {

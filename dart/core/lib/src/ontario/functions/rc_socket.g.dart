@@ -38,22 +38,12 @@ class _$RCSocketDevice extends RCSocket {
 }
 
 class _$RCSocketImplementation extends RCSocket {
-  Host _host;
   AVRConnection _connection;
+  Host _host;
 
   _$RCSocketImplementation(RCSocket delegate, Map<Symbol, Object> parameters) {
     if (parameters == null) {
       ConstructionInfoException info = new ConstructionInfoException();
-      info.dependencies.add(new Dependency(
-          name: #host,
-          type: [
-            "asset:blackbird/lib/src/device.dart#Host",
-            "asset:blackbird/lib/src/device.dart#Device",
-            "dart:core#Object"
-          ],
-          device: this,
-          module: null,
-          isModule: false));
       info.dependencies.add(new Dependency(
           name: #connection,
           type: [
@@ -65,13 +55,23 @@ class _$RCSocketImplementation extends RCSocket {
           device: this,
           module: null,
           isModule: false));
-      info[#host].annotations.add(Runtime());
+      info.dependencies.add(new Dependency(
+          name: #host,
+          type: [
+            "asset:blackbird/lib/src/device.dart#Host",
+            "asset:blackbird/lib/src/device.dart#Device",
+            "dart:core#Object"
+          ],
+          device: this,
+          module: null,
+          isModule: false));
       info[#connection].annotations.add(Runtime());
+      info[#host].annotations.add(Runtime());
       throw info;
     }
 
-    _host = parameters[#host];
     _connection = parameters[#connection];
+    _host = parameters[#host];
     _address = delegate.address;
   }
 
@@ -238,6 +238,24 @@ class _$RCSocketProxy implements RCSocket {
   InvocationHandlerFunction _handle;
   _$RCSocketProxy(this._handle) : super();
 
+  int get address {
+    Invocation invocation = Invocation.getter(#address);
+
+    return _handle(invocation);
+  }
+
+  AVRConnection get connection {
+    Invocation invocation = Invocation.getter(#connection);
+
+    return _handle(invocation);
+  }
+
+  set remoteState(bool state) {
+    Invocation invocation = Invocation.setter(#remoteState, state);
+
+    _handle(invocation);
+  }
+
   bool get _state {
     Invocation invocation = Invocation.getter(#_state);
 
@@ -248,12 +266,6 @@ class _$RCSocketProxy implements RCSocket {
     Invocation invocation = Invocation.getter(#state);
 
     return _handle(invocation);
-  }
-
-  set remoteState(bool state) {
-    Invocation invocation = Invocation.setter(#remoteState, state);
-
-    _handle(invocation);
   }
 
   Blackbird get _blackbird {
@@ -285,18 +297,6 @@ class _$RCSocketProxy implements RCSocket {
 
     return _handle(invocation);
   }
-
-  int get address {
-    Invocation invocation = Invocation.getter(#address);
-
-    return _handle(invocation);
-  }
-
-  AVRConnection get connection {
-    Invocation invocation = Invocation.getter(#connection);
-
-    return _handle(invocation);
-  }
 }
 
 // **************************************************************************
@@ -312,7 +312,10 @@ class _$RCSocketRmi {
     rmiRegisterSerializers([]);
   }
 
-  static void _registerStubConstructors(Context context) {}
+  static void _registerStubConstructors(Context context) {
+    context.registerRemoteStubConstructor('RCSocket', getRemote);
+  }
+
   static RCSocket getRemote(Context context, String uuid) {
     _registerSerializers();
     _registerStubConstructors(context);

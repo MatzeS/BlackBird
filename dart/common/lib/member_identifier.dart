@@ -94,11 +94,18 @@ DeviceMemberType identify(Element element) {
   }
 
   // check annotation consistency between accessor and corresponding
-  if (corresponding != null &&
-      _getAllAnnotations(accessor).isNotEmpty &&
-      _typeByAnnotation(accessor) != _typeByAnnotation(corresponding)) {
-    throw Exception(
-        '$element and corresponding $corresponding are illegaly, differently annotated');
+  if (corresponding != null) {
+    if (_getAllAnnotations(accessor).length !=
+        _getAllAnnotations(corresponding).length) {
+      throw new Exception(
+          'accessor $accessor and corresponding are not equally annotated, one of which has none');
+    }
+
+    if (_getAllAnnotations(accessor).isNotEmpty &&
+        _typeByAnnotation(accessor) != _typeByAnnotation(corresponding)) {
+      throw Exception(
+          '$element and corresponding $corresponding are illegaly, differently annotated');
+    }
   }
 
   executable = accessor ?? method;

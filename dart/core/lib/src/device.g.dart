@@ -87,6 +87,12 @@ class _$DeviceInvoker {
     if (invocation.isGetter && #host == invocation.memberName) {
       return target.host;
     }
+    if (invocation.isGetter && #hashCode == invocation.memberName) {
+      return target.hashCode;
+    }
+    if (invocation.isGetter && #runtimeType == invocation.memberName) {
+      return target.runtimeType;
+    }
     if (invocation.isMethod && #implementation == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
@@ -115,6 +121,32 @@ class _$DeviceInvoker {
 
       return target.serialize();
     }
+    if (invocation.isMethod && #== == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target == positionalArguments[0];
+    }
+    if (invocation.isMethod && #toString == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 0; i++)
+        positionalArguments.add(null);
+
+      return target.toString();
+    }
+    if (invocation.isMethod && #noSuchMethod == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.noSuchMethod(
+        positionalArguments[0],
+      );
+    }
   }
 }
 
@@ -137,24 +169,13 @@ Map<String, dynamic> _$HostToJson(Host instance) => <String, dynamic>{};
 // **************************************************************************
 
 class _$DeviceProxy implements Device {
-  String toString() {
+  Device implementation(Map dependencies) {
     List<Object> arguments = [];
-
+    arguments.add(dependencies);
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation =
-        Invocation.method(#toString, arguments, namedArguments);
-
-    return _handle(_$invocation);
-  }
-
-  dynamic noSuchMethod(Invocation invocation) {
-    List<Object> arguments = [];
-    arguments.add(invocation);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#noSuchMethod, arguments, namedArguments);
+        Invocation.method(#implementation, arguments, namedArguments);
 
     return _handle(_$invocation);
   }
@@ -181,17 +202,6 @@ class _$DeviceProxy implements Device {
     return _handle(_$invocation);
   }
 
-  Device implementation(Map dependencies) {
-    List<Object> arguments = [];
-    arguments.add(dependencies);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#implementation, arguments, namedArguments);
-
-    return _handle(_$invocation);
-  }
-
   Map<String, dynamic> serialize() {
     List<Object> arguments = [];
 
@@ -203,20 +213,30 @@ class _$DeviceProxy implements Device {
     return _handle(_$invocation);
   }
 
+  String toString() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#toString, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+
+  dynamic noSuchMethod(Invocation invocation) {
+    List<Object> arguments = [];
+    arguments.add(invocation);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#noSuchMethod, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+
   InvocationHandlerFunction _handle;
   _$DeviceProxy(this._handle) : super();
-
-  int get hashCode {
-    Invocation invocation = Invocation.getter(#hashCode);
-
-    return _handle(invocation);
-  }
-
-  Type get runtimeType {
-    Invocation invocation = Invocation.getter(#runtimeType);
-
-    return _handle(invocation);
-  }
 
   Blackbird get _blackbird {
     Invocation invocation = Invocation.getter(#_blackbird);
@@ -232,6 +252,18 @@ class _$DeviceProxy implements Device {
 
   Host get host {
     Invocation invocation = Invocation.getter(#host);
+
+    return _handle(invocation);
+  }
+
+  int get hashCode {
+    Invocation invocation = Invocation.getter(#hashCode);
+
+    return _handle(invocation);
+  }
+
+  Type get runtimeType {
+    Invocation invocation = Invocation.getter(#runtimeType);
 
     return _handle(invocation);
   }
@@ -353,7 +385,7 @@ class _$DeviceRmi {
 
   static void _registerStubConstructors(Context context) {
     context.registerRemoteStubConstructor('Host', Host.getRemote);
-    context.registerRemoteStubConstructor('Device', Device.getRemote);
+    context.registerRemoteStubConstructor('Device', getRemote);
   }
 
   static Device getRemote(Context context, String uuid) {
@@ -380,7 +412,7 @@ class _$HostRmi {
   }
 
   static void _registerStubConstructors(Context context) {
-    context.registerRemoteStubConstructor('Host', Host.getRemote);
+    context.registerRemoteStubConstructor('Host', getRemote);
   }
 
   static Host getRemote(Context context, String uuid) {

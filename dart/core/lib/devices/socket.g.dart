@@ -124,6 +124,39 @@ class _$RemoteSocketInvoker {
 // **************************************************************************
 
 class _$SocketProxy implements Socket {
+  void toggle() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#toggle, arguments, namedArguments);
+
+    _handle(_$invocation);
+  }
+
+  void turnOff() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#turnOff, arguments, namedArguments);
+
+    _handle(_$invocation);
+  }
+
+  void turnOn() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#turnOn, arguments, namedArguments);
+
+    _handle(_$invocation);
+  }
+
   Device implementation(Map dependencies) {
     List<Object> arguments = [];
     arguments.add(dependencies);
@@ -190,41 +223,14 @@ class _$SocketProxy implements Socket {
     return _handle(_$invocation);
   }
 
-  void toggle() {
-    List<Object> arguments = [];
-
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#toggle, arguments, namedArguments);
-
-    _handle(_$invocation);
-  }
-
-  void turnOff() {
-    List<Object> arguments = [];
-
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#turnOff, arguments, namedArguments);
-
-    _handle(_$invocation);
-  }
-
-  void turnOn() {
-    List<Object> arguments = [];
-
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#turnOn, arguments, namedArguments);
-
-    _handle(_$invocation);
-  }
-
   InvocationHandlerFunction _handle;
   _$SocketProxy(this._handle) : super();
+
+  bool get state {
+    Invocation invocation = Invocation.getter(#state);
+
+    return _handle(invocation);
+  }
 
   Blackbird get _blackbird {
     Invocation invocation = Invocation.getter(#_blackbird);
@@ -252,12 +258,6 @@ class _$SocketProxy implements Socket {
 
   Type get runtimeType {
     Invocation invocation = Invocation.getter(#runtimeType);
-
-    return _handle(invocation);
-  }
-
-  bool get state {
-    Invocation invocation = Invocation.getter(#state);
 
     return _handle(invocation);
   }
@@ -366,10 +366,22 @@ class _$RemoteSocketProxy implements RemoteSocket {
   InvocationHandlerFunction _handle;
   _$RemoteSocketProxy(this._handle) : super();
 
+  bool get _state {
+    Invocation invocation = Invocation.getter(#_state);
+
+    return _handle(invocation);
+  }
+
   bool get state {
     Invocation invocation = Invocation.getter(#state);
 
     return _handle(invocation);
+  }
+
+  set remoteState(bool state) {
+    Invocation invocation = Invocation.setter(#remoteState, state);
+
+    _handle(invocation);
   }
 
   Blackbird get _blackbird {
@@ -401,18 +413,6 @@ class _$RemoteSocketProxy implements RemoteSocket {
 
     return _handle(invocation);
   }
-
-  bool get _state {
-    Invocation invocation = Invocation.getter(#_state);
-
-    return _handle(invocation);
-  }
-
-  set remoteState(bool state) {
-    Invocation invocation = Invocation.setter(#remoteState, state);
-
-    _handle(invocation);
-  }
 }
 
 // **************************************************************************
@@ -428,7 +428,10 @@ class _$SocketRmi {
     rmiRegisterSerializers([]);
   }
 
-  static void _registerStubConstructors(Context context) {}
+  static void _registerStubConstructors(Context context) {
+    context.registerRemoteStubConstructor('Socket', getRemote);
+  }
+
   static Socket getRemote(Context context, String uuid) {
     _registerSerializers();
     _registerStubConstructors(context);
@@ -452,7 +455,10 @@ class _$RemoteSocketRmi {
     rmiRegisterSerializers([]);
   }
 
-  static void _registerStubConstructors(Context context) {}
+  static void _registerStubConstructors(Context context) {
+    context.registerRemoteStubConstructor('RemoteSocket', getRemote);
+  }
+
   static RemoteSocket getRemote(Context context, String uuid) {
     _registerSerializers();
     _registerStubConstructors(context);

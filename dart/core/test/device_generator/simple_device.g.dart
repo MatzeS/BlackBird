@@ -38,8 +38,8 @@ class _$SimpleDeviceDevice extends SimpleDevice {
 }
 
 class _$SimpleDeviceImplementation extends SimpleDevice {
-  Host _host;
   int _aRuntimeDependency;
+  Host _host;
   Device _otherDevice;
 
   _$SimpleDeviceImplementation(
@@ -47,18 +47,18 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
     if (parameters == null) {
       ConstructionInfoException info = new ConstructionInfoException();
       info.dependencies.add(new Dependency(
+          name: #aRuntimeDependency,
+          type: ["dart:core#int", "dart:core#num", "dart:core#Object"],
+          device: this,
+          module: null,
+          isModule: false));
+      info.dependencies.add(new Dependency(
           name: #host,
           type: [
             "asset:blackbird/lib/src/device.dart#Host",
             "asset:blackbird/lib/src/device.dart#Device",
             "dart:core#Object"
           ],
-          device: this,
-          module: null,
-          isModule: false));
-      info.dependencies.add(new Dependency(
-          name: #aRuntimeDependency,
-          type: ["dart:core#int", "dart:core#num", "dart:core#Object"],
           device: this,
           module: null,
           isModule: false));
@@ -71,15 +71,15 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
           device: this,
           module: delegate.otherDevice,
           isModule: true));
-      info[#host].annotations.add(Runtime());
       info[#aRuntimeDependency]
           .annotations
           .add(SomeAnnotation('text', const {'asdf': 123}));
+      info[#host].annotations.add(Runtime());
       throw info;
     }
 
-    _host = parameters[#host];
     _aRuntimeDependency = parameters[#aRuntimeDependency];
+    _host = parameters[#host];
     _otherDevice = parameters[#otherDevice];
     _aProperty = delegate.aProperty;
   }
@@ -105,6 +105,8 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
   set otherDevice(Device _otherDevice) => throw new Exception(
       "cannot change module after implementation construction");
 
+  set calculatedProperty(int x) => throw new Exception(
+      'cannot change device property after implementationconstruction');
   int get aRuntimeDependency => _aRuntimeDependency;
 
   int _aProperty;
@@ -193,6 +195,10 @@ class _$SimpleDeviceInvoker {
     if (invocation.isGetter && #calculatedProperty == invocation.memberName) {
       return target.calculatedProperty;
     }
+    if (invocation.isSetter && #calculatedProperty == invocation.memberName) {
+      target.calculatedProperty = invocation.positionalArguments[0];
+      return null;
+    }
     if (invocation.isGetter && #aRuntimeDependency == invocation.memberName) {
       return target.aRuntimeDependency;
     }
@@ -241,6 +247,17 @@ Map<String, dynamic> _$EvenSimplerDeviceToJson(EvenSimplerDevice instance) =>
 // **************************************************************************
 
 class _$SimpleDeviceProxy implements SimpleDevice {
+  void executiveMethod() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#executiveMethod, arguments, namedArguments);
+
+    _handle(_$invocation);
+  }
+
   Device implementation(Map dependencies) {
     List<Object> arguments = [];
     arguments.add(dependencies);
@@ -307,49 +324,8 @@ class _$SimpleDeviceProxy implements SimpleDevice {
     return _handle(_$invocation);
   }
 
-  void executiveMethod() {
-    List<Object> arguments = [];
-
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#executiveMethod, arguments, namedArguments);
-
-    _handle(_$invocation);
-  }
-
   InvocationHandlerFunction _handle;
   _$SimpleDeviceProxy(this._handle) : super();
-
-  Blackbird get _blackbird {
-    Invocation invocation = Invocation.getter(#_blackbird);
-
-    return _handle(invocation);
-  }
-
-  Blackbird get blackbird {
-    Invocation invocation = Invocation.getter(#blackbird);
-
-    return _handle(invocation);
-  }
-
-  Host get host {
-    Invocation invocation = Invocation.getter(#host);
-
-    return _handle(invocation);
-  }
-
-  int get hashCode {
-    Invocation invocation = Invocation.getter(#hashCode);
-
-    return _handle(invocation);
-  }
-
-  Type get runtimeType {
-    Invocation invocation = Invocation.getter(#runtimeType);
-
-    return _handle(invocation);
-  }
 
   int get aProperty {
     Invocation invocation = Invocation.getter(#aProperty);
@@ -385,6 +361,36 @@ class _$SimpleDeviceProxy implements SimpleDevice {
     Invocation invocation = Invocation.setter(#executiveSetter, value);
 
     _handle(invocation);
+  }
+
+  Blackbird get _blackbird {
+    Invocation invocation = Invocation.getter(#_blackbird);
+
+    return _handle(invocation);
+  }
+
+  Blackbird get blackbird {
+    Invocation invocation = Invocation.getter(#blackbird);
+
+    return _handle(invocation);
+  }
+
+  Host get host {
+    Invocation invocation = Invocation.getter(#host);
+
+    return _handle(invocation);
+  }
+
+  int get hashCode {
+    Invocation invocation = Invocation.getter(#hashCode);
+
+    return _handle(invocation);
+  }
+
+  Type get runtimeType {
+    Invocation invocation = Invocation.getter(#runtimeType);
+
+    return _handle(invocation);
   }
 }
 
@@ -504,6 +510,7 @@ class _$SimpleDeviceRmi {
 
   static void _registerStubConstructors(Context context) {
     context.registerRemoteStubConstructor('Device', Device.getRemote);
+    context.registerRemoteStubConstructor('SimpleDevice', getRemote);
   }
 
   static SimpleDevice getRemote(Context context, String uuid) {
@@ -529,7 +536,10 @@ class _$EvenSimplerDeviceRmi {
     rmiRegisterSerializers([]);
   }
 
-  static void _registerStubConstructors(Context context) {}
+  static void _registerStubConstructors(Context context) {
+    context.registerRemoteStubConstructor('EvenSimplerDevice', getRemote);
+  }
+
   static EvenSimplerDevice getRemote(Context context, String uuid) {
     _registerSerializers();
     _registerStubConstructors(context);

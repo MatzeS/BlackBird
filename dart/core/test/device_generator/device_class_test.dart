@@ -28,8 +28,12 @@ main() {
         (device as dynamic).aRuntimeDependency = 1;
       }, throwsNoSuchMethodError);
     });
-    test('property permutation works', () {
+    test('property permutation getter', () {
       expect(device.calculatedProperty, significantNumber * 2);
+    });
+    test('property permutation setter', () {
+      device.calculatedProperty = 3;
+      expect(device.aProperty, 1);
     });
   });
 

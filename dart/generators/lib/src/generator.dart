@@ -12,7 +12,6 @@ import 'package:source_gen_helpers/class/output_visitor.dart';
 import 'package:source_gen_helpers/class/override_visitor.dart';
 import 'device_class.dart';
 import 'implementation_class.dart';
-import 'package:source_gen_helpers/util.dart';
 import 'package:blackbird_common/member_identifier.dart';
 import 'package:tuple/tuple.dart';
 //TODO check for no arg construcotr
@@ -81,7 +80,7 @@ class DeviceGenerator extends Generator {
           ClassElement classElement = e.enclosingElement as ClassElement;
           return !classElement.type.isObject;
         })
-        .where((e) => e == lookUp(e, ce))
+        .where((e) => e == lookUpMostConcrete(e, ce))
         .toList();
 
     var fields = ce.fields.where((e) => e.isPublic && !e.isStatic).toList();

@@ -200,7 +200,10 @@ class _$OntarioRmi {
     rmiRegisterSerializers([]);
   }
 
-  static void _registerStubConstructors(Context context) {}
+  static void _registerStubConstructors(Context context) {
+    context.registerRemoteStubConstructor('Ontario', getRemote);
+  }
+
   static Ontario getRemote(Context context, String uuid) {
     _registerSerializers();
     _registerStubConstructors(context);

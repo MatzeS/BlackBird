@@ -15,8 +15,7 @@ dev_dependencies:
     path: ../common
   test:
   source_gen: 
-  source_gen_helpers: 
-    path: ../../../dart/source_gen_helpers
+  source_gen_helpers: 0.0.1
   build_runner: ^1.1.2
   build_test:
 
@@ -26,3 +25,5 @@ dependency_overrides:
     path: ../../../dart/remote_method_invocation/rmi
   rmi_generator: 
     path: ../../../dart/remote_method_invocation/rmi_generator
+  source_gen_helpers: 
+    path: ../../../dart/source_gen_helpers

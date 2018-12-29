@@ -131,6 +131,7 @@ class ImplementationVisitor extends BasicDeviceVisitor<String> {
   @override
   FutureOr<String> visitPropertySetter(PropertyAccessorElement element) =>
       "=> throw new Exception('cannot change device property after implementationconstruction');";
+
   @override
   FutureOr<String> visitPropertyGetter(PropertyAccessorElement element) {
     if ((element.correspondingGetter ?? element).isSynthetic)

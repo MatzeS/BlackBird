@@ -36,6 +36,8 @@ abstract class SimpleDevice extends Device {
 
   @Property()
   int get calculatedProperty => aProperty * 2;
+  @Property()
+  set calculatedProperty(int x) => aProperty = x ~/ 3;
 
   Device otherDevice;
 
@@ -47,6 +49,8 @@ abstract class SimpleDevice extends Device {
   set executiveSetter(int value) {}
 
   factory SimpleDevice.device() => new _$SimpleDeviceDevice();
+  static SimpleDevice deserialize(Map<String, dynamic> serialized) =>
+      _$SimpleDeviceFromJson(serialized);
 }
 
 abstract class EvenSimplerDevice extends Device {

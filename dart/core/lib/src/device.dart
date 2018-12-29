@@ -13,8 +13,26 @@ part 'device.g.dart';
 /// Properties cannot be changed as long as
 /// the device's implementation object exists in the cluster.
 ///
-/// TODO serializing properties
-/// TODO testcase
+///     class YourDevice extends Device{
+///       @Property()
+///       int address;
+///
+///       // non-final fields are also directly inferred as property
+///       // and the annotation can be avoided
+///       int another;
+///
+///       // for more sophisticated stuff, however, the annotatoin is required
+///       // for example you can create an alternative property format
+///       // this property should solely depends on other properties
+///       // it is not serialized, as it can be reconstructed form other properties,
+///       // thereby private variables should not be used as they are lost during serialization
+///       @Property()
+///       String get alternativeAddressFormat()
+///         => address.toString();
+///
+///     }
+///
+/// TODO custom serialization for non trivial properties
 class Property {
   const Property();
 }
@@ -24,6 +42,17 @@ class Property {
 /// Runtime dependencies are injected when the implementation is created
 /// They are provided by a [DependencyBuilder] and may be used by
 /// executive methods. A typical example is a connection interface.
+///
+///     class YourDevice extends Device{
+///       @Runtime()
+///       Connection get connection;
+///
+///       // A runtime dependency cannot be changed after creation.
+///       // The only allowed declaration of a runtime dependency is an abstract getter
+///       // and such one is also assumed to be a runtime dependency, if not specified otherwise (by annotation).
+///       Connection get connection;
+///     }
+///
 class Runtime {
   final bool isAbstract;
   const Runtime({this.isAbstract = false});
@@ -33,36 +62,73 @@ class Runtime {
 ///
 /// An executive element is the code run on the implementation object.
 /// It uses the injected runtime dependencies to provide high level
-/// device functionality.
+/// device functionality. These things are not overwritten by source generation.
+///
+///     class YourDevice extends Device{
+///
+///       @Executive()
+///       void turnLightOff(){
+///         // ...
+///       }
+///
+///       // Unless specified otherwise by annotation, any non abstract method is assumed as executive.
+///       void turnLightOn(){
+///       }
+///
+///     }
+///
 class Executive {
   const Executive();
 }
 
-/// TODO
+/// Declares a class member as an submodule
+///
+/// A submodule is another device which is used within another device.
+/// A submodule is both a property and runtime dependency.
+/// It is set as property, where the device does not have to be implemented yet.
+/// When constructed the subdevice is implemented and the implementation object is injected.
+///
+///     class YourDevice extends Device{
+///
+///       @Subdevice()
+///       Device aSubmodule;
+///
+///       // Any property of type [Device] is assumed to be a submodule
+///       Device aSubmodule;
+///
+///       // You cannot pass a Device by a device by anything else than a submodule
+///       // This may change in the future
+///       // void someSuspiciousMethod(Device d){} // not allowed
+///     }
 class SubModule {
   const SubModule();
 }
 
-///TODO
+///TODO not yet implemented
 // class SuperModule {
 //   const SuperModule();
 // }
 
 /// Excludes a class member from device interpertation
 ///
-/// No code generation will be applied for this member
+/// No code generation will be applied for this member, the method is not overwritten
 class Ignore {
   const Ignore();
 }
 
-/// The root device class
+/// The root class for a device
 ///
-/// TODO write documentation
+/// A device is a complex object representing a device in the real world,
+/// allowing high level API interaction with the device.
 ///
 /// Make it aware of its object kind, device/implementation/proxy
 abstract class Device implements RmiTarget {
+  /// A device must specify a default constructor with no arguments
+  ///
+  /// This allows source genration to create the device
   Device();
 
+  /// Local handle for blackbird instance
   @Ignore()
   Blackbird _blackbird;
 
@@ -76,7 +142,9 @@ abstract class Device implements RmiTarget {
     return _blackbird;
   }
 
-  ///TODO add to blackbird cluster, allow for change
+  /// The blackbird instance the device object is associated with
+  /// can only be set once
+  /// TODO add to blackbird cluster, allow for change
   @Ignore()
   set blackbird(Blackbird blackbird) {
     if (blackbird == _blackbird) return;
@@ -89,8 +157,9 @@ abstract class Device implements RmiTarget {
     _blackbird = blackbird;
   }
 
-  /// The host the implementation object is present on, null if not implemented
-  /// TODO better error than cannot get runtime dependency on device object
+  /// The host device the implementation object is located on
+  ///
+  /// TODO document what if not implemented
   @Runtime()
   Host get host;
 
@@ -99,12 +168,14 @@ abstract class Device implements RmiTarget {
   @Ignore()
   Device implementation(Map<Symbol, Object> dependencies);
 
-  /// Makes the object available for RMI, noted here for the Ignore annotation
+  /// Makes the object available for RMI
+  /// Noted here for the Ignore annotation
   /// This should not be called or implemented manually
   @Ignore()
   Provision provideRemote(Context context);
 
-  /// Invokes RMI calls, noted here for the Ignore annotation
+  /// Invokes RMI calls
+  /// Noted here for the Ignore annotation
   /// This should not be called or implemented manually
   @Ignore()
   Object invoke(Invocation invocation);
@@ -113,11 +184,29 @@ abstract class Device implements RmiTarget {
   static Device getRemote(Context context, String uuid) =>
       _$DeviceRmi.getRemote(context, uuid);
 
-  ///
+  /// serializes propoerties and submodules
   @Ignore()
   Map<String, dynamic> serialize();
 
-//  get hashCode → int, get runtimeType → Type, getRemote(Context context, String uuid) → Device, ==(dynamic other) → bool, toString() → String, noSuchMethod(Invocation invocation) → dynamic, provideRemote(Context context) → Provision, invoke(Invocation invocation) → Object
+  /// A normal device class would feature a deserialize function
+  /// static Device deserialize(Map<String, dynamic> serialized) =>
+  ///     _$DeviceFromJson(serialized);
+
+  /// The following methods are derived from [Object] and are only stated here for to ignore them
+  @Ignore()
+  int get hashCode;
+
+  @Ignore()
+  Type get runtimeType;
+
+  @Ignore()
+  bool operator ==(Object other);
+
+  @Ignore()
+  String toString();
+
+  @Ignore()
+  noSuchMethod(Invocation invocation);
 }
 
 /// A host is a device running a blackbird instance and possibly hosting implementation objects
