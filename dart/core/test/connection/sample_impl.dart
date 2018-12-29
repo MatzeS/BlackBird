@@ -11,7 +11,7 @@ class AnotherPacket extends SamplePacket {
   AnotherPacket() : super('another');
 }
 
-class SampleConnection extends PacketConnection<SamplePacket> {
+class SampleConnection extends SimplePacketConnection<SamplePacket> {
   @override
   String encode(packet) {
     return packet.payload;

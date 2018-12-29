@@ -32,7 +32,7 @@ abstract class PacketParser {
 
 typedef void ParsePacket(int command, List<int> data);
 
-class AVRConnection extends PacketConnection<AVRPacket> {
+class AVRConnection extends SimplePacketConnection<AVRPacket> {
   SerialPort port;
   get input => port.input;
   get output => port.output;

@@ -5,27 +5,26 @@ abstract class Connection {
   StreamSink<String> get output;
 }
 
-//TODO better architecture with stream decoder
 abstract class PacketConnection<P> extends Connection {
-  StreamController<P> _packetInput = new StreamController.broadcast();
-  Stream<P> get packetInput => _packetInput.stream;
+  EventSink<P> encodeTransformerFactory(EventSink<String> data);
+  EventSink<String> decodeTransformerFactory(EventSink<P> sink);
+
+  Stream<P> _packetInput;
+  Stream<P> get packetInput => _packetInput;
+  EventSink<P> _packetOutput;
+  EventSink<P> get packetOutput => _packetOutput;
 
   PacketConnection() {
-    input.listen((data) {
-      //TODO try catch
-      decode(data);
-      // print(data);
-    });
+    _packetInput = new Stream<P>.eventTransformed(
+        input, (EventSink<P> sink) => decodeTransformerFactory(sink));
+
+    _packetInput = _packetInput.asBroadcastStream();
+
+    _packetOutput = encodeTransformerFactory(output);
   }
 
-  void decode(String data);
-  fireReceivedPacket(P packet) => _packetInput.sink.add(packet);
-
-  String encode(P packet);
-
   void send(P packet) {
-    //TODO try catch
-    output.add(encode(packet));
+    packetOutput.add(packet);
   }
 
   Future<R> receive<R extends P>(
@@ -59,4 +58,49 @@ abstract class PacketConnection<P> extends Connection {
 
     return receivedPacket;
   }
+}
+
+typedef void DecodeFunction(String data);
+typedef String EncodeFunction<P>(P packet);
+
+class SimpleDecodeTransformer<P> implements EventSink<String> {
+  final EventSink<P> sink;
+  final DecodeFunction decode;
+  SimpleDecodeTransformer(this.sink, this.decode);
+
+  void add(String data) => decode(data);
+
+  void addError(e, [st]) => sink.addError(e, st);
+
+  void close() => sink.close();
+}
+
+class SimpleEncodeTransformer<P> implements EventSink<P> {
+  final EventSink<String> _outputSink;
+  final EncodeFunction encode;
+  SimpleEncodeTransformer(this._outputSink, this.encode);
+
+  void add(P data) => _outputSink.add(encode(data));
+
+  void addError(e, [st]) => _outputSink.addError(e, st);
+
+  void close() => _outputSink.close();
+}
+
+abstract class SimplePacketConnection<P> extends PacketConnection<P> {
+  SimpleDecodeTransformer<P> _decoder;
+  @override
+  EventSink<String> decodeTransformerFactory(EventSink<P> sink) {
+    _decoder = new SimpleDecodeTransformer<P>(sink, decode);
+    return _decoder;
+  }
+
+  @override
+  EventSink<P> encodeTransformerFactory(EventSink<String> data) =>
+      new SimpleEncodeTransformer<P>(data, encode);
+
+  void decode(String data);
+  fireReceivedPacket(P packet) => _decoder.sink.add(packet);
+
+  String encode(P packet);
 }
