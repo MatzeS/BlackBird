@@ -4,20 +4,21 @@ import 'package:blackbird/blackbird.dart';
 import 'package:rmi/remote_method_invocation.dart';
 import 'package:rmi/invoker.dart';
 import 'package:rmi/proxy.dart';
+import 'package:blackbird/devices/common.dart';
 
 part 'rc_socket.g.dart';
 
-abstract class RCSocket extends RemoteSocket {
+abstract class RCSocket extends Socket {
+  //TODO remove
   @Runtime()
   AVRConnection get connection;
 
   @Property()
   int address;
 
-  @override
   @Executive()
-  set remoteState(bool state) {
-    connection.send(new RCSwitchQuery(address, state));
+  writeState(int state) {
+    connection.send(new RCSwitchQuery(address, state == ON ? true : false));
   }
 
   RCSocket();

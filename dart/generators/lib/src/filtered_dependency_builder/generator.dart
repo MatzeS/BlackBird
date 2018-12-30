@@ -24,7 +24,7 @@ class FilteredDependencyBuilderTypeGenerator extends Generator {
   bool elementFilter(Element element) {
     if (TypeChecker.fromUrl(
             "asset:blackbird/lib/manager/dependency_builders.dart#FilteredDependencyBuilder")
-        .isSuperOf(element)) return true;
+        .isAssignableFrom(element)) return true;
 
     if (element is! ClassElement) return false;
 

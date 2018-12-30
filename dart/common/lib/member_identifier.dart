@@ -167,7 +167,7 @@ DeviceMemberType identify(Element element) {
   // not annotated, assume type
 
   if (isSubmodule) {
-    log.fine('$element is not annotated, assuming submodule');
+    //log.fine('$element is not annotated, assuming submodule');
 
     if (element is MethodElement)
       throw Exception(
@@ -184,7 +184,7 @@ DeviceMemberType identify(Element element) {
   }
 
   if (element is MethodElement) {
-    log.fine('Method $element is not annotated, assuming executive');
+    //log.fine('Method $element is not annotated, assuming executive');
     return DeviceMemberType.executive;
   }
 
@@ -192,17 +192,17 @@ DeviceMemberType identify(Element element) {
 
   // abstract getter without setter => runtime
   if (accessor.isGetter && accessor.isAbstract && corresponding == null) {
-    log.fine('$element is not annotated, assuming runtime');
+    //log.fine('$element is not annotated, assuming runtime');
     return DeviceMemberType.runtime;
   }
 
   if (!executable.isSynthetic && !executable.isAbstract) {
-    log.fine('$element is not annotated, assuming executive');
+    //log.fine('$element is not annotated, assuming executive');
     return DeviceMemberType.executive;
   }
 
   if (accessor != null && corresponding != null) {
-    log.fine('Method $element is not annotated, assuming property');
+    //log.fine('Method $element is not annotated, assuming property');
     return DeviceMemberType.property;
   }
 

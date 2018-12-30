@@ -27,14 +27,9 @@ class _$RCSocketDevice extends RCSocket {
 
   AVRConnection get connection => throw new Exception(
       'cannot get runtime dependencys on device representation');
-  set remoteState(bool state) =>
-      blackbird.interfaceDevice<RCSocket>(this).remoteState = state;
-  bool get state => blackbird.interfaceDevice<RCSocket>(this).state;
-  set state(bool state) =>
-      blackbird.interfaceDevice<RCSocket>(this).state = state;
-  void toggle() => blackbird.interfaceDevice<RCSocket>(this).toggle();
-  void turnOff() => blackbird.interfaceDevice<RCSocket>(this).turnOff();
-  void turnOn() => blackbird.interfaceDevice<RCSocket>(this).turnOn();
+  dynamic writeState(int state) =>
+      blackbird.interfaceDevice<RCSocket>(this).writeState(state);
+  dynamic toggle() => blackbird.interfaceDevice<RCSocket>(this).toggle();
 }
 
 class _$RCSocketImplementation extends RCSocket {
@@ -113,9 +108,15 @@ class _$RCSocketInvoker {
     if (invocation.isGetter && #connection == invocation.memberName) {
       return target.connection;
     }
-    if (invocation.isSetter && #remoteState == invocation.memberName) {
-      target.remoteState = invocation.positionalArguments[0];
-      return null;
+    if (invocation.isMethod && #writeState == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.writeState(
+        positionalArguments[0],
+      );
     }
   }
 }
@@ -136,7 +137,18 @@ Map<String, dynamic> _$RCSocketToJson(RCSocket instance) =>
 // **************************************************************************
 
 class _$RCSocketProxy implements RCSocket {
-  void toggle() {
+  dynamic writeState(int state) {
+    List<Object> arguments = [];
+    arguments.add(state);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#writeState, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+
+  dynamic toggle() {
     List<Object> arguments = [];
 
     Map<Symbol, Object> namedArguments = {};
@@ -144,10 +156,21 @@ class _$RCSocketProxy implements RCSocket {
     Invocation _$invocation =
         Invocation.method(#toggle, arguments, namedArguments);
 
-    _handle(_$invocation);
+    return _handle(_$invocation);
   }
 
-  void turnOff() {
+  Future<void> turnOn() async {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#turnOn, arguments, namedArguments);
+
+    return await _handle(_$invocation);
+  }
+
+  Future<void> turnOff() async {
     List<Object> arguments = [];
 
     Map<Symbol, Object> namedArguments = {};
@@ -155,16 +178,16 @@ class _$RCSocketProxy implements RCSocket {
     Invocation _$invocation =
         Invocation.method(#turnOff, arguments, namedArguments);
 
-    _handle(_$invocation);
+    return await _handle(_$invocation);
   }
 
-  void turnOn() {
+  void postImplementation() {
     List<Object> arguments = [];
 
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation =
-        Invocation.method(#turnOn, arguments, namedArguments);
+        Invocation.method(#postImplementation, arguments, namedArguments);
 
     _handle(_$invocation);
   }
@@ -250,20 +273,26 @@ class _$RCSocketProxy implements RCSocket {
     return _handle(invocation);
   }
 
-  set remoteState(bool state) {
-    Invocation invocation = Invocation.setter(#remoteState, state);
-
-    _handle(invocation);
-  }
-
-  bool get _state {
-    Invocation invocation = Invocation.getter(#_state);
+  int get states {
+    Invocation invocation = Invocation.getter(#states);
 
     return _handle(invocation);
   }
 
-  bool get state {
-    Invocation invocation = Invocation.getter(#state);
+  set state(int state) {
+    Invocation invocation = Invocation.setter(#state, state);
+
+    _handle(invocation);
+  }
+
+  set binaryState(bool binaryState) {
+    Invocation invocation = Invocation.setter(#binaryState, binaryState);
+
+    _handle(invocation);
+  }
+
+  int get _state {
+    Invocation invocation = Invocation.getter(#_state);
 
     return _handle(invocation);
   }

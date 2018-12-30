@@ -308,6 +308,17 @@ class _$I2CSlaveProxy implements I2CSlave {
     return _handle(_$invocation);
   }
 
+  void postImplementation() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#postImplementation, arguments, namedArguments);
+
+    _handle(_$invocation);
+  }
+
   Device implementation(Map dependencies) {
     List<Object> arguments = [];
     arguments.add(dependencies);
@@ -470,6 +481,17 @@ class _$I2CMasterProxy implements I2CMaster {
         Invocation.method(#readRegisters, arguments, namedArguments);
 
     return _handle(_$invocation);
+  }
+
+  void postImplementation() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#postImplementation, arguments, namedArguments);
+
+    _handle(_$invocation);
   }
 
   Device implementation(Map dependencies) {

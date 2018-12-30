@@ -163,6 +163,9 @@ abstract class Device implements RmiTarget {
   @Runtime()
   Host get host;
 
+  /// May be overwritten in order to perform some setup routine after creation of the implementation object
+  void postImplementation() {}
+
   /// Creates the implementation object
   /// This should not be called or implemented manually
   @Ignore()

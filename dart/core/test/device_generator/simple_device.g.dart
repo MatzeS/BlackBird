@@ -258,6 +258,17 @@ class _$SimpleDeviceProxy implements SimpleDevice {
     _handle(_$invocation);
   }
 
+  void postImplementation() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#postImplementation, arguments, namedArguments);
+
+    _handle(_$invocation);
+  }
+
   Device implementation(Map dependencies) {
     List<Object> arguments = [];
     arguments.add(dependencies);
@@ -395,6 +406,17 @@ class _$SimpleDeviceProxy implements SimpleDevice {
 }
 
 class _$EvenSimplerDeviceProxy implements EvenSimplerDevice {
+  void postImplementation() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#postImplementation, arguments, namedArguments);
+
+    _handle(_$invocation);
+  }
+
   Device implementation(Map dependencies) {
     List<Object> arguments = [];
     arguments.add(dependencies);

@@ -93,6 +93,14 @@ class _$DeviceInvoker {
     if (invocation.isGetter && #runtimeType == invocation.memberName) {
       return target.runtimeType;
     }
+    if (invocation.isMethod && #postImplementation == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 0; i++)
+        positionalArguments.add(null);
+
+      return target.postImplementation();
+    }
     if (invocation.isMethod && #implementation == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
@@ -169,6 +177,17 @@ Map<String, dynamic> _$HostToJson(Host instance) => <String, dynamic>{};
 // **************************************************************************
 
 class _$DeviceProxy implements Device {
+  void postImplementation() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#postImplementation, arguments, namedArguments);
+
+    _handle(_$invocation);
+  }
+
   Device implementation(Map dependencies) {
     List<Object> arguments = [];
     arguments.add(dependencies);
@@ -270,6 +289,17 @@ class _$DeviceProxy implements Device {
 }
 
 class _$HostProxy implements Host {
+  void postImplementation() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#postImplementation, arguments, namedArguments);
+
+    _handle(_$invocation);
+  }
+
   Device implementation(Map dependencies) {
     List<Object> arguments = [];
     arguments.add(dependencies);

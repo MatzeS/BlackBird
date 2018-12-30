@@ -56,7 +56,6 @@ main() {
     buffer.addAll('asdf'.codeUnits);
     buffer.add(0x00);
     buffer.add(0xFF);
-    print(buffer);
     port.inputController.sink.add(String.fromCharCodes(buffer));
     expect((await r).avrID, 'asdf');
   }, timeout: Timeout(Duration(seconds: 1)));
