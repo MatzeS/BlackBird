@@ -27,20 +27,20 @@ abstract class PacketConnection<P> extends Connection {
     packetOutput.add(packet);
   }
 
-  Future<R> receive<R extends P>(
-      {bool filter(R packet), Duration timeout}) async {
+  /// normally the generic R would be constrained to R extends P, however, this appears to be currently not possible due to bugs in the dart SDK
+  Future<R> receive<R>({bool filter(R packet), Duration timeout}) async {
     if (filter == null) filter = (p) => true;
 
     var future = packetInput
         .where((p) => p is R)
-        .where((p) => filter(p))
         .map((p) => p as R)
+        .where((p) => filter(p))
         .first;
     if (timeout != null) future = future.timeout(timeout);
     return future;
   }
 
-  Future<R> sendAndReceive<R extends P>(P request,
+  Future<R> sendAndReceive<R>(P request,
       {bool filter(R packet), Duration timeout, num tries = 1}) async {
     Future<R> receiver = receive<R>(filter: filter, timeout: timeout);
     R receivedPacket;

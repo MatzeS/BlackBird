@@ -1,23 +1,21 @@
-import 'package:js/js.dart';
 import 'package:blackbird/src/connection.dart';
 import 'package:blackbird/src/ontario/serial_port.dart';
 import 'dart:async';
-import 'package:tuple/tuple.dart';
 import 'functions/device_identification.dart';
 
 class AVRPacket {}
 
 abstract class TransmittableAVRPacket extends AVRPacket {
-  final int command;
+  final int _command;
+  int get command => _command;
   List<int> get payload;
-
-  TransmittableAVRPacket(this.command);
+  TransmittableAVRPacket([this._command]);
 }
 
 class ConstructionPacket extends TransmittableAVRPacket {
   List<int> _buffer = [];
-
-  ConstructionPacket(int command) : super(command);
+  final int command;
+  ConstructionPacket(this.command);
   get payload => _buffer;
 
   write(int byte) => _buffer.add(byte);
@@ -32,47 +30,34 @@ abstract class PacketParser {
 
 typedef void ParsePacket(int command, List<int> data);
 
-class AVRConnection extends SimplePacketConnection<AVRPacket> {
+class AVRConnection extends PacketConnection<AVRPacket> {
   SerialPort port;
+  AVRConnection(this.port);
+
   get input => port.input;
   get output => port.output;
 
-  _PayloadDecoder _decoder = new _PayloadDecoder();
-  decode(String data) {
-    data.codeUnits.forEach((b) => _decoder.parseByte(b));
-  }
+  EventSink<AVRPacket> encodeTransformerFactory(EventSink<String> sink) =>
+      new _PayloadEncoder(sink);
 
-  AVRConnection(this.port) {
-    _decoder.output.listen((t) => parsePacket(t.item1, t.item2));
-
-    //TODO
-    packetparsers.add(new DeviceIdentificationParser());
-  }
-
-  _PayloadEncoder _encoder = new _PayloadEncoder();
-  String encode(AVRPacket packet) => _encoder.encode(packet);
-
-  List<PacketParser> packetparsers = [];
-  PacketParser getPacketParser(int command) =>
-      packetparsers.firstWhere((p) => p.command == command);
-
-  void parsePacket(int command, String data) {
-    if (command == 0) return;
-    try {
-      PacketParser parser = getPacketParser(command);
-      AVRPacket packet = parser.parse(data);
-      fireReceivedPacket(packet);
-    } on Exception {
-      print('no parser');
-      return;
-    }
+  _PayloadDecoder _decoder;
+  EventSink<String> decodeTransformerFactory(EventSink<AVRPacket> sink) {
+    _decoder = new _PayloadDecoder(sink);
+    return _decoder;
   }
 }
 
 enum Expect { CMD, DATA, ESC }
 
-class _PayloadEncoder {
-  String encode(TransmittableAVRPacket packet) {
+class _PayloadEncoder implements EventSink<TransmittableAVRPacket> {
+  final EventSink<String> _outputSink;
+  _PayloadEncoder(this._outputSink);
+
+  void addError(e, [st]) => _outputSink.addError(e, st);
+
+  void close() => _outputSink.close();
+
+  void add(TransmittableAVRPacket packet) {
     List<int> data = packet.payload;
 
     List<int> buffer = [];
@@ -130,16 +115,37 @@ class _PayloadEncoder {
 
     buffer.add(0xff); //DELIMITER END BYTE
 
-    return String.fromCharCodes(buffer);
+    _outputSink.add(String.fromCharCodes(buffer));
   }
 }
 
-class _PayloadDecoder {
-  StreamController<Tuple2<int, String>> _outputController =
-      new StreamController();
-  Stream get output => _outputController.stream;
-  void fire(int command, String data) =>
-      _outputController.sink.add(new Tuple2(command, data));
+class _PayloadDecoder implements EventSink<String> {
+  final EventSink<AVRPacket> sink;
+  _PayloadDecoder(this.sink) {
+    packetparsers.add(new DeviceIdentificationParser());
+  }
+
+  void add(String data) => data.codeUnits.forEach((b) => parseByte(b));
+
+  void addError(e, [st]) => sink.addError(e, st);
+
+  void close() => sink.close();
+
+  List<PacketParser> packetparsers = [];
+  PacketParser getPacketParser(int command) =>
+      packetparsers.firstWhere((p) => p.command == command);
+
+  void parsePacket(int command, String data) {
+    if (command == 0) return;
+    try {
+      PacketParser parser = getPacketParser(command);
+      AVRPacket packet = parser.parse(data);
+      sink.add(packet);
+    } on Exception {
+      print('no parser');
+      return;
+    }
+  }
 
   Expect expect = Expect.ESC;
   int dataIndex = 0;
@@ -159,9 +165,10 @@ class _PayloadDecoder {
               if ((escByte & (1 << i)) != 0) data[dataIndex - 1 - 1 - i] = 0xff;
 
             dataIndex = dataIndex - 1;
+            data.removeLast();
           }
 
-          fire(command, String.fromCharCodes(data));
+          parsePacket(command, String.fromCharCodes(data));
         }
         // else double escape, do nothing
 
