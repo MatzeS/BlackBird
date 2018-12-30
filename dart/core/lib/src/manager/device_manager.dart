@@ -1,6 +1,11 @@
 import 'package:blackbird/blackbird.dart';
 import 'construction.dart';
 
+/// Manages a device implementation
+///
+/// In particular the manager ensures there is only one device implementation object in the cluster.
+/// It either provides a handle of the implementation object on a remote host (RMI)
+/// or constructs the implementation object itself.
 abstract class DeviceManager {
   final Blackbird blackbird;
   final Device device;

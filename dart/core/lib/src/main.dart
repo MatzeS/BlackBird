@@ -2,15 +2,13 @@ import 'manager/device_manager.dart';
 import 'device.dart';
 
 class Blackbird {
-  R interfaceDevice<R extends Device>(R device) {
-    // return getManager(device).interfaceDevice;
-    return implementDevice<R>(device);
-  }
+  /// See [DeviceManager.interfaceDevice]
+  R interfaceDevice<R extends Device>(R device) =>
+      getManager(device).interfaceDevice;
 
-  R implementDevice<R extends Device>(R device) {
-    if (device == null) throw new Exception('device is null');
-    return getManager(device).implementDevice;
-  }
+  /// See [DeviceManager.implementDevice]
+  R implementDevice<R extends Device>(R device) =>
+      getManager(device).implementDevice;
 
   List<Device> devices; //TODO
   List<Host> get hosts => devices.where((d) => d is Host).toList();
@@ -22,6 +20,8 @@ class Blackbird {
   Map<Device, DeviceManager> _managers = {};
 
   DeviceManager getManager(Device device) {
+    if (device == null) throw new Exception('device is null');
+
     if (_managers[device] != null) {
       return _managers[device];
     }
