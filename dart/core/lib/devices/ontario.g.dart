@@ -24,14 +24,42 @@ class _$OntarioDevice extends Ontario {
   @override
   Map<String, dynamic> serialize() => _$OntarioToJson(this);
   static Ontario deserialize(Map json) => _$OntarioFromJson(json);
+
+  AVRConnection get connection => throw new Exception(
+      'cannot get runtime dependencys on device representation');
+  Future<void> writeRegister(int slave, int register, int value) => blackbird
+      .interfaceDevice<Ontario>(this)
+      .writeRegister(slave, register, value);
+  Future<int> readRegister(int slave, int register) async =>
+      blackbird.interfaceDevice<Ontario>(this).readRegister(slave, register);
+  Future<void> writeRegisters(int slave, int register, List values) async =>
+      blackbird
+          .interfaceDevice<Ontario>(this)
+          .writeRegisters(slave, register, values);
+  Future<List<int>> readRegisters(int slave, int register, int length) async =>
+      blackbird
+          .interfaceDevice<Ontario>(this)
+          .readRegisters(slave, register, length);
 }
 
 class _$OntarioImplementation extends Ontario {
+  AVRConnection _connection;
   Host _host;
 
   _$OntarioImplementation(Ontario delegate, Map<Symbol, Object> parameters) {
     if (parameters == null) {
       ConstructionInfoException info = new ConstructionInfoException();
+      info.dependencies.add(new Dependency(
+          name: #connection,
+          type: [
+            "asset:blackbird/lib/src/ontario/connection.dart#AVRConnection",
+            "asset:blackbird/lib/src/connection.dart#PacketConnection",
+            "asset:blackbird/lib/src/connection.dart#Connection",
+            "dart:core#Object"
+          ],
+          device: this,
+          module: null,
+          isModule: false));
       info.dependencies.add(new Dependency(
           name: #host,
           type: [
@@ -46,6 +74,7 @@ class _$OntarioImplementation extends Ontario {
       throw info;
     }
 
+    _connection = parameters[#connection];
     _host = parameters[#host];
   }
 
@@ -62,6 +91,8 @@ class _$OntarioImplementation extends Ontario {
       _$OntarioRmi.getRemote(context, uuid);
   @override
   Map<String, dynamic> serialize() => _$OntarioToJson(this);
+
+  AVRConnection get connection => _connection;
 }
 
 // **************************************************************************
@@ -69,7 +100,58 @@ class _$OntarioImplementation extends Ontario {
 // **************************************************************************
 
 class _$OntarioInvoker {
-  static dynamic invoke(Invocation invocation, Ontario target) {}
+  static dynamic invoke(Invocation invocation, Ontario target) {
+    if (invocation.isGetter && #connection == invocation.memberName) {
+      return target.connection;
+    }
+    if (invocation.isMethod && #writeRegister == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 3; i++)
+        positionalArguments.add(null);
+
+      return target.writeRegister(
+        positionalArguments[0],
+        positionalArguments[1],
+        positionalArguments[2],
+      );
+    }
+    if (invocation.isMethod && #readRegister == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 2; i++)
+        positionalArguments.add(null);
+
+      return target.readRegister(
+        positionalArguments[0],
+        positionalArguments[1],
+      );
+    }
+    if (invocation.isMethod && #writeRegisters == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 3; i++)
+        positionalArguments.add(null);
+
+      return target.writeRegisters(
+        positionalArguments[0],
+        positionalArguments[1],
+        positionalArguments[2],
+      );
+    }
+    if (invocation.isMethod && #readRegisters == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 3; i++)
+        positionalArguments.add(null);
+
+      return target.readRegisters(
+        positionalArguments[0],
+        positionalArguments[1],
+        positionalArguments[2],
+      );
+    }
+  }
 }
 
 // **************************************************************************
@@ -87,6 +169,57 @@ Map<String, dynamic> _$OntarioToJson(Ontario instance) => <String, dynamic>{};
 // **************************************************************************
 
 class _$OntarioProxy implements Ontario {
+  Future<void> writeRegister(int slave, int register, int value) {
+    List<Object> arguments = [];
+    arguments.add(slave);
+    arguments.add(register);
+    arguments.add(value);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#writeRegister, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+
+  Future<int> readRegister(int slave, int register) async {
+    List<Object> arguments = [];
+    arguments.add(slave);
+    arguments.add(register);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#readRegister, arguments, namedArguments);
+
+    return await _handle(_$invocation);
+  }
+
+  Future<void> writeRegisters(int slave, int register, List values) async {
+    List<Object> arguments = [];
+    arguments.add(slave);
+    arguments.add(register);
+    arguments.add(values);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#writeRegisters, arguments, namedArguments);
+
+    return await _handle(_$invocation);
+  }
+
+  Future<List<int>> readRegisters(int slave, int register, int length) async {
+    List<Object> arguments = [];
+    arguments.add(slave);
+    arguments.add(register);
+    arguments.add(length);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#readRegisters, arguments, namedArguments);
+
+    return await _handle(_$invocation);
+  }
+
   Device implementation(Map dependencies) {
     List<Object> arguments = [];
     arguments.add(dependencies);
@@ -155,6 +288,12 @@ class _$OntarioProxy implements Ontario {
 
   InvocationHandlerFunction _handle;
   _$OntarioProxy(this._handle) : super();
+
+  AVRConnection get connection {
+    Invocation invocation = Invocation.getter(#connection);
+
+    return _handle(invocation);
+  }
 
   Blackbird get _blackbird {
     Invocation invocation = Invocation.getter(#_blackbird);
