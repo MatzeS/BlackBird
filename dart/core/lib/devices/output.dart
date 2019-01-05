@@ -1,6 +1,8 @@
 import 'package:blackbird/blackbird.dart';
 import 'common.dart';
 
+// part 'output.g.dart';
+
 abstract class DiscreteOutput extends Device {
   @Property()
   int get states;

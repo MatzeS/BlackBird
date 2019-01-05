@@ -8,14 +8,13 @@ environment:
   sdk: '>=2.0.0-dev <3.0.0'
 
 dependencies:
+  source_gen_helpers: 0.0.1
 
 dev_dependencies:
-  source_gen_helpers: 0.0.1
-  built_value_generator: ^6.1.6
   build_runner: ^1.1.2
   build_test:
   test:
 
-# dependency_overrides:
-#   source_gen_helpers:
-#     path: ../../../dart/source_gen_helpers
+dependency_overrides:
+  source_gen_helpers:
+    path: ../../../dart/source_gen_helpers

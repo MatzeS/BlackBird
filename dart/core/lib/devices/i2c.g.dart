@@ -363,6 +363,16 @@ class _$I2CSlaveProxy implements I2CSlave {
     return _handle(_$invocation);
   }
 
+  bool operator ==(Object other) {
+    List<Object> arguments = [];
+    arguments.add(other);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation = Invocation.method(#==, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+
   String toString() {
     List<Object> arguments = [];
 
@@ -538,6 +548,16 @@ class _$I2CMasterProxy implements I2CMaster {
     return _handle(_$invocation);
   }
 
+  bool operator ==(Object other) {
+    List<Object> arguments = [];
+    arguments.add(other);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation = Invocation.method(#==, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+
   String toString() {
     List<Object> arguments = [];
 
@@ -604,7 +624,7 @@ class _$I2CSlaveRmi {
     if (_registered) return;
     _registered = true;
 
-    rmiRegisterSerializers([]);
+    rmiRegisterSerializers({});
   }
 
   static void _registerStubConstructors(Context context) {
@@ -632,7 +652,7 @@ class _$I2CMasterRmi {
     if (_registered) return;
     _registered = true;
 
-    rmiRegisterSerializers([]);
+    rmiRegisterSerializers({});
   }
 
   static void _registerStubConstructors(Context context) {

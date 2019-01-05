@@ -1,6 +1,8 @@
 import 'package:blackbird/blackbird.dart';
 import 'common.dart';
 
+// part 'input.g.dart';
+
 abstract class DiscreteInput extends Device {
   /// The number of descrete states
   @Property()

@@ -8,15 +8,14 @@ environment:
   sdk: '>=2.0.0-dev <3.0.0'
 
 dependencies:
-  blackbird_common:
-    path: ../common
   rmi: ^0.0.3
   tuple:
-  built_value: ^6.1.6
-  built_collection: ^4.1.0
   json_annotation:
+    path: ../../../dart/json_serializable/json_annotation
 
 dev_dependencies:
+  blackbird_common:
+    path: ../common
   json_serializable:
     path: ../../../dart/json_serializable/json_serializable
   built_value_generator: ^6.1.6
@@ -34,3 +33,9 @@ dependency_overrides:
     path: ../../../dart/remote_method_invocation/rmi
   rmi_generator: 
     path: ../../../dart/remote_method_invocation/rmi_generator
+  source_gen_helpers:
+    path: ../../../dart/source_gen_helpers
+  json_serializable:
+    path: ../../../dart/json_serializable/json_serializable
+  json_annotation:
+    path: ../../../dart/json_serializable/json_annotation
