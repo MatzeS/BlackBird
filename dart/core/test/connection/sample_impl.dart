@@ -11,37 +11,31 @@ class AnotherPacket extends SamplePacket {
   AnotherPacket() : super('another');
 }
 
-class SampleConnection extends SimplePacketConnection<SamplePacket> {
-  @override
-  String encode(packet) {
-    return packet.payload;
-  }
-
-  @override
-  void decode(String data) {
-    if (data == 'another')
-      fireReceivedPacket(new AnotherPacket());
-    else
-      fireReceivedPacket(SamplePacket(data));
-  }
-
-  Stream<String> _input;
-  StreamSink<String> _output;
-
-  @override
-  Stream<String> get input => _input;
-  @override
-  StreamSink<String> get output => _output;
-
-  SampleConnection(this._input, this._output);
+class SampleConnection extends Connection<SamplePacket> {
+  SampleConnection(Connection<String> connection)
+      : super(connection.transformConnection(SampleTransformer()));
 
   static Tuple2<SampleConnection, SampleConnection> pair() {
     StreamController<String> pipeA = new StreamController();
     StreamController<String> pipeB = new StreamController();
 
-    SampleConnection a = new SampleConnection(pipeA.stream, pipeB.sink);
-    SampleConnection b = new SampleConnection(pipeB.stream, pipeA.sink);
+    SampleConnection a =
+        SampleConnection(Connection.fromParts(pipeA.stream, pipeB.sink));
+    SampleConnection b =
+        SampleConnection(Connection.fromParts(pipeB.stream, pipeA.sink));
 
     return new Tuple2(a, b);
+  }
+}
+
+class SampleTransformer
+    extends SimpleConnectionTransformer<String, SamplePacket> {
+  void encode(SamplePacket data, EventSink<String> sink) =>
+      sink.add(data.payload);
+  void decode(String data, EventSink<SamplePacket> sink) {
+    if (data == 'another')
+      sink.add(new AnotherPacket());
+    else
+      sink.add(SamplePacket(data));
   }
 }

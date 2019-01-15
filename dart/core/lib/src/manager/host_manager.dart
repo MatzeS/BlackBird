@@ -27,7 +27,9 @@ class HostManager extends DeviceManager {
     Socket socket = await Socket.connect(device.address, device.port);
     HostConnection connection = HostConnection.fromSocket(socket);
 
-    Context context = new Context(connection.input, connection.output);
+    Context context =
+        new Context(connection.rmiSubConnection, connection.rmiSubConnection);
+
     var localImpl = await blackbird.implementDevice(blackbird.localDevice);
     Provision localProvision = localImpl.provideRemote(context);
 
@@ -48,52 +50,43 @@ class HostManager extends DeviceManager {
 
 class BlackbirdPacket {}
 
-class HostConnection extends SimplePacketConnection<BlackbirdPacket> {
-  final Stream<String> _input;
-  final StreamSink<String> _output;
+class HostConnection extends Connection<BlackbirdPacket> {
+  HostConnection(Connection<String> delegate)
+      : super(delegate.transformConnection(new HostConnectionTransformer())) {}
 
-  @override
-  Stream<String> get input => _input;
-  @override
-  StreamSink<String> get output => _output;
+  HostConnection.fromSocket(Socket socket)
+      : this(connectionFromSocket(socket).asStringConnection());
 
-  JsonSerialization serialization = new JsonSerialization();
+  Connection<String> get rmiSubConnection => this.transformConnection(
+          ConnectionTransformer<BlackbirdPacket, String>.fromFunctions(
+              (String data, EventSink<BlackbirdPacket> sink) =>
+                  new RmiWrapperPacket(data),
+              (BlackbirdPacket data, EventSink<String> sink) {
+        if (data is RmiWrapperPacket) sink.add(data.wrapped);
+      }));
+}
 
-  Stream<String> _rmiInput;
-  StreamSink<String> _rmiOutput;
-  Stream<String> get rmiInput => _rmiInput;
-  StreamSink<String> get rmiOutput => _rmiOutput;
+Connection<List<int>> connectionFromSocket(Socket socket) =>
+    new Connection.fromParts(socket.asBroadcastStream(), socket);
 
-  HostConnection(this._input, this._output) {
+typedef Object FromJson(Map<String, dynamic> json);
+
+class HostConnectionTransformer
+    extends SimpleConnectionTransformer<String, BlackbirdPacket> {
+  HostConnectionTransformer() {
     serialization.registerDeserializer(
         'asset:blackbird/lib/src/manager/packets.dart#HandshakePacket',
         (d) => HandshakePacket.fromJson(d));
-
-    receive<RmiWrapperPacket>().where((p) => p is Rmi).transform(
-        new StreamTransformer.fromHandlers(handleData: (value, sink) {}));
-
-    _rmiInput = new Stream<String>.eventTransformed(
-            input, (EventSink<String> sink) => new _RmiInput(sink))
-        .asBroadcastStream();
-
-    _rmiOutput = new _RmiOutput(_output);
   }
 
-  factory HostConnection.fromSocket(Socket socket) {
-    StreamController<String> controller = new StreamController<String>();
-    controller.stream.listen((data) => socket.write(data));
+  JsonSerialization serialization = new JsonSerialization();
 
-    return new HostConnection(
-        socket.map((list) => String.fromCharCodes(list)).asBroadcastStream(),
-        controller.sink);
+  void encode(BlackbirdPacket data, EventSink<String> sink) {
+    sink.add(_serialize(data));
   }
 
-  void decode(String data) {
-    fireReceivedPacket(_deserialize(data));
-  }
-
-  String encode(BlackbirdPacket packet) {
-    return _serialize(packet);
+  void decode(String data, EventSink<BlackbirdPacket> sink) {
+    sink.add(_deserialize(data));
   }
 
   String _serialize(Object object) {
@@ -104,22 +97,3 @@ class HostConnection extends SimplePacketConnection<BlackbirdPacket> {
     return serialization.deserialize(serialized);
   }
 }
-
-class _RmiOutput extends DelegatingStreamSink<String> {
-  StreamSink<String> sink;
-  _RmiOutput(this.sink) : super(sink);
-  void add(String data) => sink.add(new RmiWrapperPacket(data));
-}
-
-class _RmiInput implements EventSink<RmiWrapperPacket> {
-  final EventSink<String> sink;
-  _RmiInput(this.sink);
-
-  void add(RmiWrapperPacket data) => sink.add(data.wrapped);
-
-  void addError(e, [st]) => sink.addError(e, st);
-
-  void close() => sink.close();
-}
-
-typedef Object FromJson(Map<String, dynamic> json);

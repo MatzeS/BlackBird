@@ -2,6 +2,7 @@ import 'package:blackbird/src/connection.dart';
 import 'package:blackbird/src/ontario/serial_port.dart';
 import 'dart:async';
 import 'functions/device_identification.dart';
+import 'package:async/async.dart';
 
 class AVRPacket {}
 
@@ -30,34 +31,38 @@ abstract class PacketParser {
 
 typedef void ParsePacket(int command, List<int> data);
 
-class AVRConnection extends PacketConnection<AVRPacket> {
-  SerialPort port;
-  AVRConnection(this.port);
+class AVRConnection extends Connection<AVRPacket> {
+  AVRConnection(Connection<List<int>> connection)
+      : super(connection.transformConnection(new AVRConnectionTransformer()));
+}
 
-  get input => port.input;
-  get output => port.output;
+class AVRConnectionTransformer
+    extends ConnectionTransformer<List<int>, AVRPacket> {
+  @override
+  StreamSink<AVRPacket> bindSink(StreamSink<List<int>> sink) {
+    return _PayloadEncoder.asStreamSinkTransformer().bind(sink);
+  }
 
-  EventSink<AVRPacket> encodeTransformerFactory(EventSink<String> sink) =>
-      new _PayloadEncoder(sink);
-
-  _PayloadDecoder _decoder;
-  EventSink<String> decodeTransformerFactory(EventSink<AVRPacket> sink) {
-    _decoder = new _PayloadDecoder(sink);
-    return _decoder;
+  @override
+  Stream<AVRPacket> bindStream(Stream<List<int>> stream) {
+    return _PayloadDecoder.asStreamTransformer().bind(stream);
   }
 }
 
 enum Expect { CMD, DATA, ESC }
 
-class _PayloadEncoder implements EventSink<TransmittableAVRPacket> {
-  final EventSink<String> _outputSink;
-  _PayloadEncoder(this._outputSink);
+class _PayloadEncoder {
+  static StreamSinkTransformer<AVRPacket, List<int>>
+      asStreamSinkTransformer() => StreamSinkTransformer.fromHandlers(
+          handleData: (AVRPacket data, EventSink<List<int>> sink) =>
+              new _PayloadEncoder().encode(data, sink));
 
-  void addError(e, [st]) => _outputSink.addError(e, st);
+  void encode(AVRPacket avrPacket, EventSink<List<int>> sink) {
+    if (avrPacket is! TransmittableAVRPacket)
+      throw new Exception("not transmittable avr packet");
 
-  void close() => _outputSink.close();
+    TransmittableAVRPacket packet = avrPacket;
 
-  void add(TransmittableAVRPacket packet) {
     List<int> data = packet.payload;
 
     List<int> buffer = [];
@@ -115,27 +120,28 @@ class _PayloadEncoder implements EventSink<TransmittableAVRPacket> {
 
     buffer.add(0xff); //DELIMITER END BYTE
 
-    _outputSink.add(String.fromCharCodes(buffer));
+    sink.add(buffer);
   }
 }
 
-class _PayloadDecoder implements EventSink<String> {
-  final EventSink<AVRPacket> sink;
-  _PayloadDecoder(this.sink) {
+class _PayloadDecoder {
+  static StreamTransformer<List<int>, AVRPacket> asStreamTransformer() =>
+      StreamTransformer.fromHandlers(
+          handleData: (List<int> data, EventSink<AVRPacket> sink) =>
+              new _PayloadDecoder().decode(data, sink));
+
+  _PayloadDecoder() {
     packetparsers.add(new DeviceIdentificationParser());
   }
 
-  void add(String data) => data.codeUnits.forEach((b) => parseByte(b));
-
-  void addError(e, [st]) => sink.addError(e, st);
-
-  void close() => sink.close();
+  void decode(List<int> data, EventSink<AVRPacket> sink) =>
+      data.forEach((b) => parseByte(b, sink));
 
   List<PacketParser> packetparsers = [];
   PacketParser getPacketParser(int command) =>
       packetparsers.firstWhere((p) => p.command == command);
 
-  void parsePacket(int command, String data) {
+  void parsePacket(int command, String data, EventSink<AVRPacket> sink) {
     if (command == 0) return;
     try {
       PacketParser parser = getPacketParser(command);
@@ -152,7 +158,7 @@ class _PayloadDecoder implements EventSink<String> {
   List<int> data = [];
   int command = 0;
 
-  void parseByte(int incomingByte) {
+  void parseByte(int incomingByte, EventSink<AVRPacket> sink) {
     try {
       if (incomingByte == 0xff) {
         // expecting DATA when the last byte was an escape byte or ESC when the last 8 bytes were 7 data bytes and their ESC byte
@@ -168,7 +174,7 @@ class _PayloadDecoder implements EventSink<String> {
             data.removeLast();
           }
 
-          parsePacket(command, String.fromCharCodes(data));
+          parsePacket(command, String.fromCharCodes(data), sink);
         }
         // else double escape, do nothing
 

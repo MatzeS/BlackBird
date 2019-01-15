@@ -1,37 +1,47 @@
 import 'dart:async';
+import 'dart:io';
+import 'dart:convert';
 
-abstract class Connection {
-  Stream<String> get input;
-  StreamSink<String> get output;
-}
+import 'package:async/async.dart';
 
-abstract class PacketConnection<P> extends Connection {
-  EventSink<P> encodeTransformerFactory(EventSink<String> data);
-  EventSink<String> decodeTransformerFactory(EventSink<P> sink);
+class Connection<T> extends DelegatingStream<T> implements StreamSink<T> {
+  final StreamSink<T> sink;
+  final Stream<T> stream;
 
-  Stream<P> _packetInput;
-  Stream<P> get packetInput => _packetInput;
-  EventSink<P> _packetOutput;
-  EventSink<P> get packetOutput => _packetOutput;
+  Connection.fromParts(this.stream, this.sink)
+      : super(stream.asBroadcastStream());
 
-  PacketConnection() {
-    _packetInput = new Stream<P>.eventTransformed(
-        input, (EventSink<P> sink) => decodeTransformerFactory(sink));
+  Connection(Connection delegate)
+      : stream = delegate.stream,
+        sink = delegate.sink,
+        super(delegate.stream) {}
 
-    _packetInput = _packetInput.asBroadcastStream();
+  Connection<R> transformConnection<R>(
+          ConnectionTransformer<T, R> transformer) =>
+      transformer.bindConnection(this);
 
-    _packetOutput = encodeTransformerFactory(output);
-  }
+  @override
+  Future get done => sink.done;
+  @override
+  Future close() => sink.close();
 
-  void send(P packet) {
-    packetOutput.add(packet);
-  }
+  @override
+  Future addStream(Stream<T> stream) => sink.addStream(stream);
 
-  /// normally the generic R would be constrained to R extends P, however, this appears to be currently not possible due to bugs in the dart SDK
+  @override
+  void addError(Object error, [StackTrace stackTrace]) =>
+      sink.addError(error, stackTrace);
+
+  @override
+  void add(T event) => sink.add(event);
+
+  void send(T data) => add(data);
+
+  /// normally the generic R would be constrained to R extends T, however, this appears to be currently not possible due to bugs in the dart SDK
   Future<R> receive<R>({bool filter(R packet), Duration timeout}) async {
     if (filter == null) filter = (p) => true;
 
-    var future = packetInput
+    var future = stream
         .where((p) => p is R)
         .map((p) => p as R)
         .where((p) => filter(p))
@@ -40,7 +50,7 @@ abstract class PacketConnection<P> extends Connection {
     return future;
   }
 
-  Future<R> sendAndReceive<R>(P request,
+  Future<R> sendAndReceive<R>(T request,
       {bool filter(R packet), Duration timeout, num tries = 1}) async {
     Future<R> receiver = receive<R>(filter: filter, timeout: timeout);
     R receivedPacket;
@@ -58,49 +68,83 @@ abstract class PacketConnection<P> extends Connection {
 
     return receivedPacket;
   }
+
+  Connection<String> asStringConnection() {
+    // if (T is! List<int>)
+    //   throw new Exception('cannot convert $T connection to String connection');
+    return (this as Connection<List<int>>)
+        .transformConnection(new _ByteTranformer());
+  }
+
+  Connection<List<int>> asByteConnection() {
+    // if (T is! String)
+    //   throw new Exception('cannot convert $T connection to Byte connection');
+    return (this as Connection<String>)
+        .transformConnection(new _StringTranformer());
+  }
 }
 
-typedef void DecodeFunction(String data);
-typedef String EncodeFunction<P>(P packet);
-
-class SimpleDecodeTransformer<P> implements EventSink<String> {
-  final EventSink<P> sink;
-  final DecodeFunction decode;
-  SimpleDecodeTransformer(this.sink, this.decode);
-
-  void add(String data) => decode(data);
-
-  void addError(e, [st]) => sink.addError(e, st);
-
-  void close() => sink.close();
+class _ByteTranformer extends SimpleConnectionTransformer<List<int>, String> {
+  void encode(String data, EventSink<List<int>> sink) =>
+      sink.add(data.codeUnits);
+  void decode(List<int> data, EventSink<String> sink) =>
+      sink.add(String.fromCharCodes(data));
 }
 
-class SimpleEncodeTransformer<P> implements EventSink<P> {
-  final EventSink<String> _outputSink;
-  final EncodeFunction encode;
-  SimpleEncodeTransformer(this._outputSink, this.encode);
-
-  void add(P data) => _outputSink.add(encode(data));
-
-  void addError(e, [st]) => _outputSink.addError(e, st);
-
-  void close() => _outputSink.close();
+class _StringTranformer extends SimpleConnectionTransformer<String, List<int>> {
+  void encode(List<int> data, EventSink<String> sink) =>
+      sink.add(String.fromCharCodes(data));
+  void decode(String data, EventSink<List<int>> sink) =>
+      sink.add(data.codeUnits);
 }
 
-abstract class SimplePacketConnection<P> extends PacketConnection<P> {
-  SimpleDecodeTransformer<P> _decoder;
+abstract class ConnectionTransformer<S, T> {
+  Stream<T> bindStream(Stream<S> stream);
+  StreamSink<T> bindSink(StreamSink<S> sink);
+
+  Connection<T> bindConnection(Connection<S> connection) =>
+      Connection.fromParts(bindStream(connection), bindSink(connection));
+
+  ConnectionTransformer();
+
+  factory ConnectionTransformer.fromFunctions(
+          EncodeFunction<S, T> encode, DecodeFunction<S, T> decode) =>
+      _ConnectionTransformerFunctionImpl(encode, decode);
+}
+
+typedef void EncodeFunction<S, T>(T data, EventSink<S> sink);
+typedef void DecodeFunction<S, T>(S data, EventSink<T> sink);
+
+class _ConnectionTransformerFunctionImpl<S, T>
+    extends ConnectionTransformer<S, T> {
+  EncodeFunction<S, T> _encodeFunction;
+  DecodeFunction<S, T> _decodeFunction;
+
+  _ConnectionTransformerFunctionImpl(
+      this._encodeFunction, this._decodeFunction) {}
+
   @override
-  EventSink<String> decodeTransformerFactory(EventSink<P> sink) {
-    _decoder = new SimpleDecodeTransformer<P>(sink, decode);
-    return _decoder;
+  StreamSink<T> bindSink(StreamSink<S> sink) =>
+      StreamSinkTransformer.fromHandlers(handleData: _encodeFunction)
+          .bind(sink);
+
+  @override
+  Stream<T> bindStream(Stream<S> stream) =>
+      StreamTransformer.fromHandlers(handleData: _decodeFunction).bind(stream);
+}
+
+abstract class SimpleConnectionTransformer<S, T>
+    extends ConnectionTransformer<S, T> {
+  void encode(T data, EventSink<S> sink);
+  void decode(S data, EventSink<T> sink);
+
+  @override
+  StreamSink<T> bindSink(StreamSink<S> sink) {
+    return StreamSinkTransformer.fromHandlers(handleData: encode).bind(sink);
   }
 
   @override
-  EventSink<P> encodeTransformerFactory(EventSink<String> data) =>
-      new SimpleEncodeTransformer<P>(data, encode);
-
-  void decode(String data);
-  fireReceivedPacket(P packet) => _decoder.sink.add(packet);
-
-  String encode(P packet);
+  Stream<T> bindStream(Stream<S> stream) {
+    return StreamTransformer.fromHandlers(handleData: decode).bind(stream);
+  }
 }

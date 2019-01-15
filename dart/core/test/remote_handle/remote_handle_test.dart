@@ -18,18 +18,6 @@ abstract class ADevice extends Device {
       _$ADeviceRmi.getRemote(context, uuid);
 }
 
-class DummyConnection extends Connection {
-  @override
-  final Stream<String> _input;
-  @override
-  final StreamSink<String> _output;
-  @override
-  Stream<String> get input => _input;
-  @override
-  StreamSink<String> get output => _output;
-  DummyConnection(this._input, this._output);
-}
-
 main() {
   group('', () {
     test('', () async {

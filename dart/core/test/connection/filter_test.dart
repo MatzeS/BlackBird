@@ -11,8 +11,8 @@ main() {
   group('unidirectional', () {
     StreamController<String> a = new StreamController();
     StreamController<String> b = new StreamController();
-    PacketConnection<SamplePacket> connection =
-        new SampleConnection(a.stream, b.sink);
+    Connection<SamplePacket> connection = Connection.fromParts(a.stream, b.sink)
+        .transformConnection(SampleTransformer());
     Stream<String> fromConnection = b.stream;
     StreamSink<String> toConnection = a.sink;
 
@@ -26,7 +26,7 @@ main() {
     });
     test('decoding', () async {
       Stream<SamplePacket> receiver =
-          connection.packetInput.where((p) => p.payload == significantString);
+          connection.where((p) => p.payload == significantString);
       Future<SamplePacket> result =
           receiver.first.timeout(new Duration(seconds: 1));
       toConnection.add(significantString);
@@ -36,8 +36,8 @@ main() {
 
   group('end2end', () {
     var connections = SampleConnection.pair();
-    PacketConnection<SamplePacket> a = connections.item1;
-    PacketConnection<SamplePacket> b = connections.item2;
+    SampleConnection a = connections.item1;
+    SampleConnection b = connections.item2;
     test('receive', () async {
       var receiver = a.receive();
       b.send(new SamplePacket(significantString));

@@ -43,8 +43,10 @@ class _$RCSocketImplementation extends RCSocket {
           name: #connection,
           type: [
             "asset:blackbird/lib/src/ontario/connection.dart#AVRConnection",
-            "asset:blackbird/lib/src/connection.dart#PacketConnection",
             "asset:blackbird/lib/src/connection.dart#Connection",
+            "asset:async/lib/src/delegate/stream.dart#DelegatingStream",
+            "dart:async#StreamView",
+            "dart:async#Stream",
             "dart:core#Object"
           ],
           device: this,

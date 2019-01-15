@@ -21,7 +21,8 @@ class Blackbird {
       server.listen((socket) {
         var connection = new HostConnection.fromSocket(socket);
         connection.receive<HandshakePacket>().then((handshake) async {
-          Context context = new Context(connection.input, connection.output);
+          Context context = new Context(
+              connection.rmiSubConnection, connection.rmiSubConnection);
           var localImpl = await implementDevice(localDevice);
           Provision localProvision = localImpl.provideRemote(context);
 

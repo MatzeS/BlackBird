@@ -3,12 +3,23 @@ import 'package:blackbird/src/ontario/serial_port.dart';
 import 'dart:async';
 import 'package:test/test.dart';
 import 'package:blackbird/src/ontario/functions/device_identification.dart';
+import 'package:blackbird/src/connection.dart';
 
-class MockSerialPort implements SerialPort {
-  StreamController<String> inputController = new StreamController();
-  StreamController<String> outputController = new StreamController();
-  Stream<String> get input => inputController.stream;
-  StreamSink<String> get output => outputController.sink;
+class MockSerialPort extends SerialPort {
+  StreamController<String> inputController;
+  StreamController<String> outputController;
+
+  MockSerialPort._(Stream<String> input, StreamSink<String> output)
+      : super(Connection.fromParts(input, output).asByteConnection());
+
+  factory MockSerialPort() {
+    var a = new StreamController<String>();
+    var b = new StreamController<String>();
+    var res = new MockSerialPort._(a.stream, b.sink);
+    res.inputController = a;
+    res.outputController = b;
+    return res;
+  }
 }
 
 class MockPacket extends TransmittableAVRPacket {
@@ -29,7 +40,8 @@ main() {
     AVRConnection connection = new AVRConnection(port);
     TransmittableAVRPacket packet = new MockPacket();
     connection.send(packet);
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(seconds: 5));
+    expect(buffer, isNotNull);
     expect(buffer.codeUnits, [
       0xFF,
       0xAB,
