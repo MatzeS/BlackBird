@@ -22,24 +22,18 @@ class _$OntarioDevice extends Ontario {
   Ontario getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
   @override
-  Map<String, dynamic> serialize() => _$OntarioToJson(this);
-  static Ontario deserialize(Map json) => _$OntarioFromJson(json);
+  Map<String, dynamic> toJson() => _$OntarioToJson(this);
 
   AVRConnection get connection => throw new Exception(
       'cannot get runtime dependencys on device representation');
-  Future<void> writeRegister(int slave, int register, int value) => blackbird
-      .interfaceDevice<Ontario>(this)
-      .writeRegister(slave, register, value);
+  Future<void> writeRegister(int slave, int register, int value) =>
+      throw new Exception("you cannot execute stuff on devices");
   Future<int> readRegister(int slave, int register) async =>
-      blackbird.interfaceDevice<Ontario>(this).readRegister(slave, register);
+      throw new Exception("you cannot execute stuff on devices");
   Future<void> writeRegisters(int slave, int register, List values) async =>
-      blackbird
-          .interfaceDevice<Ontario>(this)
-          .writeRegisters(slave, register, values);
+      throw new Exception("you cannot execute stuff on devices");
   Future<List<int>> readRegisters(int slave, int register, int length) async =>
-      blackbird
-          .interfaceDevice<Ontario>(this)
-          .readRegisters(slave, register, length);
+      throw new Exception("you cannot execute stuff on devices");
 }
 
 class _$OntarioImplementation extends Ontario {
@@ -90,7 +84,7 @@ class _$OntarioImplementation extends Ontario {
   Ontario getRemote(Context context, String uuid) =>
       _$OntarioRmi.getRemote(context, uuid);
   @override
-  Map<String, dynamic> serialize() => _$OntarioToJson(this);
+  Map<String, dynamic> toJson() => _$OntarioToJson(this);
 
   AVRConnection get connection => _connection;
 }
@@ -162,7 +156,10 @@ Ontario _$OntarioFromJson(Map<String, dynamic> json) {
   return Ontario.device();
 }
 
-Map<String, dynamic> _$OntarioToJson(Ontario instance) => <String, dynamic>{};
+Map<String, dynamic> _$OntarioToJson(Ontario instance) => <String, dynamic>{
+      'json_serializable.className':
+          "asset:blackbird/lib/devices/ontario.dart#Ontario",
+    };
 
 // **************************************************************************
 // ProxyGenerator
@@ -264,13 +261,13 @@ class _$OntarioProxy implements Ontario {
     return _handle(_$invocation);
   }
 
-  Map<String, dynamic> serialize() {
+  Map<String, dynamic> toJson() {
     List<Object> arguments = [];
 
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation =
-        Invocation.method(#serialize, arguments, namedArguments);
+        Invocation.method(#toJson, arguments, namedArguments);
 
     return _handle(_$invocation);
   }
@@ -352,28 +349,23 @@ class _$OntarioProxy implements Ontario {
 // **************************************************************************
 
 class _$OntarioRmi {
-  static bool _registered = false;
-  static void _registerSerializers() {
-    if (_registered) return;
-    _registered = true;
-
-    rmiRegisterSerializers({});
-  }
-
+  static void _registerSerializers(Context context) {}
   static void _registerStubConstructors(Context context) {
-    context.registerRemoteStubConstructor('Ontario', getRemote);
+    context.registerRemoteStubConstructor(
+        'asset:blackbird/lib/devices/ontario.dart#Ontario', getRemote);
   }
 
   static Ontario getRemote(Context context, String uuid) {
-    _registerSerializers();
+    _registerSerializers(context);
     _registerStubConstructors(context);
     RmiProxyHandler handler = RmiProxyHandler(context, uuid);
     return _$OntarioProxy(handler.handle);
   }
 
   static Provision provideRemote(Context context, Ontario target) {
-    _registerSerializers();
+    _registerSerializers(context);
     _registerStubConstructors(context);
-    return rmiProvideRemote(context, target);
+    return rmiProvideRemote(
+        context, target, 'asset:blackbird/lib/devices/ontario.dart#Ontario');
   }
 }

@@ -44,8 +44,8 @@ abstract class SimpleDevice extends Device {
   @SomeAnnotation('text', {'asdf': 123})
   int get aRuntimeDependency;
 
-  void executiveMethod() {}
-  int get executiveGetter {}
+  Future<void> executiveMethod() async {}
+  Future<int> get executiveGetter async {}
   set executiveSetter(int value) {}
 
   factory SimpleDevice.device() => new _$SimpleDeviceDevice();

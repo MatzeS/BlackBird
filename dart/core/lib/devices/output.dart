@@ -11,7 +11,7 @@ abstract class DiscreteOutput extends Device {
   set state(int state) => writeState(state);
 
   @Executive()
-  writeState(int state);
+  void writeState(int state);
 }
 
 mixin BinaryOutput implements DiscreteOutput {

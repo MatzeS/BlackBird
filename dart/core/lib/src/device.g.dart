@@ -22,16 +22,30 @@ class _$HostDevice extends Host {
   Host getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
   @override
-  Map<String, dynamic> serialize() => _$HostToJson(this);
-  static Host deserialize(Map json) => _$HostFromJson(json);
+  Map<String, dynamic> toJson() => _$HostToJson(this);
+
+  Blackbird get blackbird => throw new Exception(
+      'cannot get runtime dependencys on device representation');
+  Future<Object> getRemoteHandle(Device device) =>
+      throw new Exception("you cannot execute stuff on devices");
 }
 
 class _$HostImplementation extends Host {
+  Blackbird _blackbird;
   Host _host;
 
   _$HostImplementation(Host delegate, Map<Symbol, Object> parameters) {
     if (parameters == null) {
       ConstructionInfoException info = new ConstructionInfoException();
+      info.dependencies.add(new Dependency(
+          name: #blackbird,
+          type: [
+            "asset:blackbird/lib/src/main.dart#Blackbird",
+            "dart:core#Object"
+          ],
+          device: this,
+          module: null,
+          isModule: false));
       info.dependencies.add(new Dependency(
           name: #host,
           type: [
@@ -42,11 +56,15 @@ class _$HostImplementation extends Host {
           device: this,
           module: null,
           isModule: false));
+      info[#blackbird].annotations.add(Runtime());
       info[#host].annotations.add(Runtime());
       throw info;
     }
 
+    _blackbird = parameters[#blackbird];
     _host = parameters[#host];
+    _address = delegate.address;
+    _port = delegate.port;
   }
 
   Host get host => _host;
@@ -61,7 +79,19 @@ class _$HostImplementation extends Host {
   Host getRemote(Context context, String uuid) =>
       _$HostRmi.getRemote(context, uuid);
   @override
-  Map<String, dynamic> serialize() => _$HostToJson(this);
+  Map<String, dynamic> toJson() => _$HostToJson(this);
+
+  String get address => _address;
+  set address(String _address) => throw new Exception(
+      'cannot change device property after implementationconstruction');
+  int get port => _port;
+  set port(int _port) => throw new Exception(
+      'cannot change device property after implementationconstruction');
+  Blackbird get blackbird => _blackbird;
+
+  String _address;
+
+  int _port;
 }
 
 // **************************************************************************
@@ -121,13 +151,13 @@ class _$DeviceInvoker {
         positionalArguments[0],
       );
     }
-    if (invocation.isMethod && #serialize == invocation.memberName) {
+    if (invocation.isMethod && #toJson == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
       for (int i = invocation.positionalArguments.length; i < 0; i++)
         positionalArguments.add(null);
 
-      return target.serialize();
+      return target.toJson();
     }
     if (invocation.isMethod && #== == invocation.memberName) {
       List<Object> positionalArguments =
@@ -159,7 +189,35 @@ class _$DeviceInvoker {
 }
 
 class _$HostInvoker {
-  static dynamic invoke(Invocation invocation, Host target) {}
+  static dynamic invoke(Invocation invocation, Host target) {
+    if (invocation.isGetter && #address == invocation.memberName) {
+      return target.address;
+    }
+    if (invocation.isSetter && #address == invocation.memberName) {
+      target.address = invocation.positionalArguments[0];
+      return null;
+    }
+    if (invocation.isGetter && #port == invocation.memberName) {
+      return target.port;
+    }
+    if (invocation.isSetter && #port == invocation.memberName) {
+      target.port = invocation.positionalArguments[0];
+      return null;
+    }
+    if (invocation.isGetter && #blackbird == invocation.memberName) {
+      return target.blackbird;
+    }
+    if (invocation.isMethod && #getRemoteHandle == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.getRemoteHandle(
+        positionalArguments[0],
+      );
+    }
+  }
 }
 
 // **************************************************************************
@@ -167,10 +225,16 @@ class _$HostInvoker {
 // **************************************************************************
 
 Host _$HostFromJson(Map<String, dynamic> json) {
-  return Host.device();
+  return Host.device()
+    ..address = json['address'] as String
+    ..port = json['port'] as int;
 }
 
-Map<String, dynamic> _$HostToJson(Host instance) => <String, dynamic>{};
+Map<String, dynamic> _$HostToJson(Host instance) => <String, dynamic>{
+      'address': instance.address,
+      'port': instance.port,
+      'json_serializable.className': "asset:blackbird/lib/src/device.dart#Host",
+    };
 
 // **************************************************************************
 // ProxyGenerator
@@ -221,13 +285,13 @@ class _$DeviceProxy implements Device {
     return _handle(_$invocation);
   }
 
-  Map<String, dynamic> serialize() {
+  Map<String, dynamic> toJson() {
     List<Object> arguments = [];
 
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation =
-        Invocation.method(#serialize, arguments, namedArguments);
+        Invocation.method(#toJson, arguments, namedArguments);
 
     return _handle(_$invocation);
   }
@@ -299,6 +363,17 @@ class _$DeviceProxy implements Device {
 }
 
 class _$HostProxy implements Host {
+  Future<Object> getRemoteHandle(Device device) {
+    List<Object> arguments = [];
+    arguments.add(device);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#getRemoteHandle, arguments, namedArguments);
+
+    return _handle(_$invocation);
+  }
+
   void postImplementation() {
     List<Object> arguments = [];
 
@@ -343,13 +418,13 @@ class _$HostProxy implements Host {
     return _handle(_$invocation);
   }
 
-  Map<String, dynamic> serialize() {
+  Map<String, dynamic> toJson() {
     List<Object> arguments = [];
 
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation =
-        Invocation.method(#serialize, arguments, namedArguments);
+        Invocation.method(#toJson, arguments, namedArguments);
 
     return _handle(_$invocation);
   }
@@ -389,14 +464,26 @@ class _$HostProxy implements Host {
   InvocationHandlerFunction _handle;
   _$HostProxy(this._handle) : super();
 
-  Blackbird get _blackbird {
-    Invocation invocation = Invocation.getter(#_blackbird);
+  String get address {
+    Invocation invocation = Invocation.getter(#address);
+
+    return _handle(invocation);
+  }
+
+  int get port {
+    Invocation invocation = Invocation.getter(#port);
 
     return _handle(invocation);
   }
 
   Blackbird get blackbird {
     Invocation invocation = Invocation.getter(#blackbird);
+
+    return _handle(invocation);
+  }
+
+  Blackbird get _blackbird {
+    Invocation invocation = Invocation.getter(#_blackbird);
 
     return _handle(invocation);
   }
@@ -425,56 +512,49 @@ class _$HostProxy implements Host {
 // **************************************************************************
 
 class _$DeviceRmi {
-  static bool _registered = false;
-  static void _registerSerializers() {
-    if (_registered) return;
-    _registered = true;
-
-    rmiRegisterSerializers({});
-  }
-
+  static void _registerSerializers(Context context) {}
   static void _registerStubConstructors(Context context) {
-    context.registerRemoteStubConstructor('Host', Host.getRemote);
-    context.registerRemoteStubConstructor('Device', getRemote);
+    context.registerRemoteStubConstructor(
+        'asset:blackbird/lib/src/device.dart#Host', Host.getRemote);
+    context.registerRemoteStubConstructor(
+        'asset:blackbird/lib/src/device.dart#Device', getRemote);
   }
 
   static Device getRemote(Context context, String uuid) {
-    _registerSerializers();
+    _registerSerializers(context);
     _registerStubConstructors(context);
     RmiProxyHandler handler = RmiProxyHandler(context, uuid);
     return _$DeviceProxy(handler.handle);
   }
 
   static Provision provideRemote(Context context, Device target) {
-    _registerSerializers();
+    _registerSerializers(context);
     _registerStubConstructors(context);
-    return rmiProvideRemote(context, target);
+    return rmiProvideRemote(
+        context, target, 'asset:blackbird/lib/src/device.dart#Device');
   }
 }
 
 class _$HostRmi {
-  static bool _registered = false;
-  static void _registerSerializers() {
-    if (_registered) return;
-    _registered = true;
-
-    rmiRegisterSerializers({});
-  }
-
+  static void _registerSerializers(Context context) {}
   static void _registerStubConstructors(Context context) {
-    context.registerRemoteStubConstructor('Host', getRemote);
+    context.registerRemoteStubConstructor(
+        'asset:blackbird/lib/src/device.dart#Device', Device.getRemote);
+    context.registerRemoteStubConstructor(
+        'asset:blackbird/lib/src/device.dart#Host', getRemote);
   }
 
   static Host getRemote(Context context, String uuid) {
-    _registerSerializers();
+    _registerSerializers(context);
     _registerStubConstructors(context);
     RmiProxyHandler handler = RmiProxyHandler(context, uuid);
     return _$HostProxy(handler.handle);
   }
 
   static Provision provideRemote(Context context, Host target) {
-    _registerSerializers();
+    _registerSerializers(context);
     _registerStubConstructors(context);
-    return rmiProvideRemote(context, target);
+    return rmiProvideRemote(
+        context, target, 'asset:blackbird/lib/src/device.dart#Host');
   }
 }

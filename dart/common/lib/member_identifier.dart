@@ -166,6 +166,10 @@ DeviceMemberType identify(Element element) {
 
   // not annotated, assume type
 
+  //TODO
+  if (element.displayName == 'getRemoteHandle')
+    return DeviceMemberType.executive;
+
   if (isSubmodule) {
     //log.fine('$element is not annotated, assuming submodule');
 

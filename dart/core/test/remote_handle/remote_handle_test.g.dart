@@ -1,97 +1,115 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'socket.dart';
+part of 'remote_handle_test.dart';
 
 // **************************************************************************
 // DeviceGenerator
 // **************************************************************************
 
-abstract class _$SocketDevice extends Socket {
-  _$SocketDevice();
+class _$ADeviceDevice extends ADevice {
+  _$ADeviceDevice();
 
   Host get host =>
       throw new Exception('only implementation objects are hosted');
 
-  Socket implementation(Map<Symbol, Object> dependencies) =>
-      throw new Exception("cannot implement abstract device");
+  ADevice implementation(Map<Symbol, Object> dependencies) =>
+      _$ADeviceImplementation(this, dependencies);
   @override
   Object invoke(Invocation invocation) =>
       throw new Exception('no invocation on devices');
   Provision provideRemote(Context context) =>
       throw new Exception('no RMI on devices');
-  Socket getRemote(Context context, String uuid) =>
+  ADevice getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
+  @override
+  Map<String, dynamic> toJson() => _$ADeviceToJson(this);
 
-  dynamic toggle() =>
+  void executive() =>
       throw new Exception("you cannot execute stuff on devices");
-  void writeState(int state) =>
-      throw new Exception("you cannot execute stuff on devices");
+}
+
+class _$ADeviceImplementation extends ADevice {
+  Host _host;
+
+  _$ADeviceImplementation(ADevice delegate, Map<Symbol, Object> parameters) {
+    if (parameters == null) {
+      ConstructionInfoException info = new ConstructionInfoException();
+      info.dependencies.add(new Dependency(
+          name: #host,
+          type: [
+            "asset:blackbird/lib/src/device.dart#Host",
+            "asset:blackbird/lib/src/device.dart#Device",
+            "dart:core#Object"
+          ],
+          device: this,
+          module: null,
+          isModule: false));
+      info[#host].annotations.add(Runtime());
+      throw info;
+    }
+
+    _host = parameters[#host];
+  }
+
+  Host get host => _host;
+
+  ADevice implementation(Map<Symbol, Object> dependencies) =>
+      throw Exception('this is already an implementation');
+  @override
+  Object invoke(Invocation invocation) =>
+      _$ADeviceInvoker.invoke(invocation, this);
+  Provision provideRemote(Context context) =>
+      _$ADeviceRmi.provideRemote(context, this);
+  ADevice getRemote(Context context, String uuid) =>
+      _$ADeviceRmi.getRemote(context, uuid);
+  @override
+  Map<String, dynamic> toJson() => _$ADeviceToJson(this);
 }
 
 // **************************************************************************
 // InvokerGenerator
 // **************************************************************************
 
-class _$SocketInvoker {
-  static dynamic invoke(Invocation invocation, Socket target) {
-    if (invocation.isMethod && #toggle == invocation.memberName) {
+class _$ADeviceInvoker {
+  static dynamic invoke(Invocation invocation, ADevice target) {
+    if (invocation.isMethod && #executive == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
       for (int i = invocation.positionalArguments.length; i < 0; i++)
         positionalArguments.add(null);
 
-      return target.toggle();
+      return target.executive();
     }
   }
 }
 
 // **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+ADevice _$ADeviceFromJson(Map<String, dynamic> json) {
+  return ADevice.device();
+}
+
+Map<String, dynamic> _$ADeviceToJson(ADevice instance) => <String, dynamic>{
+      'json_serializable.className':
+          "asset:blackbird/test/remote_handle/remote_handle_test.dart#ADevice",
+    };
+
+// **************************************************************************
 // ProxyGenerator
 // **************************************************************************
 
-class _$SocketProxy implements Socket {
-  dynamic toggle() {
+class _$ADeviceProxy implements ADevice {
+  void executive() {
     List<Object> arguments = [];
 
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation =
-        Invocation.method(#toggle, arguments, namedArguments);
-
-    return _handle(_$invocation);
-  }
-
-  void writeState(int state) {
-    List<Object> arguments = [];
-    arguments.add(state);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#writeState, arguments, namedArguments);
+        Invocation.method(#executive, arguments, namedArguments);
 
     _handle(_$invocation);
-  }
-
-  Future<void> turnOn() async {
-    List<Object> arguments = [];
-
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#turnOn, arguments, namedArguments);
-
-    return await _handle(_$invocation);
-  }
-
-  Future<void> turnOff() async {
-    List<Object> arguments = [];
-
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#turnOff, arguments, namedArguments);
-
-    return await _handle(_$invocation);
   }
 
   void postImplementation() {
@@ -182,31 +200,7 @@ class _$SocketProxy implements Socket {
   }
 
   InvocationHandlerFunction _handle;
-  _$SocketProxy(this._handle) : super();
-
-  int get states {
-    Invocation invocation = Invocation.getter(#states);
-
-    return _handle(invocation);
-  }
-
-  set state(int state) {
-    Invocation invocation = Invocation.setter(#state, state);
-
-    _handle(invocation);
-  }
-
-  set binaryState(bool binaryState) {
-    Invocation invocation = Invocation.setter(#binaryState, binaryState);
-
-    _handle(invocation);
-  }
-
-  int get _state {
-    Invocation invocation = Invocation.getter(#_state);
-
-    return _handle(invocation);
-  }
+  _$ADeviceProxy(this._handle) : super();
 
   Blackbird get _blackbird {
     Invocation invocation = Invocation.getter(#_blackbird);
@@ -243,24 +237,25 @@ class _$SocketProxy implements Socket {
 // RmiGenerator
 // **************************************************************************
 
-class _$SocketRmi {
+class _$ADeviceRmi {
   static void _registerSerializers(Context context) {}
   static void _registerStubConstructors(Context context) {
     context.registerRemoteStubConstructor(
-        'asset:blackbird/lib/devices/socket.dart#Socket', getRemote);
+        'asset:blackbird/test/remote_handle/remote_handle_test.dart#ADevice',
+        getRemote);
   }
 
-  static Socket getRemote(Context context, String uuid) {
+  static ADevice getRemote(Context context, String uuid) {
     _registerSerializers(context);
     _registerStubConstructors(context);
     RmiProxyHandler handler = RmiProxyHandler(context, uuid);
-    return _$SocketProxy(handler.handle);
+    return _$ADeviceProxy(handler.handle);
   }
 
-  static Provision provideRemote(Context context, Socket target) {
+  static Provision provideRemote(Context context, ADevice target) {
     _registerSerializers(context);
     _registerStubConstructors(context);
-    return rmiProvideRemote(
-        context, target, 'asset:blackbird/lib/devices/socket.dart#Socket');
+    return rmiProvideRemote(context, target,
+        'asset:blackbird/test/remote_handle/remote_handle_test.dart#ADevice');
   }
 }

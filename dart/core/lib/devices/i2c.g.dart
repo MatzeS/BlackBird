@@ -22,18 +22,16 @@ class _$I2CSlaveDevice extends I2CSlave {
   I2CSlave getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
   @override
-  Map<String, dynamic> serialize() => _$I2CSlaveToJson(this);
-  static I2CSlave deserialize(Map json) => _$I2CSlaveFromJson(json);
+  Map<String, dynamic> toJson() => _$I2CSlaveToJson(this);
 
   Future<void> writeRegister(int register, int value) =>
-      blackbird.interfaceDevice<I2CSlave>(this).writeRegister(register, value);
+      throw new Exception("you cannot execute stuff on devices");
   Future<int> readRegister(int register) =>
-      blackbird.interfaceDevice<I2CSlave>(this).readRegister(register);
-  Future<void> writeRegisters(int register, List values) => blackbird
-      .interfaceDevice<I2CSlave>(this)
-      .writeRegisters(register, values);
+      throw new Exception("you cannot execute stuff on devices");
+  Future<void> writeRegisters(int register, List values) =>
+      throw new Exception("you cannot execute stuff on devices");
   Future<List<int>> readRegisters(int register, int length) =>
-      blackbird.interfaceDevice<I2CSlave>(this).readRegisters(register, length);
+      throw new Exception("you cannot execute stuff on devices");
   I2CMaster master;
 }
 
@@ -85,7 +83,7 @@ class _$I2CSlaveImplementation extends I2CSlave {
   I2CSlave getRemote(Context context, String uuid) =>
       _$I2CSlaveRmi.getRemote(context, uuid);
   @override
-  Map<String, dynamic> serialize() => _$I2CSlaveToJson(this);
+  Map<String, dynamic> toJson() => _$I2CSlaveToJson(this);
 
   I2CMaster get master => _master;
   set master(I2CMaster _master) => throw new Exception(
@@ -113,18 +111,14 @@ abstract class _$I2CMasterDevice extends I2CMaster {
   I2CMaster getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
 
-  Future<void> writeRegister(int slave, int register, int value) => blackbird
-      .interfaceDevice<I2CMaster>(this)
-      .writeRegister(slave, register, value);
+  Future<void> writeRegister(int slave, int register, int value) =>
+      throw new Exception("you cannot execute stuff on devices");
   Future<int> readRegister(int slave, int register) =>
-      blackbird.interfaceDevice<I2CMaster>(this).readRegister(slave, register);
-  Future<void> writeRegisters(int slave, int register, List values) => blackbird
-      .interfaceDevice<I2CMaster>(this)
-      .writeRegisters(slave, register, values);
+      throw new Exception("you cannot execute stuff on devices");
+  Future<void> writeRegisters(int slave, int register, List values) =>
+      throw new Exception("you cannot execute stuff on devices");
   Future<List<int>> readRegisters(int slave, int register, int length) =>
-      blackbird
-          .interfaceDevice<I2CMaster>(this)
-          .readRegisters(slave, register, length);
+      throw new Exception("you cannot execute stuff on devices");
 }
 
 // **************************************************************************
@@ -253,8 +247,11 @@ I2CSlave _$I2CSlaveFromJson(Map<String, dynamic> json) {
   return I2CSlave.device()..address = json['address'] as int;
 }
 
-Map<String, dynamic> _$I2CSlaveToJson(I2CSlave instance) =>
-    <String, dynamic>{'address': instance.address};
+Map<String, dynamic> _$I2CSlaveToJson(I2CSlave instance) => <String, dynamic>{
+      'address': instance.address,
+      'json_serializable.className':
+          "asset:blackbird/lib/devices/i2c.dart#I2CSlave",
+    };
 
 // **************************************************************************
 // ProxyGenerator
@@ -352,13 +349,13 @@ class _$I2CSlaveProxy implements I2CSlave {
     return _handle(_$invocation);
   }
 
-  Map<String, dynamic> serialize() {
+  Map<String, dynamic> toJson() {
     List<Object> arguments = [];
 
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation =
-        Invocation.method(#serialize, arguments, namedArguments);
+        Invocation.method(#toJson, arguments, namedArguments);
 
     return _handle(_$invocation);
   }
@@ -537,13 +534,13 @@ class _$I2CMasterProxy implements I2CMaster {
     return _handle(_$invocation);
   }
 
-  Map<String, dynamic> serialize() {
+  Map<String, dynamic> toJson() {
     List<Object> arguments = [];
 
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation =
-        Invocation.method(#serialize, arguments, namedArguments);
+        Invocation.method(#toJson, arguments, namedArguments);
 
     return _handle(_$invocation);
   }
@@ -619,56 +616,47 @@ class _$I2CMasterProxy implements I2CMaster {
 // **************************************************************************
 
 class _$I2CSlaveRmi {
-  static bool _registered = false;
-  static void _registerSerializers() {
-    if (_registered) return;
-    _registered = true;
-
-    rmiRegisterSerializers({});
-  }
-
+  static void _registerSerializers(Context context) {}
   static void _registerStubConstructors(Context context) {
-    context.registerRemoteStubConstructor('I2CMaster', I2CMaster.getRemote);
-    context.registerRemoteStubConstructor('I2CSlave', getRemote);
+    context.registerRemoteStubConstructor(
+        'asset:blackbird/lib/devices/i2c.dart#I2CMaster', I2CMaster.getRemote);
+    context.registerRemoteStubConstructor(
+        'asset:blackbird/lib/devices/i2c.dart#I2CSlave', getRemote);
   }
 
   static I2CSlave getRemote(Context context, String uuid) {
-    _registerSerializers();
+    _registerSerializers(context);
     _registerStubConstructors(context);
     RmiProxyHandler handler = RmiProxyHandler(context, uuid);
     return _$I2CSlaveProxy(handler.handle);
   }
 
   static Provision provideRemote(Context context, I2CSlave target) {
-    _registerSerializers();
+    _registerSerializers(context);
     _registerStubConstructors(context);
-    return rmiProvideRemote(context, target);
+    return rmiProvideRemote(
+        context, target, 'asset:blackbird/lib/devices/i2c.dart#I2CSlave');
   }
 }
 
 class _$I2CMasterRmi {
-  static bool _registered = false;
-  static void _registerSerializers() {
-    if (_registered) return;
-    _registered = true;
-
-    rmiRegisterSerializers({});
-  }
-
+  static void _registerSerializers(Context context) {}
   static void _registerStubConstructors(Context context) {
-    context.registerRemoteStubConstructor('I2CMaster', getRemote);
+    context.registerRemoteStubConstructor(
+        'asset:blackbird/lib/devices/i2c.dart#I2CMaster', getRemote);
   }
 
   static I2CMaster getRemote(Context context, String uuid) {
-    _registerSerializers();
+    _registerSerializers(context);
     _registerStubConstructors(context);
     RmiProxyHandler handler = RmiProxyHandler(context, uuid);
     return _$I2CMasterProxy(handler.handle);
   }
 
   static Provision provideRemote(Context context, I2CMaster target) {
-    _registerSerializers();
+    _registerSerializers(context);
     _registerStubConstructors(context);
-    return rmiProvideRemote(context, target);
+    return rmiProvideRemote(
+        context, target, 'asset:blackbird/lib/devices/i2c.dart#I2CMaster');
   }
 }

@@ -22,17 +22,16 @@ class _$SimpleDeviceDevice extends SimpleDevice {
   SimpleDevice getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
   @override
-  Map<String, dynamic> serialize() => _$SimpleDeviceToJson(this);
-  static SimpleDevice deserialize(Map json) => _$SimpleDeviceFromJson(json);
+  Map<String, dynamic> toJson() => _$SimpleDeviceToJson(this);
 
   int get aRuntimeDependency => throw new Exception(
       'cannot get runtime dependencys on device representation');
-  int get executiveGetter =>
-      blackbird.interfaceDevice<SimpleDevice>(this).executiveGetter;
+  Future<int> get executiveGetter async =>
+      throw new Exception("you cannot execute stuff on devices");
   set executiveSetter(int value) =>
-      blackbird.interfaceDevice<SimpleDevice>(this).executiveSetter = value;
-  void executiveMethod() =>
-      blackbird.interfaceDevice<SimpleDevice>(this).executiveMethod();
+      throw new Exception("you cannot execute stuff on devices");
+  Future<void> executiveMethod() async =>
+      throw new Exception("you cannot execute stuff on devices");
 
   Device otherDevice;
 }
@@ -96,7 +95,7 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
   SimpleDevice getRemote(Context context, String uuid) =>
       _$SimpleDeviceRmi.getRemote(context, uuid);
   @override
-  Map<String, dynamic> serialize() => _$SimpleDeviceToJson(this);
+  Map<String, dynamic> toJson() => _$SimpleDeviceToJson(this);
 
   int get aProperty => _aProperty;
   set aProperty(int _aProperty) => throw new Exception(
@@ -128,9 +127,7 @@ class _$EvenSimplerDeviceDevice extends EvenSimplerDevice {
   EvenSimplerDevice getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
   @override
-  Map<String, dynamic> serialize() => _$EvenSimplerDeviceToJson(this);
-  static EvenSimplerDevice deserialize(Map json) =>
-      _$EvenSimplerDeviceFromJson(json);
+  Map<String, dynamic> toJson() => _$EvenSimplerDeviceToJson(this);
 }
 
 class _$EvenSimplerDeviceImplementation extends EvenSimplerDevice {
@@ -169,7 +166,7 @@ class _$EvenSimplerDeviceImplementation extends EvenSimplerDevice {
   EvenSimplerDevice getRemote(Context context, String uuid) =>
       _$EvenSimplerDeviceRmi.getRemote(context, uuid);
   @override
-  Map<String, dynamic> serialize() => _$EvenSimplerDeviceToJson(this);
+  Map<String, dynamic> toJson() => _$EvenSimplerDeviceToJson(this);
 }
 
 // **************************************************************************
@@ -233,21 +230,28 @@ SimpleDevice _$SimpleDeviceFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$SimpleDeviceToJson(SimpleDevice instance) =>
-    <String, dynamic>{'aProperty': instance.aProperty};
+    <String, dynamic>{
+      'aProperty': instance.aProperty,
+      'json_serializable.className':
+          "asset:blackbird/test/device_generator/simple_device.dart#SimpleDevice",
+    };
 
 EvenSimplerDevice _$EvenSimplerDeviceFromJson(Map<String, dynamic> json) {
   return EvenSimplerDevice.device();
 }
 
 Map<String, dynamic> _$EvenSimplerDeviceToJson(EvenSimplerDevice instance) =>
-    <String, dynamic>{};
+    <String, dynamic>{
+      'json_serializable.className':
+          "asset:blackbird/test/device_generator/simple_device.dart#EvenSimplerDevice",
+    };
 
 // **************************************************************************
 // ProxyGenerator
 // **************************************************************************
 
 class _$SimpleDeviceProxy implements SimpleDevice {
-  void executiveMethod() {
+  Future<void> executiveMethod() async {
     List<Object> arguments = [];
 
     Map<Symbol, Object> namedArguments = {};
@@ -255,7 +259,7 @@ class _$SimpleDeviceProxy implements SimpleDevice {
     Invocation _$invocation =
         Invocation.method(#executiveMethod, arguments, namedArguments);
 
-    _handle(_$invocation);
+    return await _handle(_$invocation);
   }
 
   void postImplementation() {
@@ -302,13 +306,13 @@ class _$SimpleDeviceProxy implements SimpleDevice {
     return _handle(_$invocation);
   }
 
-  Map<String, dynamic> serialize() {
+  Map<String, dynamic> toJson() {
     List<Object> arguments = [];
 
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation =
-        Invocation.method(#serialize, arguments, namedArguments);
+        Invocation.method(#toJson, arguments, namedArguments);
 
     return _handle(_$invocation);
   }
@@ -372,10 +376,10 @@ class _$SimpleDeviceProxy implements SimpleDevice {
     return _handle(invocation);
   }
 
-  int get executiveGetter {
+  Future<int> get executiveGetter async {
     Invocation invocation = Invocation.getter(#executiveGetter);
 
-    return _handle(invocation);
+    return await _handle(invocation);
   }
 
   set executiveSetter(int value) {
@@ -460,13 +464,13 @@ class _$EvenSimplerDeviceProxy implements EvenSimplerDevice {
     return _handle(_$invocation);
   }
 
-  Map<String, dynamic> serialize() {
+  Map<String, dynamic> toJson() {
     List<Object> arguments = [];
 
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation =
-        Invocation.method(#serialize, arguments, namedArguments);
+        Invocation.method(#toJson, arguments, namedArguments);
 
     return _handle(_$invocation);
   }
@@ -542,56 +546,49 @@ class _$EvenSimplerDeviceProxy implements EvenSimplerDevice {
 // **************************************************************************
 
 class _$SimpleDeviceRmi {
-  static bool _registered = false;
-  static void _registerSerializers() {
-    if (_registered) return;
-    _registered = true;
-
-    rmiRegisterSerializers({});
-  }
-
+  static void _registerSerializers(Context context) {}
   static void _registerStubConstructors(Context context) {
-    context.registerRemoteStubConstructor('Device', Device.getRemote);
-    context.registerRemoteStubConstructor('SimpleDevice', getRemote);
+    context.registerRemoteStubConstructor(
+        'asset:blackbird/lib/src/device.dart#Device', Device.getRemote);
+    context.registerRemoteStubConstructor(
+        'asset:blackbird/test/device_generator/simple_device.dart#SimpleDevice',
+        getRemote);
   }
 
   static SimpleDevice getRemote(Context context, String uuid) {
-    _registerSerializers();
+    _registerSerializers(context);
     _registerStubConstructors(context);
     RmiProxyHandler handler = RmiProxyHandler(context, uuid);
     return _$SimpleDeviceProxy(handler.handle);
   }
 
   static Provision provideRemote(Context context, SimpleDevice target) {
-    _registerSerializers();
+    _registerSerializers(context);
     _registerStubConstructors(context);
-    return rmiProvideRemote(context, target);
+    return rmiProvideRemote(context, target,
+        'asset:blackbird/test/device_generator/simple_device.dart#SimpleDevice');
   }
 }
 
 class _$EvenSimplerDeviceRmi {
-  static bool _registered = false;
-  static void _registerSerializers() {
-    if (_registered) return;
-    _registered = true;
-
-    rmiRegisterSerializers({});
-  }
-
+  static void _registerSerializers(Context context) {}
   static void _registerStubConstructors(Context context) {
-    context.registerRemoteStubConstructor('EvenSimplerDevice', getRemote);
+    context.registerRemoteStubConstructor(
+        'asset:blackbird/test/device_generator/simple_device.dart#EvenSimplerDevice',
+        getRemote);
   }
 
   static EvenSimplerDevice getRemote(Context context, String uuid) {
-    _registerSerializers();
+    _registerSerializers(context);
     _registerStubConstructors(context);
     RmiProxyHandler handler = RmiProxyHandler(context, uuid);
     return _$EvenSimplerDeviceProxy(handler.handle);
   }
 
   static Provision provideRemote(Context context, EvenSimplerDevice target) {
-    _registerSerializers();
+    _registerSerializers(context);
     _registerStubConstructors(context);
-    return rmiProvideRemote(context, target);
+    return rmiProvideRemote(context, target,
+        'asset:blackbird/test/device_generator/simple_device.dart#EvenSimplerDevice');
   }
 }

@@ -22,14 +22,14 @@ class _$RCSocketDevice extends RCSocket {
   RCSocket getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
   @override
-  Map<String, dynamic> serialize() => _$RCSocketToJson(this);
-  static RCSocket deserialize(Map json) => _$RCSocketFromJson(json);
+  Map<String, dynamic> toJson() => _$RCSocketToJson(this);
 
   AVRConnection get connection => throw new Exception(
       'cannot get runtime dependencys on device representation');
-  dynamic writeState(int state) =>
-      blackbird.interfaceDevice<RCSocket>(this).writeState(state);
-  dynamic toggle() => blackbird.interfaceDevice<RCSocket>(this).toggle();
+  void writeState(int state) =>
+      throw new Exception("you cannot execute stuff on devices");
+  dynamic toggle() =>
+      throw new Exception("you cannot execute stuff on devices");
 }
 
 class _$RCSocketImplementation extends RCSocket {
@@ -82,7 +82,7 @@ class _$RCSocketImplementation extends RCSocket {
   RCSocket getRemote(Context context, String uuid) =>
       _$RCSocketRmi.getRemote(context, uuid);
   @override
-  Map<String, dynamic> serialize() => _$RCSocketToJson(this);
+  Map<String, dynamic> toJson() => _$RCSocketToJson(this);
 
   int get address => _address;
   set address(int _address) => throw new Exception(
@@ -129,15 +129,18 @@ RCSocket _$RCSocketFromJson(Map<String, dynamic> json) {
   return RCSocket.device()..address = json['address'] as int;
 }
 
-Map<String, dynamic> _$RCSocketToJson(RCSocket instance) =>
-    <String, dynamic>{'address': instance.address};
+Map<String, dynamic> _$RCSocketToJson(RCSocket instance) => <String, dynamic>{
+      'address': instance.address,
+      'json_serializable.className':
+          "asset:blackbird/lib/src/ontario/functions/rc_socket.dart#RCSocket",
+    };
 
 // **************************************************************************
 // ProxyGenerator
 // **************************************************************************
 
 class _$RCSocketProxy implements RCSocket {
-  dynamic writeState(int state) {
+  void writeState(int state) {
     List<Object> arguments = [];
     arguments.add(state);
     Map<Symbol, Object> namedArguments = {};
@@ -145,7 +148,7 @@ class _$RCSocketProxy implements RCSocket {
     Invocation _$invocation =
         Invocation.method(#writeState, arguments, namedArguments);
 
-    return _handle(_$invocation);
+    _handle(_$invocation);
   }
 
   dynamic toggle() {
@@ -225,13 +228,13 @@ class _$RCSocketProxy implements RCSocket {
     return _handle(_$invocation);
   }
 
-  Map<String, dynamic> serialize() {
+  Map<String, dynamic> toJson() {
     List<Object> arguments = [];
 
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation =
-        Invocation.method(#serialize, arguments, namedArguments);
+        Invocation.method(#toJson, arguments, namedArguments);
 
     return _handle(_$invocation);
   }
@@ -343,28 +346,24 @@ class _$RCSocketProxy implements RCSocket {
 // **************************************************************************
 
 class _$RCSocketRmi {
-  static bool _registered = false;
-  static void _registerSerializers() {
-    if (_registered) return;
-    _registered = true;
-
-    rmiRegisterSerializers({});
-  }
-
+  static void _registerSerializers(Context context) {}
   static void _registerStubConstructors(Context context) {
-    context.registerRemoteStubConstructor('RCSocket', getRemote);
+    context.registerRemoteStubConstructor(
+        'asset:blackbird/lib/src/ontario/functions/rc_socket.dart#RCSocket',
+        getRemote);
   }
 
   static RCSocket getRemote(Context context, String uuid) {
-    _registerSerializers();
+    _registerSerializers(context);
     _registerStubConstructors(context);
     RmiProxyHandler handler = RmiProxyHandler(context, uuid);
     return _$RCSocketProxy(handler.handle);
   }
 
   static Provision provideRemote(Context context, RCSocket target) {
-    _registerSerializers();
+    _registerSerializers(context);
     _registerStubConstructors(context);
-    return rmiProvideRemote(context, target);
+    return rmiProvideRemote(context, target,
+        'asset:blackbird/lib/src/ontario/functions/rc_socket.dart#RCSocket');
   }
 }

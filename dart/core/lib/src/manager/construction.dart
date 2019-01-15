@@ -2,12 +2,6 @@ import 'package:blackbird/blackbird.dart';
 import 'device_manager.dart';
 import 'dependency_builders.dart';
 
-List<DependencyBuilder> dependencyBuilders = [];
-
-//TODO remove
-addDependencyBuilder(DependencyBuilder builder) =>
-    dependencyBuilders.add(builder);
-
 abstract class ConstructionManager extends DeviceManager {
   ConstructionManager(Device device, Blackbird blackbird)
       : super(device, blackbird);
@@ -27,7 +21,7 @@ abstract class ConstructionManager extends DeviceManager {
   Object constructRuntimeDependency(Dependency dependency) {
     Object result;
 
-    for (DependencyBuilder builder in dependencyBuilders) {
+    for (DependencyBuilder builder in blackbird.dependencyBuilders) {
       try {
         result = builder.build(dependency);
         break;

@@ -37,8 +37,7 @@ class DeviceVisitor extends BasicDeviceVisitor<String> {
       implementation = '_\$${name}Implementation(this,   dependencies);';
       serialization = '''
         @override
-        Map<String, dynamic> serialize() => _\$${name}ToJson(this);
-        static ${name} deserialize(Map json) => _\$${name}FromJson(json);
+        Map<String, dynamic> toJson() => _\$${name}ToJson(this);
       ''';
     }
 
@@ -89,23 +88,26 @@ class DeviceVisitor extends BasicDeviceVisitor<String> {
     return "=> throw new Exception('cannot get runtime dependencys on device representation');";
   }
 
-  Future<String> get _bbhook async =>
-      'blackbird.interfaceDevice<${(await classElement).name}>(this).';
+  // Future<String> get _bbhook async =>
+  // '(await blackbird.interfaceDevice<${(await classElement).name}>(this)).';
 
   @override
   FutureOr<String> visitExecutiveMethod(MethodElement element) async {
     String arguments = element.parameters.map((p) => p.name).join(',');
-    return '=> ${await _bbhook}${element.displayName}($arguments);';
+    return ' => throw new Exception("you cannot execute stuff on devices");';
+    // return '=> ${await _bbhook}${element.displayName}($arguments);';
   }
 
   @override
   FutureOr<String> visitExecutiveSetter(PropertyAccessorElement element) async {
     String arguments = element.parameters.map((p) => p.name).first;
-    return '=> ${await _bbhook}${element.displayName} = $arguments;';
+    return ' => throw new Exception("you cannot execute stuff on devices");';
+    // return '=> ${await _bbhook}${element.displayName} = $arguments;';
   }
 
   @override
   FutureOr<String> visitExecutiveGetter(PropertyAccessorElement element) async {
-    return '=> ${await _bbhook}${element.displayName};';
+    return ' => throw new Exception("you cannot execute stuff on devices");';
+    // return '=> ${await _bbhook}${element.displayName};';
   }
 }

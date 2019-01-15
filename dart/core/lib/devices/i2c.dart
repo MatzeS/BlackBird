@@ -7,6 +7,8 @@ abstract class I2CSlave extends Device {
   factory I2CSlave.device() => _$I2CSlaveDevice();
   static I2CSlave getRemote(Context context, String uuid) =>
       _$I2CSlaveRmi.getRemote(context, uuid);
+  factory I2CSlave.fromJson(Map<String, dynamic> json) =>
+      _$I2CSlaveFromJson(json);
 
   I2CMaster master;
   int address;

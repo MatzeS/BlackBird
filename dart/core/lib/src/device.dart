@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:rmi/rmi.dart';
 import 'package:blackbird/blackbird.dart';
 import 'main.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'device.g.dart';
 
@@ -189,10 +192,10 @@ abstract class Device implements RmiTarget {
 
   /// serializes propoerties and submodules
   @Ignore()
-  Map<String, dynamic> serialize();
+  Map<String, dynamic> toJson();
 
-  /// A normal device class would feature a deserialize function
-  /// static Device deserialize(Map<String, dynamic> serialized) =>
+  /// A normal device class also features a deserialize function
+  /// factory Device fromJson(Map<String, dynamic> json) =>
   ///     _$DeviceFromJson(serialized);
 
   /// The following methods are derived from [Object] and are only stated here for to ignore them
@@ -217,7 +220,18 @@ abstract class Host extends Device {
   Host();
   factory Host.device() => _$HostDevice();
 
-  /// This is required for RMI
+  //TODO inetaddress?
+  String address;
+  int port;
+
+  @Runtime()
+  Blackbird get blackbird;
+
+  Future<Object> getRemoteHandle(Device device) {
+    return blackbird.implementDevice(device);
+  }
+
   static Host getRemote(Context context, String uuid) =>
       _$HostRmi.getRemote(context, uuid);
+  static Host fromJson(Map<String, dynamic> json) => _$HostFromJson(json);
 }

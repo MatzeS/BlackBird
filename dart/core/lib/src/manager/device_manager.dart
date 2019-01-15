@@ -11,44 +11,51 @@ abstract class DeviceManager {
   final Device device;
   DeviceManager(this.device, this.blackbird);
 
-  Host get currentHost;
-  bool get isRemoteHosted =>
-      currentHost != null && currentHost != blackbird.localDevice;
-  bool get isLocallyHosted =>
-      currentHost != null && currentHost == blackbird.localDevice;
-  bool get isAvailable => isRemoteHosted || isLocallyHosted;
+  Future<Host> get currentHost;
+  Future<bool> get isRemoteHosted async =>
+      await currentHost != null && await currentHost != blackbird.localDevice;
+  Future<bool> get isLocallyHosted async =>
+      await currentHost != null && await currentHost == blackbird.localDevice;
+  Future<bool> get isAvailable async =>
+      await isRemoteHosted || await isLocallyHosted;
 
-  Device get interfaceDevice;
-  Device get implementDevice;
+  Future<Device> get interfaceDevice;
+  Future<Device> get implementDevice;
 }
 
 class AgentManager extends ConstructionManager {
   Device localHandle;
   AgentManager(Device device, Blackbird blackbird) : super(device, blackbird);
 
-  Device get remoteHandle {
-    //    throw new Exception('not implemented yet'); //TODO
-    return null;
+  Future<Device> get remoteHandle async {
+    Device handle = await blackbird.hosts
+        .map((h) => h.getRemoteHandle(device))
+        .map((f) async => await f)
+        .where((handle) => handle != null)
+        .single;
+    return handle;
   }
 
   @override
-  Host get currentHost {
+  Future<Host> get currentHost async {
     if (localHandle != null) return blackbird.localDevice;
 
-    return remoteHandle?.host;
+    return (await remoteHandle)?.host;
   }
 
   @override
-  Device get interfaceDevice {
+  Future<Device> get interfaceDevice async {
     if (localHandle != null) return localHandle;
-    if (remoteHandle != null) return remoteHandle;
+    if (remoteHandle != null) return await remoteHandle;
+    //TODO
+    throw new Exception('not fully implemented?');
   }
 
   @override
-  Device get implementDevice {
-    if (isRemoteHosted)
+  Future<Device> get implementDevice async {
+    if (await isRemoteHosted)
       throw new Exception('cannot implement remote hosted device'); //TODO
-    if (isLocallyHosted) return localHandle;
+    if (await isLocallyHosted) return localHandle;
 
     //CONSTRUCT IT
     localHandle = constructImplementation();
@@ -57,37 +64,23 @@ class AgentManager extends ConstructionManager {
   }
 }
 
-class HostManager extends DeviceManager {
-  HostManager(Host device, Blackbird blackbird) : super(device, blackbird);
-
-  @override
-  Device get implementDevice =>
-      throw new Exception('cannot implement host devices');
-
-  Device get remoteHandle {
-// do netowrk connect and get RMI handle
-    throw new Exception('not yet implemented');
-  }
-
-  @override
-  Host get currentHost => device;
-
-  @override
-  Device get interfaceDevice => remoteHandle;
-}
-
-class LocalDeviceManager extends DeviceManager {
+class LocalDeviceManager extends ConstructionManager {
   Device localHandle;
 
   LocalDeviceManager(Host device, Blackbird blackbird)
       : super(device, blackbird) {
-    //TODO
+    localHandle = constructImplementation();
   }
 
   @override
-  Device get implementDevice => localHandle;
+  Future<Device> get implementDevice async => localHandle;
   @override
-  Device get interfaceDevice => implementDevice;
+  Future<Device> get interfaceDevice => implementDevice;
   @override
-  Host get currentHost => device;
+  Future<Host> get currentHost async => device;
+
+  //TODO not sure on this one
+  Device get remoteHandle {
+    throw new Exception('local is not remote');
+  }
 }
