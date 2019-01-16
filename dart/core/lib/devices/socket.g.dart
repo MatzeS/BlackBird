@@ -58,6 +58,8 @@ class _$SocketProxy implements Socket {
     Invocation _$invocation =
         Invocation.method(#toggle, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -68,6 +70,8 @@ class _$SocketProxy implements Socket {
 
     Invocation _$invocation =
         Invocation.method(#writeState, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     _handle(_$invocation);
   }
@@ -80,6 +84,8 @@ class _$SocketProxy implements Socket {
     Invocation _$invocation =
         Invocation.method(#turnOn, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return await _handle(_$invocation);
   }
 
@@ -90,6 +96,8 @@ class _$SocketProxy implements Socket {
 
     Invocation _$invocation =
         Invocation.method(#turnOff, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return await _handle(_$invocation);
   }
@@ -102,6 +110,8 @@ class _$SocketProxy implements Socket {
     Invocation _$invocation =
         Invocation.method(#postImplementation, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     _handle(_$invocation);
   }
 
@@ -112,6 +122,8 @@ class _$SocketProxy implements Socket {
 
     Invocation _$invocation =
         Invocation.method(#implementation, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }
@@ -124,6 +136,8 @@ class _$SocketProxy implements Socket {
     Invocation _$invocation =
         Invocation.method(#provideRemote, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -134,6 +148,8 @@ class _$SocketProxy implements Socket {
 
     Invocation _$invocation =
         Invocation.method(#invoke, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }
@@ -146,6 +162,8 @@ class _$SocketProxy implements Socket {
     Invocation _$invocation =
         Invocation.method(#toJson, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -155,6 +173,8 @@ class _$SocketProxy implements Socket {
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation = Invocation.method(#==, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }
@@ -167,6 +187,8 @@ class _$SocketProxy implements Socket {
     Invocation _$invocation =
         Invocation.method(#toString, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -177,6 +199,8 @@ class _$SocketProxy implements Socket {
 
     Invocation _$invocation =
         Invocation.method(#noSuchMethod, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }

@@ -267,6 +267,8 @@ class _$I2CSlaveProxy implements I2CSlave {
     Invocation _$invocation =
         Invocation.method(#writeRegister, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -277,6 +279,8 @@ class _$I2CSlaveProxy implements I2CSlave {
 
     Invocation _$invocation =
         Invocation.method(#readRegister, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }
@@ -290,6 +294,8 @@ class _$I2CSlaveProxy implements I2CSlave {
     Invocation _$invocation =
         Invocation.method(#writeRegisters, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -302,6 +308,8 @@ class _$I2CSlaveProxy implements I2CSlave {
     Invocation _$invocation =
         Invocation.method(#readRegisters, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -312,6 +320,8 @@ class _$I2CSlaveProxy implements I2CSlave {
 
     Invocation _$invocation =
         Invocation.method(#postImplementation, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     _handle(_$invocation);
   }
@@ -324,6 +334,8 @@ class _$I2CSlaveProxy implements I2CSlave {
     Invocation _$invocation =
         Invocation.method(#implementation, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -334,6 +346,8 @@ class _$I2CSlaveProxy implements I2CSlave {
 
     Invocation _$invocation =
         Invocation.method(#provideRemote, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }
@@ -346,6 +360,8 @@ class _$I2CSlaveProxy implements I2CSlave {
     Invocation _$invocation =
         Invocation.method(#invoke, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -357,6 +373,8 @@ class _$I2CSlaveProxy implements I2CSlave {
     Invocation _$invocation =
         Invocation.method(#toJson, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -366,6 +384,8 @@ class _$I2CSlaveProxy implements I2CSlave {
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation = Invocation.method(#==, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }
@@ -378,6 +398,8 @@ class _$I2CSlaveProxy implements I2CSlave {
     Invocation _$invocation =
         Invocation.method(#toString, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -388,6 +410,8 @@ class _$I2CSlaveProxy implements I2CSlave {
 
     Invocation _$invocation =
         Invocation.method(#noSuchMethod, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }
@@ -449,6 +473,8 @@ class _$I2CMasterProxy implements I2CMaster {
     Invocation _$invocation =
         Invocation.method(#writeRegister, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -460,6 +486,8 @@ class _$I2CMasterProxy implements I2CMaster {
 
     Invocation _$invocation =
         Invocation.method(#readRegister, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }
@@ -474,6 +502,8 @@ class _$I2CMasterProxy implements I2CMaster {
     Invocation _$invocation =
         Invocation.method(#writeRegisters, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -487,6 +517,8 @@ class _$I2CMasterProxy implements I2CMaster {
     Invocation _$invocation =
         Invocation.method(#readRegisters, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -497,6 +529,8 @@ class _$I2CMasterProxy implements I2CMaster {
 
     Invocation _$invocation =
         Invocation.method(#postImplementation, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     _handle(_$invocation);
   }
@@ -509,6 +543,8 @@ class _$I2CMasterProxy implements I2CMaster {
     Invocation _$invocation =
         Invocation.method(#implementation, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -519,6 +555,8 @@ class _$I2CMasterProxy implements I2CMaster {
 
     Invocation _$invocation =
         Invocation.method(#provideRemote, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }
@@ -531,6 +569,8 @@ class _$I2CMasterProxy implements I2CMaster {
     Invocation _$invocation =
         Invocation.method(#invoke, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -542,6 +582,8 @@ class _$I2CMasterProxy implements I2CMaster {
     Invocation _$invocation =
         Invocation.method(#toJson, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -551,6 +593,8 @@ class _$I2CMasterProxy implements I2CMaster {
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation = Invocation.method(#==, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }
@@ -563,6 +607,8 @@ class _$I2CMasterProxy implements I2CMaster {
     Invocation _$invocation =
         Invocation.method(#toString, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -573,6 +619,8 @@ class _$I2CMasterProxy implements I2CMaster {
 
     Invocation _$invocation =
         Invocation.method(#noSuchMethod, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }

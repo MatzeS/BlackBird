@@ -227,8 +227,18 @@ abstract class Host extends Device {
   @Runtime()
   Blackbird get blackbird;
 
-  Future<Object> getRemoteHandle(Device device) {
-    return blackbird.implementDevice(device);
+  @AsImplementation()
+  Future<Device> getRemoteHandle(@AsDevice() Device device) async {
+    return await blackbird.implementDevice(device);
+  }
+
+  Future<void> something(String text) async {
+    print('well $address $text');
+  }
+
+  @Ignore()
+  String toString() {
+    return 'Host($address/$port)';
   }
 
   static Host getRemote(Context context, String uuid) =>

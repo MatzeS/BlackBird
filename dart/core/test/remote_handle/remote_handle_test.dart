@@ -3,26 +3,12 @@ import 'package:blackbird/src/main.dart';
 import 'package:blackbird/blackbird.dart';
 import 'dart:async';
 import 'dart:io';
-part 'remote_handle_test.g.dart';
-
-abstract class ADevice extends Device {
-  ADevice();
-  factory ADevice.device() => _$ADeviceDevice();
-
-  void executive() {
-    print('well this is going well');
-  }
-
-  /// This is required for RMI
-  static ADevice getRemote(Context context, String uuid) =>
-      _$ADeviceRmi.getRemote(context, uuid);
-}
+// part 'remote_handle_test.g.dart';
+import 'package:blackbird/devices/example_device.dart';
 
 main() {
   group('', () {
     test('', () async {
-      // ADevice testDevice = ADevice.device();
-
       Host localA = Host.device();
       localA.address = "localhost";
       localA.port = 2000;
@@ -33,8 +19,27 @@ main() {
       Blackbird blackbirdA = new Blackbird(localA);
       Blackbird blackbirdB = new Blackbird(localB);
 
-      var handle = await blackbirdB.interfaceDevice(localA);
-      // handle.something('test');
-    });
+      ADevice testDeviceA = ADevice.device();
+      testDeviceA.identifier = 'A';
+      blackbirdA.devices.add(testDeviceA);
+
+      ADevice testDeviceB = ADevice.device();
+      testDeviceB.identifier = 'B';
+      blackbirdB.devices.add(testDeviceB);
+
+      (await blackbirdB.implementDevice(testDeviceB)).executive("local");
+
+      blackbirdA.devices.add(localB);
+      blackbirdB.devices.add(localA);
+
+      expect(testDeviceA, testDeviceB);
+
+      Host handleOfBOnA = await blackbirdA.interfaceDevice(localB);
+      await handleOfBOnA.something('test');
+
+      ADevice remoteImplementationofB =
+          await handleOfBOnA.getRemoteHandle(testDeviceB);
+      await remoteImplementationofB.executive("some");
+    }, tags: "current");
   });
 }

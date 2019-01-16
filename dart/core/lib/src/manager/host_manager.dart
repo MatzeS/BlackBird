@@ -7,6 +7,7 @@ import 'package:blackbird/src/connection.dart';
 import 'dart:convert';
 import 'package:json_serialization/json_serialization.dart';
 import 'package:async/async.dart';
+import 'package:blackbird/devices/example_device.dart';
 
 class HostManager extends DeviceManager {
   HostManager(Host device, Blackbird blackbird) : super(device, blackbird);
@@ -29,7 +30,12 @@ class HostManager extends DeviceManager {
 
     Context context =
         new Context(connection.rmiSubConnection, connection.rmiSubConnection);
-
+    context.registerDeserializer(
+        'asset:blackbird/lib/devices/example_device.dart#ADevice',
+        (d) => ADevice.device()..identifier = d['identifier'] as String);
+    context.registerRemoteStubConstructor(
+        'asset:blackbird/lib/devices/example_device.dart#ADevice',
+        ADevice.getRemote);
     var localImpl = await blackbird.implementDevice(blackbird.localDevice);
     Provision localProvision = localImpl.provideRemote(context);
 
@@ -60,7 +66,7 @@ class HostConnection extends Connection<BlackbirdPacket> {
   Connection<String> get rmiSubConnection => this.transformConnection(
           ConnectionTransformer<BlackbirdPacket, String>.fromFunctions(
               (String data, EventSink<BlackbirdPacket> sink) =>
-                  new RmiWrapperPacket(data),
+                  sink.add(new RmiWrapperPacket(data)),
               (BlackbirdPacket data, EventSink<String> sink) {
         if (data is RmiWrapperPacket) sink.add(data.wrapped);
       }));
@@ -77,6 +83,10 @@ class HostConnectionTransformer
     serialization.registerDeserializer(
         'asset:blackbird/lib/src/manager/packets.dart#HandshakePacket',
         (d) => HandshakePacket.fromJson(d));
+
+    serialization.registerDeserializer(
+        'asset:blackbird/lib/src/manager/packets.dart#RmiWrapperPacket',
+        (d) => RmiWrapperPacket.fromJson(d));
   }
 
   JsonSerialization serialization = new JsonSerialization();

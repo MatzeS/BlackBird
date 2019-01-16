@@ -259,6 +259,8 @@ class _$SimpleDeviceProxy implements SimpleDevice {
     Invocation _$invocation =
         Invocation.method(#executiveMethod, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return await _handle(_$invocation);
   }
 
@@ -269,6 +271,8 @@ class _$SimpleDeviceProxy implements SimpleDevice {
 
     Invocation _$invocation =
         Invocation.method(#postImplementation, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     _handle(_$invocation);
   }
@@ -281,6 +285,8 @@ class _$SimpleDeviceProxy implements SimpleDevice {
     Invocation _$invocation =
         Invocation.method(#implementation, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -291,6 +297,8 @@ class _$SimpleDeviceProxy implements SimpleDevice {
 
     Invocation _$invocation =
         Invocation.method(#provideRemote, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }
@@ -303,6 +311,8 @@ class _$SimpleDeviceProxy implements SimpleDevice {
     Invocation _$invocation =
         Invocation.method(#invoke, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -314,6 +324,8 @@ class _$SimpleDeviceProxy implements SimpleDevice {
     Invocation _$invocation =
         Invocation.method(#toJson, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -323,6 +335,8 @@ class _$SimpleDeviceProxy implements SimpleDevice {
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation = Invocation.method(#==, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }
@@ -335,6 +349,8 @@ class _$SimpleDeviceProxy implements SimpleDevice {
     Invocation _$invocation =
         Invocation.method(#toString, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -345,6 +361,8 @@ class _$SimpleDeviceProxy implements SimpleDevice {
 
     Invocation _$invocation =
         Invocation.method(#noSuchMethod, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }
@@ -428,6 +446,8 @@ class _$EvenSimplerDeviceProxy implements EvenSimplerDevice {
     Invocation _$invocation =
         Invocation.method(#postImplementation, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     _handle(_$invocation);
   }
 
@@ -438,6 +458,8 @@ class _$EvenSimplerDeviceProxy implements EvenSimplerDevice {
 
     Invocation _$invocation =
         Invocation.method(#implementation, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }
@@ -450,6 +472,8 @@ class _$EvenSimplerDeviceProxy implements EvenSimplerDevice {
     Invocation _$invocation =
         Invocation.method(#provideRemote, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -460,6 +484,8 @@ class _$EvenSimplerDeviceProxy implements EvenSimplerDevice {
 
     Invocation _$invocation =
         Invocation.method(#invoke, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }
@@ -472,6 +498,8 @@ class _$EvenSimplerDeviceProxy implements EvenSimplerDevice {
     Invocation _$invocation =
         Invocation.method(#toJson, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -481,6 +509,8 @@ class _$EvenSimplerDeviceProxy implements EvenSimplerDevice {
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation = Invocation.method(#==, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }
@@ -493,6 +523,8 @@ class _$EvenSimplerDeviceProxy implements EvenSimplerDevice {
     Invocation _$invocation =
         Invocation.method(#toString, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -503,6 +535,8 @@ class _$EvenSimplerDeviceProxy implements EvenSimplerDevice {
 
     Invocation _$invocation =
         Invocation.method(#noSuchMethod, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }

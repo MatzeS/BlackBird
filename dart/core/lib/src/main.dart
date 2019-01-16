@@ -7,6 +7,7 @@ import 'manager/construction.dart';
 import 'manager/dependency_builders.dart';
 import 'manager/host_manager.dart';
 import 'manager/packets.dart';
+import 'package:blackbird/devices/example_device.dart';
 part 'main.g.dart';
 
 class Blackbird {
@@ -23,6 +24,14 @@ class Blackbird {
         connection.receive<HandshakePacket>().then((handshake) async {
           Context context = new Context(
               connection.rmiSubConnection, connection.rmiSubConnection);
+
+          context.registerDeserializer(
+              'asset:blackbird/lib/devices/example_device.dart#ADevice',
+              (d) => ADevice.device()..identifier = d['identifier'] as String);
+          context.registerRemoteStubConstructor(
+              'asset:blackbird/lib/devices/example_device.dart#ADevice',
+              ADevice.getRemote);
+
           var localImpl = await implementDevice(localDevice);
           Provision localProvision = localImpl.provideRemote(context);
 
@@ -42,8 +51,9 @@ class Blackbird {
   Future<R> implementDevice<R extends Device>(R device) async =>
       await getManager(device).implementDevice;
 
-  List<Device> devices; //TODO
-  List<Host> get hosts => devices.where((d) => d is Host).toList();
+  List<Device> devices = []; //TODO
+  List<Host> get hosts =>
+      devices.where((d) => d is Host).map((h) => h as Host).toList();
 
   List<DependencyBuilder> dependencyBuilders = [];
 
@@ -60,6 +70,7 @@ class Blackbird {
       return _managers[device];
     }
 
+    print('creating manager for $device on $localDevice');
     DeviceManager manager = managerFactory(device);
     _managers.putIfAbsent(device, () => manager);
     return manager;

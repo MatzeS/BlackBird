@@ -28,11 +28,16 @@ class AgentManager extends ConstructionManager {
   AgentManager(Device device, Blackbird blackbird) : super(device, blackbird);
 
   Future<Device> get remoteHandle async {
-    Device handle = await blackbird.hosts
+    if (blackbird.localDevice.port == 2002) return null;
+
+    List<Future<Device>> handleFutureList = blackbird.hosts
         .map((h) => h.getRemoteHandle(device))
         .map((f) async => await f)
         .where((handle) => handle != null)
-        .single;
+        .toList();
+    List<Device> handleList = await Future.wait(handleFutureList);
+    if (handleList.isEmpty) return null;
+    Device handle = handleList.single;
     return handle;
   }
 
@@ -53,10 +58,12 @@ class AgentManager extends ConstructionManager {
 
   @override
   Future<Device> get implementDevice async {
+    print("implementing $device on ${blackbird.localDevice}");
     if (await isRemoteHosted)
       throw new Exception('cannot implement remote hosted device'); //TODO
     if (await isLocallyHosted) return localHandle;
 
+    print('construction');
     //CONSTRUCT IT
     localHandle = constructImplementation();
 

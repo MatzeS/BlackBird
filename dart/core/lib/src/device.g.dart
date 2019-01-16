@@ -26,7 +26,9 @@ class _$HostDevice extends Host {
 
   Blackbird get blackbird => throw new Exception(
       'cannot get runtime dependencys on device representation');
-  Future<Object> getRemoteHandle(Device device) =>
+  Future<Device> getRemoteHandle(Device device) =>
+      throw new Exception("you cannot execute stuff on devices");
+  Future<void> something(String text) async =>
       throw new Exception("you cannot execute stuff on devices");
 }
 
@@ -217,6 +219,24 @@ class _$HostInvoker {
         positionalArguments[0],
       );
     }
+    if (invocation.isMethod && #something == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.something(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod && #toString == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 0; i++)
+        positionalArguments.add(null);
+
+      return target.toString();
+    }
   }
 }
 
@@ -249,6 +269,8 @@ class _$DeviceProxy implements Device {
     Invocation _$invocation =
         Invocation.method(#postImplementation, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     _handle(_$invocation);
   }
 
@@ -259,6 +281,8 @@ class _$DeviceProxy implements Device {
 
     Invocation _$invocation =
         Invocation.method(#implementation, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }
@@ -271,6 +295,8 @@ class _$DeviceProxy implements Device {
     Invocation _$invocation =
         Invocation.method(#provideRemote, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -281,6 +307,8 @@ class _$DeviceProxy implements Device {
 
     Invocation _$invocation =
         Invocation.method(#invoke, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }
@@ -293,6 +321,8 @@ class _$DeviceProxy implements Device {
     Invocation _$invocation =
         Invocation.method(#toJson, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -302,6 +332,8 @@ class _$DeviceProxy implements Device {
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation = Invocation.method(#==, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }
@@ -314,6 +346,8 @@ class _$DeviceProxy implements Device {
     Invocation _$invocation =
         Invocation.method(#toString, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -324,6 +358,8 @@ class _$DeviceProxy implements Device {
 
     Invocation _$invocation =
         Invocation.method(#noSuchMethod, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }
@@ -363,13 +399,41 @@ class _$DeviceProxy implements Device {
 }
 
 class _$HostProxy implements Host {
-  Future<Object> getRemoteHandle(Device device) {
+  Future<Device> getRemoteHandle(Device device) async {
     List<Object> arguments = [];
     arguments.add(device);
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation =
         Invocation.method(#getRemoteHandle, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
+
+    return await _handle(_$invocation);
+  }
+
+  Future<void> something(String text) async {
+    List<Object> arguments = [];
+    arguments.add(text);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#something, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
+
+    return await _handle(_$invocation);
+  }
+
+  String toString() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#toString, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }
@@ -382,6 +446,8 @@ class _$HostProxy implements Host {
     Invocation _$invocation =
         Invocation.method(#postImplementation, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     _handle(_$invocation);
   }
 
@@ -392,6 +458,8 @@ class _$HostProxy implements Host {
 
     Invocation _$invocation =
         Invocation.method(#implementation, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }
@@ -404,6 +472,8 @@ class _$HostProxy implements Host {
     Invocation _$invocation =
         Invocation.method(#provideRemote, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -414,6 +484,8 @@ class _$HostProxy implements Host {
 
     Invocation _$invocation =
         Invocation.method(#invoke, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }
@@ -426,6 +498,8 @@ class _$HostProxy implements Host {
     Invocation _$invocation =
         Invocation.method(#toJson, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -436,16 +510,7 @@ class _$HostProxy implements Host {
 
     Invocation _$invocation = Invocation.method(#==, arguments, namedArguments);
 
-    return _handle(_$invocation);
-  }
-
-  String toString() {
-    List<Object> arguments = [];
-
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#toString, arguments, namedArguments);
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }
@@ -457,6 +522,8 @@ class _$HostProxy implements Host {
 
     Invocation _$invocation =
         Invocation.method(#noSuchMethod, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }

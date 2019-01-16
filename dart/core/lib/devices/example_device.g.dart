@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'remote_handle_test.dart';
+part of 'example_device.dart';
 
 // **************************************************************************
 // DeviceGenerator
@@ -24,7 +24,7 @@ class _$ADeviceDevice extends ADevice {
   @override
   Map<String, dynamic> toJson() => _$ADeviceToJson(this);
 
-  void executive() =>
+  Future<void> executive(String data) async =>
       throw new Exception("you cannot execute stuff on devices");
 }
 
@@ -49,6 +49,7 @@ class _$ADeviceImplementation extends ADevice {
     }
 
     _host = parameters[#host];
+    _identifier = delegate.identifier;
   }
 
   Host get host => _host;
@@ -64,6 +65,12 @@ class _$ADeviceImplementation extends ADevice {
       _$ADeviceRmi.getRemote(context, uuid);
   @override
   Map<String, dynamic> toJson() => _$ADeviceToJson(this);
+
+  String get identifier => _identifier;
+  set identifier(String _identifier) => throw new Exception(
+      'cannot change device property after implementationconstruction');
+
+  String _identifier;
 }
 
 // **************************************************************************
@@ -72,13 +79,41 @@ class _$ADeviceImplementation extends ADevice {
 
 class _$ADeviceInvoker {
   static dynamic invoke(Invocation invocation, ADevice target) {
+    if (invocation.isGetter && #identifier == invocation.memberName) {
+      return target.identifier;
+    }
+    if (invocation.isSetter && #identifier == invocation.memberName) {
+      target.identifier = invocation.positionalArguments[0];
+      return null;
+    }
+    if (invocation.isGetter && #hashCode == invocation.memberName) {
+      return target.hashCode;
+    }
     if (invocation.isMethod && #executive == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.executive(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod && #== == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target == positionalArguments[0];
+    }
+    if (invocation.isMethod && #toString == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
       for (int i = invocation.positionalArguments.length; i < 0; i++)
         positionalArguments.add(null);
 
-      return target.executive();
+      return target.toString();
     }
   }
 }
@@ -88,12 +123,13 @@ class _$ADeviceInvoker {
 // **************************************************************************
 
 ADevice _$ADeviceFromJson(Map<String, dynamic> json) {
-  return ADevice.device();
+  return ADevice.device()..identifier = json['identifier'] as String;
 }
 
 Map<String, dynamic> _$ADeviceToJson(ADevice instance) => <String, dynamic>{
+      'identifier': instance.identifier,
       'json_serializable.className':
-          "asset:blackbird/test/remote_handle/remote_handle_test.dart#ADevice",
+          "asset:blackbird/lib/devices/example_device.dart#ADevice",
     };
 
 // **************************************************************************
@@ -101,70 +137,17 @@ Map<String, dynamic> _$ADeviceToJson(ADevice instance) => <String, dynamic>{
 // **************************************************************************
 
 class _$ADeviceProxy implements ADevice {
-  void executive() {
+  Future<void> executive(String data) async {
     List<Object> arguments = [];
-
+    arguments.add(data);
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation =
         Invocation.method(#executive, arguments, namedArguments);
 
-    _handle(_$invocation);
-  }
+    MetaFlags meta = new MetaFlags();
 
-  void postImplementation() {
-    List<Object> arguments = [];
-
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#postImplementation, arguments, namedArguments);
-
-    _handle(_$invocation);
-  }
-
-  Device implementation(Map dependencies) {
-    List<Object> arguments = [];
-    arguments.add(dependencies);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#implementation, arguments, namedArguments);
-
-    return _handle(_$invocation);
-  }
-
-  Provision provideRemote(Context context) {
-    List<Object> arguments = [];
-    arguments.add(context);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#provideRemote, arguments, namedArguments);
-
-    return _handle(_$invocation);
-  }
-
-  Object invoke(Invocation invocation) {
-    List<Object> arguments = [];
-    arguments.add(invocation);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#invoke, arguments, namedArguments);
-
-    return _handle(_$invocation);
-  }
-
-  Map<String, dynamic> toJson() {
-    List<Object> arguments = [];
-
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#toJson, arguments, namedArguments);
-
-    return _handle(_$invocation);
+    return await _handle(_$invocation);
   }
 
   bool operator ==(Object other) {
@@ -173,6 +156,8 @@ class _$ADeviceProxy implements ADevice {
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation = Invocation.method(#==, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
 
     return _handle(_$invocation);
   }
@@ -185,6 +170,73 @@ class _$ADeviceProxy implements ADevice {
     Invocation _$invocation =
         Invocation.method(#toString, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
+    return _handle(_$invocation);
+  }
+
+  void postImplementation() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#postImplementation, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
+
+    _handle(_$invocation);
+  }
+
+  Device implementation(Map dependencies) {
+    List<Object> arguments = [];
+    arguments.add(dependencies);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#implementation, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
+
+    return _handle(_$invocation);
+  }
+
+  Provision provideRemote(Context context) {
+    List<Object> arguments = [];
+    arguments.add(context);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#provideRemote, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
+
+    return _handle(_$invocation);
+  }
+
+  Object invoke(Invocation invocation) {
+    List<Object> arguments = [];
+    arguments.add(invocation);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#invoke, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
+
+    return _handle(_$invocation);
+  }
+
+  Map<String, dynamic> toJson() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#toJson, arguments, namedArguments);
+
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
@@ -196,11 +248,25 @@ class _$ADeviceProxy implements ADevice {
     Invocation _$invocation =
         Invocation.method(#noSuchMethod, arguments, namedArguments);
 
+    MetaFlags meta = new MetaFlags();
+
     return _handle(_$invocation);
   }
 
   InvocationHandlerFunction _handle;
   _$ADeviceProxy(this._handle) : super();
+
+  String get identifier {
+    Invocation invocation = Invocation.getter(#identifier);
+
+    return _handle(invocation);
+  }
+
+  int get hashCode {
+    Invocation invocation = Invocation.getter(#hashCode);
+
+    return _handle(invocation);
+  }
 
   Blackbird get _blackbird {
     Invocation invocation = Invocation.getter(#_blackbird);
@@ -220,12 +286,6 @@ class _$ADeviceProxy implements ADevice {
     return _handle(invocation);
   }
 
-  int get hashCode {
-    Invocation invocation = Invocation.getter(#hashCode);
-
-    return _handle(invocation);
-  }
-
   Type get runtimeType {
     Invocation invocation = Invocation.getter(#runtimeType);
 
@@ -241,8 +301,7 @@ class _$ADeviceRmi {
   static void _registerSerializers(Context context) {}
   static void _registerStubConstructors(Context context) {
     context.registerRemoteStubConstructor(
-        'asset:blackbird/test/remote_handle/remote_handle_test.dart#ADevice',
-        getRemote);
+        'asset:blackbird/lib/devices/example_device.dart#ADevice', getRemote);
   }
 
   static ADevice getRemote(Context context, String uuid) {
@@ -256,6 +315,6 @@ class _$ADeviceRmi {
     _registerSerializers(context);
     _registerStubConstructors(context);
     return rmiProvideRemote(context, target,
-        'asset:blackbird/test/remote_handle/remote_handle_test.dart#ADevice');
+        'asset:blackbird/lib/devices/example_device.dart#ADevice');
   }
 }
