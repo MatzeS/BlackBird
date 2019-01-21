@@ -5,8 +5,8 @@ part 'example_device.g.dart';
 
 abstract class ADevice extends Device {
   String identifier;
-  ADevice();
-  factory ADevice.device() => _$ADeviceDevice();
+  ADevice._();
+  factory ADevice() => _$ADeviceDevice();
 
   Future<void> executive(String data) async {
     print('well this is going well $identifier, $data');

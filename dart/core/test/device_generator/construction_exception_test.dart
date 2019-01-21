@@ -6,7 +6,7 @@ int significantNumber = 123456789;
 
 main() {
   group('device', () {
-    SimpleDevice device = SimpleDevice.device();
+    SimpleDevice device = SimpleDevice();
 
     ConstructionInfoException info;
     try {

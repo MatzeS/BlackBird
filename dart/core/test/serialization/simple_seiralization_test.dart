@@ -3,7 +3,7 @@ import '../device_generator/simple_device.dart';
 
 main() {
   test('serialization', () {
-    SimpleDevice device = SimpleDevice.device();
+    SimpleDevice device = SimpleDevice();
     device.aProperty = 1234;
     Map<String, dynamic> serialized = device.toJson();
 

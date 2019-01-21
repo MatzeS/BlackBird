@@ -25,6 +25,6 @@ dev_dependencies:
   blackbird_generators:
     path: ../dart/generators
   source_gen:
-  source_gen_helpers: 
-    path: ../../dart/source_gen_helpers
+  source_gen_helpers: 0.0.2
   build_node_compilers:
+  rmi_generator: ^0.0.4

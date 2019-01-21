@@ -9,6 +9,7 @@ import 'package:angular_components/material_toggle/material_toggle.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:angular_forms/angular_forms.dart';
 import 'package:blackbird_electron/src/ui/switch_component/switch_component.dart';
+import 'package:blackbird_electron/src/test.dart';
 
 @Component(
   selector: 'socket-card',
@@ -32,4 +33,7 @@ class SocketCardComponent implements OnInit {
   SocketCardComponent() {}
 
   ngOnInit() {}
+  void a() {
+    toggle();
+  }
 }

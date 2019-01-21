@@ -24,3 +24,10 @@ domum =  my home implementation
 ## TODO
  - precommit scripts
  - device serialization
+ - Switch device
+ - motor device
+ - binary sensor device
+ - analog sensor device
+ - temperature sensor device
+ - check placment of dependencies vs dev dependeices on all packages
+ 

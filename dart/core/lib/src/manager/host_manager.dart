@@ -32,7 +32,7 @@ class HostManager extends DeviceManager {
         new Context(connection.rmiSubConnection, connection.rmiSubConnection);
     context.registerDeserializer(
         'asset:blackbird/lib/devices/example_device.dart#ADevice',
-        (d) => ADevice.device()..identifier = d['identifier'] as String);
+        (d) => ADevice()..identifier = d['identifier'] as String);
     context.registerRemoteStubConstructor(
         'asset:blackbird/lib/devices/example_device.dart#ADevice',
         ADevice.getRemote);

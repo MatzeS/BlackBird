@@ -28,11 +28,12 @@ main() async {
 
   StubBuilder builder = new StubBuilder(avr);
 
-  Blackbird blackbird = new Blackbird();
+  Host local = new Host();
+  Blackbird blackbird = new Blackbird(local);
 
-  addDependencyBuilder(builder);
+  blackbird.addDependencyBuilder(builder);
 
-  RCSocket socket = new RCSocket.device();
+  RCSocket socket = new RCSocket();
   socket.address = 528;
   socket.blackbird = blackbird;
 

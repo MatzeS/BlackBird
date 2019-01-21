@@ -1,19 +1,20 @@
 import 'package:test/test.dart';
 import 'package:blackbird/blackbird.dart';
 import 'simple_device.dart';
+import 'package:blackbird/src/ontario/functions/rc_socket.dart';
 
 int significantNumber = 123456789;
 
 main() {
   group('device', () {
-    SimpleDevice device = SimpleDevice.device();
+    SimpleDevice device = SimpleDevice();
 
     test('set and get property', () {
       device.aProperty = significantNumber;
       expect(device.aProperty, significantNumber);
     });
     test('set and get module', () {
-      device.otherDevice = SimpleDevice.device();
+      device.otherDevice = SimpleDevice();
       (device.otherDevice as SimpleDevice).aProperty = significantNumber;
       expect(device.otherDevice != null, true);
       expect((device.otherDevice as SimpleDevice).aProperty, significantNumber);
@@ -39,13 +40,13 @@ main() {
 
   group('runtime', () {
     Map<Symbol, Object> map = {};
-    map[#host] = Host.device();
+    map[#host] = Host();
     map[#aRuntimeDependency] = significantNumber;
-    SimpleDevice otherDevice = SimpleDevice.device();
+    SimpleDevice otherDevice = SimpleDevice();
     otherDevice.aProperty = significantNumber;
     map[#otherDevice] = otherDevice;
 
-    SimpleDevice d = SimpleDevice.device();
+    SimpleDevice d = SimpleDevice();
     d.aProperty = significantNumber;
     SimpleDevice device = d.implementation(map);
 
@@ -59,7 +60,7 @@ main() {
     });
     test('set module raises exception', () {
       expect(() {
-        device.otherDevice = SimpleDevice.device();
+        device.otherDevice = SimpleDevice();
       }, throwsException);
     });
     test('get module', () {

@@ -7,7 +7,7 @@ part of 'i2c.dart';
 // **************************************************************************
 
 class _$I2CSlaveDevice extends I2CSlave {
-  _$I2CSlaveDevice();
+  _$I2CSlaveDevice() : super._();
 
   Host get host =>
       throw new Exception('only implementation objects are hosted');
@@ -39,7 +39,8 @@ class _$I2CSlaveImplementation extends I2CSlave {
   Host _host;
   I2CMaster _master;
 
-  _$I2CSlaveImplementation(I2CSlave delegate, Map<Symbol, Object> parameters) {
+  _$I2CSlaveImplementation(I2CSlave delegate, Map<Symbol, Object> parameters)
+      : super._() {
     if (parameters == null) {
       ConstructionInfoException info = new ConstructionInfoException();
       info.dependencies.add(new Dependency(
@@ -96,7 +97,7 @@ class _$I2CSlaveImplementation extends I2CSlave {
 }
 
 abstract class _$I2CMasterDevice extends I2CMaster {
-  _$I2CMasterDevice();
+  _$I2CMasterDevice() : super._();
 
   Host get host =>
       throw new Exception('only implementation objects are hosted');
@@ -122,25 +123,25 @@ abstract class _$I2CMasterDevice extends I2CMaster {
 }
 
 // **************************************************************************
+// DeviceJsonSerializableGenerator
+// **************************************************************************
+
+I2CSlave _$I2CSlaveFromJson(Map<String, dynamic> json) {
+  return I2CSlave()..address = json['address'] as int;
+}
+
+Map<String, dynamic> _$I2CSlaveToJson(I2CSlave instance) => <String, dynamic>{
+      'address': instance.address,
+      'json_serializable.className':
+          "asset:blackbird/lib/devices/i2c.dart#I2CSlave",
+    };
+
+// **************************************************************************
 // InvokerGenerator
 // **************************************************************************
 
 class _$I2CSlaveInvoker {
   static dynamic invoke(Invocation invocation, I2CSlave target) {
-    if (invocation.isGetter && #master == invocation.memberName) {
-      return target.master;
-    }
-    if (invocation.isSetter && #master == invocation.memberName) {
-      target.master = invocation.positionalArguments[0];
-      return null;
-    }
-    if (invocation.isGetter && #address == invocation.memberName) {
-      return target.address;
-    }
-    if (invocation.isSetter && #address == invocation.memberName) {
-      target.address = invocation.positionalArguments[0];
-      return null;
-    }
     if (invocation.isMethod && #writeRegister == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
@@ -183,6 +184,106 @@ class _$I2CSlaveInvoker {
         positionalArguments[0],
         positionalArguments[1],
       );
+    }
+    if (invocation.isGetter && #master == invocation.memberName) {
+      return target.master;
+    }
+    if (invocation.isSetter && #master == invocation.memberName) {
+      target.master = invocation.positionalArguments[0];
+      return null;
+    }
+    if (invocation.isGetter && #address == invocation.memberName) {
+      return target.address;
+    }
+    if (invocation.isSetter && #address == invocation.memberName) {
+      target.address = invocation.positionalArguments[0];
+      return null;
+    }
+    if (invocation.isGetter && #blackbird == invocation.memberName) {
+      return target.blackbird;
+    }
+    if (invocation.isSetter && #blackbird == invocation.memberName) {
+      target.blackbird = invocation.positionalArguments[0];
+      return null;
+    }
+    if (invocation.isGetter && #host == invocation.memberName) {
+      return target.host;
+    }
+    if (invocation.isGetter && #hashCode == invocation.memberName) {
+      return target.hashCode;
+    }
+    if (invocation.isGetter && #runtimeType == invocation.memberName) {
+      return target.runtimeType;
+    }
+    if (invocation.isMethod && #postImplementation == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 0; i++)
+        positionalArguments.add(null);
+
+      return target.postImplementation();
+    }
+    if (invocation.isMethod && #implementation == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.implementation(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod && #provideRemote == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.provideRemote(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod && #toJson == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 0; i++)
+        positionalArguments.add(null);
+
+      return target.toJson();
+    }
+    if (invocation.isMethod && #== == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target == positionalArguments[0];
+    }
+    if (invocation.isMethod && #toString == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 0; i++)
+        positionalArguments.add(null);
+
+      return target.toString();
+    }
+    if (invocation.isMethod && #noSuchMethod == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.noSuchMethod(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod && #== == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target == positionalArguments[0];
     }
   }
 }
@@ -236,22 +337,94 @@ class _$I2CMasterInvoker {
         positionalArguments[2],
       );
     }
+    if (invocation.isGetter && #blackbird == invocation.memberName) {
+      return target.blackbird;
+    }
+    if (invocation.isSetter && #blackbird == invocation.memberName) {
+      target.blackbird = invocation.positionalArguments[0];
+      return null;
+    }
+    if (invocation.isGetter && #host == invocation.memberName) {
+      return target.host;
+    }
+    if (invocation.isGetter && #hashCode == invocation.memberName) {
+      return target.hashCode;
+    }
+    if (invocation.isGetter && #runtimeType == invocation.memberName) {
+      return target.runtimeType;
+    }
+    if (invocation.isMethod && #postImplementation == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 0; i++)
+        positionalArguments.add(null);
+
+      return target.postImplementation();
+    }
+    if (invocation.isMethod && #implementation == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.implementation(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod && #provideRemote == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.provideRemote(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod && #toJson == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 0; i++)
+        positionalArguments.add(null);
+
+      return target.toJson();
+    }
+    if (invocation.isMethod && #== == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target == positionalArguments[0];
+    }
+    if (invocation.isMethod && #toString == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 0; i++)
+        positionalArguments.add(null);
+
+      return target.toString();
+    }
+    if (invocation.isMethod && #noSuchMethod == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.noSuchMethod(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod && #== == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target == positionalArguments[0];
+    }
   }
 }
-
-// **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
-
-I2CSlave _$I2CSlaveFromJson(Map<String, dynamic> json) {
-  return I2CSlave.device()..address = json['address'] as int;
-}
-
-Map<String, dynamic> _$I2CSlaveToJson(I2CSlave instance) => <String, dynamic>{
-      'address': instance.address,
-      'json_serializable.className':
-          "asset:blackbird/lib/devices/i2c.dart#I2CSlave",
-    };
 
 // **************************************************************************
 // ProxyGenerator
@@ -267,9 +440,12 @@ class _$I2CSlaveProxy implements I2CSlave {
     Invocation _$invocation =
         Invocation.method(#writeRegister, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   Future<int> readRegister(int register) {
@@ -280,9 +456,11 @@ class _$I2CSlaveProxy implements I2CSlave {
     Invocation _$invocation =
         Invocation.method(#readRegister, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   Future<void> writeRegisters(int register, List values) {
@@ -294,9 +472,12 @@ class _$I2CSlaveProxy implements I2CSlave {
     Invocation _$invocation =
         Invocation.method(#writeRegisters, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   Future<List<int>> readRegisters(int register, int length) {
@@ -308,9 +489,12 @@ class _$I2CSlaveProxy implements I2CSlave {
     Invocation _$invocation =
         Invocation.method(#readRegisters, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   void postImplementation() {
@@ -321,9 +505,10 @@ class _$I2CSlaveProxy implements I2CSlave {
     Invocation _$invocation =
         Invocation.method(#postImplementation, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
 
-    _handle(_$invocation);
+    _handle(_$invocation, metadata);
   }
 
   Device implementation(Map dependencies) {
@@ -334,9 +519,12 @@ class _$I2CSlaveProxy implements I2CSlave {
     Invocation _$invocation =
         Invocation.method(#implementation, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   Provision provideRemote(Context context) {
@@ -347,9 +535,12 @@ class _$I2CSlaveProxy implements I2CSlave {
     Invocation _$invocation =
         Invocation.method(#provideRemote, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   Object invoke(Invocation invocation) {
@@ -360,9 +551,12 @@ class _$I2CSlaveProxy implements I2CSlave {
     Invocation _$invocation =
         Invocation.method(#invoke, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   Map<String, dynamic> toJson() {
@@ -373,9 +567,11 @@ class _$I2CSlaveProxy implements I2CSlave {
     Invocation _$invocation =
         Invocation.method(#toJson, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   bool operator ==(Object other) {
@@ -385,9 +581,12 @@ class _$I2CSlaveProxy implements I2CSlave {
 
     Invocation _$invocation = Invocation.method(#==, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   String toString() {
@@ -398,9 +597,11 @@ class _$I2CSlaveProxy implements I2CSlave {
     Invocation _$invocation =
         Invocation.method(#toString, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   dynamic noSuchMethod(Invocation invocation) {
@@ -411,9 +612,12 @@ class _$I2CSlaveProxy implements I2CSlave {
     Invocation _$invocation =
         Invocation.method(#noSuchMethod, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   InvocationHandlerFunction _handle;
@@ -422,43 +626,59 @@ class _$I2CSlaveProxy implements I2CSlave {
   I2CMaster get master {
     Invocation invocation = Invocation.getter(#master);
 
-    return _handle(invocation);
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
   }
 
   int get address {
     Invocation invocation = Invocation.getter(#address);
 
-    return _handle(invocation);
-  }
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
 
-  Blackbird get _blackbird {
-    Invocation invocation = Invocation.getter(#_blackbird);
-
-    return _handle(invocation);
+    return _handle(invocation, metadata);
   }
 
   Blackbird get blackbird {
     Invocation invocation = Invocation.getter(#blackbird);
 
-    return _handle(invocation);
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
   }
 
   Host get host {
     Invocation invocation = Invocation.getter(#host);
 
-    return _handle(invocation);
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Runtime());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
   }
 
   int get hashCode {
     Invocation invocation = Invocation.getter(#hashCode);
 
-    return _handle(invocation);
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
   }
 
   Type get runtimeType {
     Invocation invocation = Invocation.getter(#runtimeType);
 
-    return _handle(invocation);
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
   }
 }
 
@@ -473,9 +693,13 @@ class _$I2CMasterProxy implements I2CMaster {
     Invocation _$invocation =
         Invocation.method(#writeRegister, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   Future<int> readRegister(int slave, int register) {
@@ -487,9 +711,12 @@ class _$I2CMasterProxy implements I2CMaster {
     Invocation _$invocation =
         Invocation.method(#readRegister, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   Future<void> writeRegisters(int slave, int register, List values) {
@@ -502,9 +729,13 @@ class _$I2CMasterProxy implements I2CMaster {
     Invocation _$invocation =
         Invocation.method(#writeRegisters, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   Future<List<int>> readRegisters(int slave, int register, int length) {
@@ -517,9 +748,13 @@ class _$I2CMasterProxy implements I2CMaster {
     Invocation _$invocation =
         Invocation.method(#readRegisters, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   void postImplementation() {
@@ -530,9 +765,10 @@ class _$I2CMasterProxy implements I2CMaster {
     Invocation _$invocation =
         Invocation.method(#postImplementation, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
 
-    _handle(_$invocation);
+    _handle(_$invocation, metadata);
   }
 
   Device implementation(Map dependencies) {
@@ -543,9 +779,12 @@ class _$I2CMasterProxy implements I2CMaster {
     Invocation _$invocation =
         Invocation.method(#implementation, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   Provision provideRemote(Context context) {
@@ -556,9 +795,12 @@ class _$I2CMasterProxy implements I2CMaster {
     Invocation _$invocation =
         Invocation.method(#provideRemote, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   Object invoke(Invocation invocation) {
@@ -569,9 +811,12 @@ class _$I2CMasterProxy implements I2CMaster {
     Invocation _$invocation =
         Invocation.method(#invoke, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   Map<String, dynamic> toJson() {
@@ -582,9 +827,11 @@ class _$I2CMasterProxy implements I2CMaster {
     Invocation _$invocation =
         Invocation.method(#toJson, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   bool operator ==(Object other) {
@@ -594,9 +841,12 @@ class _$I2CMasterProxy implements I2CMaster {
 
     Invocation _$invocation = Invocation.method(#==, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   String toString() {
@@ -607,9 +857,11 @@ class _$I2CMasterProxy implements I2CMaster {
     Invocation _$invocation =
         Invocation.method(#toString, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   dynamic noSuchMethod(Invocation invocation) {
@@ -620,42 +872,55 @@ class _$I2CMasterProxy implements I2CMaster {
     Invocation _$invocation =
         Invocation.method(#noSuchMethod, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   InvocationHandlerFunction _handle;
   _$I2CMasterProxy(this._handle) : super();
 
-  Blackbird get _blackbird {
-    Invocation invocation = Invocation.getter(#_blackbird);
-
-    return _handle(invocation);
-  }
-
   Blackbird get blackbird {
     Invocation invocation = Invocation.getter(#blackbird);
 
-    return _handle(invocation);
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
   }
 
   Host get host {
     Invocation invocation = Invocation.getter(#host);
 
-    return _handle(invocation);
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Runtime());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
   }
 
   int get hashCode {
     Invocation invocation = Invocation.getter(#hashCode);
 
-    return _handle(invocation);
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
   }
 
   Type get runtimeType {
     Invocation invocation = Invocation.getter(#runtimeType);
 
-    return _handle(invocation);
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
   }
 }
 

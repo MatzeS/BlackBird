@@ -103,7 +103,7 @@ class ImplementationVisitor extends BasicDeviceVisitor<String> {
     return '''
       $privateVariables
 
-      _\$${await className}Implementation(${await className} delegate, Map<Symbol, Object> parameters){
+      _\$${await className}Implementation(${await className} delegate, Map<Symbol, Object> parameters) : super._(){
           $constructionInfo
         
           $assigns

@@ -1,25 +1,34 @@
 import 'serial_port_module.dart';
 import 'package:blackbird/devices/ontario.dart';
 import 'dart:async';
+import 'package:blackbird/src/connection.dart';
 
-class NodeSerialPort implements SerialPort {
+class NodeSerialPort extends SerialPort {
   NodeSerialPortJS port;
 
-  NodeSerialPort(String path, [dynamic port]) {
-    // port = newSerialPort(path);
-    this.port = port;
-
+  factory NodeSerialPort(String path, [dynamic port]) {
+    StreamController input = new StreamController<List<int>>();
     port.on('data', ([dynamic data]) {
       print('received $data');
-      _input.sink.add(String.fromCharCodes(data));
+      input.sink.add(String.fromCharCodes(data));
     });
 
-    _output.stream.listen((data) {
-      List<int> sequence = [];
-      data.codeUnits.forEach(sequence.add);
-      port.write(sequence);
+    StreamController output = new StreamController<List<int>>();
+    output.stream.listen((data) {
+      // List<int> sequence = [];
+      // ('' + data).codeUnits.forEach(sequence.add);
+      port.write(data);
     });
+
+    Connection<List<int>> connection =
+        new Connection.fromParts(input.stream, output.sink);
+
+    var res = NodeSerialPort._(connection);
+    res.port = port;
+    return res;
   }
+
+  NodeSerialPort._(Connection<List<int>> connection) : super(connection) {}
 
   StreamController<String> _input = new StreamController();
   @override

@@ -9,6 +9,9 @@ import 'package:blackbird/devices/common.dart';
 part 'rc_socket.g.dart';
 
 abstract class RCSocket extends Socket {
+  RCSocket._() : super();
+  factory RCSocket() => _$RCSocketDevice();
+
   //TODO remove
   @Runtime()
   AVRConnection get connection;
@@ -20,9 +23,6 @@ abstract class RCSocket extends Socket {
   writeState(int state) {
     connection.send(new RCSwitchQuery(address, state == ON ? true : false));
   }
-
-  RCSocket();
-  factory RCSocket.device() => _$RCSocketDevice();
 }
 
 class RCSwitchQuery extends TransmittableAVRPacket {

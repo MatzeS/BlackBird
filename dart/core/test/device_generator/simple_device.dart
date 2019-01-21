@@ -30,7 +30,7 @@ class SomeAnnotation {
 }
 
 abstract class SimpleDevice extends Device {
-  SimpleDevice();
+  SimpleDevice._();
 
   int aProperty;
 
@@ -48,12 +48,12 @@ abstract class SimpleDevice extends Device {
   Future<int> get executiveGetter async {}
   set executiveSetter(int value) {}
 
-  factory SimpleDevice.device() => new _$SimpleDeviceDevice();
+  factory SimpleDevice() => new _$SimpleDeviceDevice();
   static SimpleDevice deserialize(Map<String, dynamic> serialized) =>
       _$SimpleDeviceFromJson(serialized);
 }
 
 abstract class EvenSimplerDevice extends Device {
-  EvenSimplerDevice();
-  factory EvenSimplerDevice.device() => new _$EvenSimplerDeviceDevice();
+  EvenSimplerDevice._();
+  factory EvenSimplerDevice() => new _$EvenSimplerDeviceDevice();
 }

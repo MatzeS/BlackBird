@@ -217,8 +217,8 @@ abstract class Device implements RmiTarget {
 
 /// A host is a device running a blackbird instance and possibly hosting implementation objects
 abstract class Host extends Device {
-  Host();
-  factory Host.device() => _$HostDevice();
+  Host._();
+  factory Host() => _$HostDevice();
 
   //TODO inetaddress?
   String address;
@@ -227,8 +227,7 @@ abstract class Host extends Device {
   @Runtime()
   Blackbird get blackbird;
 
-  @AsImplementation()
-  Future<Device> getRemoteHandle(@AsDevice() Device device) async {
+  Future<Device> getRemoteHandle(@NotAsRmi() Device device) async {
     return await blackbird.implementDevice(device);
   }
 

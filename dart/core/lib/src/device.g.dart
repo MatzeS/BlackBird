@@ -7,7 +7,7 @@ part of 'device.dart';
 // **************************************************************************
 
 class _$HostDevice extends Host {
-  _$HostDevice();
+  _$HostDevice() : super._();
 
   Host get host =>
       throw new Exception('only implementation objects are hosted');
@@ -26,7 +26,7 @@ class _$HostDevice extends Host {
 
   Blackbird get blackbird => throw new Exception(
       'cannot get runtime dependencys on device representation');
-  Future<Device> getRemoteHandle(Device device) =>
+  Future<Device> getRemoteHandle(Device device) async =>
       throw new Exception("you cannot execute stuff on devices");
   Future<void> something(String text) async =>
       throw new Exception("you cannot execute stuff on devices");
@@ -36,7 +36,8 @@ class _$HostImplementation extends Host {
   Blackbird _blackbird;
   Host _host;
 
-  _$HostImplementation(Host delegate, Map<Symbol, Object> parameters) {
+  _$HostImplementation(Host delegate, Map<Symbol, Object> parameters)
+      : super._() {
     if (parameters == null) {
       ConstructionInfoException info = new ConstructionInfoException();
       info.dependencies.add(new Dependency(
@@ -97,34 +98,27 @@ class _$HostImplementation extends Host {
 }
 
 // **************************************************************************
+// DeviceJsonSerializableGenerator
+// **************************************************************************
+
+Host _$HostFromJson(Map<String, dynamic> json) {
+  return Host()
+    ..address = json['address'] as String
+    ..port = json['port'] as int;
+}
+
+Map<String, dynamic> _$HostToJson(Host instance) => <String, dynamic>{
+      'address': instance.address,
+      'port': instance.port,
+      'json_serializable.className': "asset:blackbird/lib/src/device.dart#Host",
+    };
+
+// **************************************************************************
 // InvokerGenerator
 // **************************************************************************
 
 class _$DeviceInvoker {
   static dynamic invoke(Invocation invocation, Device target) {
-    if (invocation.isGetter && #_blackbird == invocation.memberName) {
-      return target._blackbird;
-    }
-    if (invocation.isSetter && #_blackbird == invocation.memberName) {
-      target._blackbird = invocation.positionalArguments[0];
-      return null;
-    }
-    if (invocation.isGetter && #blackbird == invocation.memberName) {
-      return target.blackbird;
-    }
-    if (invocation.isSetter && #blackbird == invocation.memberName) {
-      target.blackbird = invocation.positionalArguments[0];
-      return null;
-    }
-    if (invocation.isGetter && #host == invocation.memberName) {
-      return target.host;
-    }
-    if (invocation.isGetter && #hashCode == invocation.memberName) {
-      return target.hashCode;
-    }
-    if (invocation.isGetter && #runtimeType == invocation.memberName) {
-      return target.runtimeType;
-    }
     if (invocation.isMethod && #postImplementation == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
@@ -187,28 +181,35 @@ class _$DeviceInvoker {
         positionalArguments[0],
       );
     }
+    if (invocation.isGetter && #blackbird == invocation.memberName) {
+      return target.blackbird;
+    }
+    if (invocation.isSetter && #blackbird == invocation.memberName) {
+      target.blackbird = invocation.positionalArguments[0];
+      return null;
+    }
+    if (invocation.isGetter && #host == invocation.memberName) {
+      return target.host;
+    }
+    if (invocation.isGetter && #hashCode == invocation.memberName) {
+      return target.hashCode;
+    }
+    if (invocation.isGetter && #runtimeType == invocation.memberName) {
+      return target.runtimeType;
+    }
+    if (invocation.isMethod && #== == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target == positionalArguments[0];
+    }
   }
 }
 
 class _$HostInvoker {
   static dynamic invoke(Invocation invocation, Host target) {
-    if (invocation.isGetter && #address == invocation.memberName) {
-      return target.address;
-    }
-    if (invocation.isSetter && #address == invocation.memberName) {
-      target.address = invocation.positionalArguments[0];
-      return null;
-    }
-    if (invocation.isGetter && #port == invocation.memberName) {
-      return target.port;
-    }
-    if (invocation.isSetter && #port == invocation.memberName) {
-      target.port = invocation.positionalArguments[0];
-      return null;
-    }
-    if (invocation.isGetter && #blackbird == invocation.memberName) {
-      return target.blackbird;
-    }
     if (invocation.isMethod && #getRemoteHandle == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
@@ -237,24 +238,100 @@ class _$HostInvoker {
 
       return target.toString();
     }
+    if (invocation.isGetter && #address == invocation.memberName) {
+      return target.address;
+    }
+    if (invocation.isSetter && #address == invocation.memberName) {
+      target.address = invocation.positionalArguments[0];
+      return null;
+    }
+    if (invocation.isGetter && #port == invocation.memberName) {
+      return target.port;
+    }
+    if (invocation.isSetter && #port == invocation.memberName) {
+      target.port = invocation.positionalArguments[0];
+      return null;
+    }
+    if (invocation.isGetter && #blackbird == invocation.memberName) {
+      return target.blackbird;
+    }
+    if (invocation.isSetter && #blackbird == invocation.memberName) {
+      target.blackbird = invocation.positionalArguments[0];
+      return null;
+    }
+    if (invocation.isGetter && #host == invocation.memberName) {
+      return target.host;
+    }
+    if (invocation.isGetter && #hashCode == invocation.memberName) {
+      return target.hashCode;
+    }
+    if (invocation.isGetter && #runtimeType == invocation.memberName) {
+      return target.runtimeType;
+    }
+    if (invocation.isMethod && #postImplementation == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 0; i++)
+        positionalArguments.add(null);
+
+      return target.postImplementation();
+    }
+    if (invocation.isMethod && #implementation == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.implementation(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod && #provideRemote == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.provideRemote(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod && #toJson == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 0; i++)
+        positionalArguments.add(null);
+
+      return target.toJson();
+    }
+    if (invocation.isMethod && #== == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target == positionalArguments[0];
+    }
+    if (invocation.isMethod && #noSuchMethod == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.noSuchMethod(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod && #== == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target == positionalArguments[0];
+    }
   }
 }
-
-// **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
-
-Host _$HostFromJson(Map<String, dynamic> json) {
-  return Host.device()
-    ..address = json['address'] as String
-    ..port = json['port'] as int;
-}
-
-Map<String, dynamic> _$HostToJson(Host instance) => <String, dynamic>{
-      'address': instance.address,
-      'port': instance.port,
-      'json_serializable.className': "asset:blackbird/lib/src/device.dart#Host",
-    };
 
 // **************************************************************************
 // ProxyGenerator
@@ -269,9 +346,10 @@ class _$DeviceProxy implements Device {
     Invocation _$invocation =
         Invocation.method(#postImplementation, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
 
-    _handle(_$invocation);
+    _handle(_$invocation, metadata);
   }
 
   Device implementation(Map dependencies) {
@@ -282,9 +360,12 @@ class _$DeviceProxy implements Device {
     Invocation _$invocation =
         Invocation.method(#implementation, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   Provision provideRemote(Context context) {
@@ -295,9 +376,12 @@ class _$DeviceProxy implements Device {
     Invocation _$invocation =
         Invocation.method(#provideRemote, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   Object invoke(Invocation invocation) {
@@ -308,9 +392,12 @@ class _$DeviceProxy implements Device {
     Invocation _$invocation =
         Invocation.method(#invoke, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   Map<String, dynamic> toJson() {
@@ -321,9 +408,11 @@ class _$DeviceProxy implements Device {
     Invocation _$invocation =
         Invocation.method(#toJson, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   bool operator ==(Object other) {
@@ -333,9 +422,12 @@ class _$DeviceProxy implements Device {
 
     Invocation _$invocation = Invocation.method(#==, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   String toString() {
@@ -346,9 +438,11 @@ class _$DeviceProxy implements Device {
     Invocation _$invocation =
         Invocation.method(#toString, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   dynamic noSuchMethod(Invocation invocation) {
@@ -359,42 +453,55 @@ class _$DeviceProxy implements Device {
     Invocation _$invocation =
         Invocation.method(#noSuchMethod, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   InvocationHandlerFunction _handle;
   _$DeviceProxy(this._handle) : super();
 
-  Blackbird get _blackbird {
-    Invocation invocation = Invocation.getter(#_blackbird);
-
-    return _handle(invocation);
-  }
-
   Blackbird get blackbird {
     Invocation invocation = Invocation.getter(#blackbird);
 
-    return _handle(invocation);
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
   }
 
   Host get host {
     Invocation invocation = Invocation.getter(#host);
 
-    return _handle(invocation);
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Runtime());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
   }
 
   int get hashCode {
     Invocation invocation = Invocation.getter(#hashCode);
 
-    return _handle(invocation);
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
   }
 
   Type get runtimeType {
     Invocation invocation = Invocation.getter(#runtimeType);
 
-    return _handle(invocation);
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
   }
 }
 
@@ -407,9 +514,12 @@ class _$HostProxy implements Host {
     Invocation _$invocation =
         Invocation.method(#getRemoteHandle, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata[0].add(NotAsRmi());
+    metadata.isStream = false;
 
-    return await _handle(_$invocation);
+    return await _handle(_$invocation, metadata);
   }
 
   Future<void> something(String text) async {
@@ -420,9 +530,11 @@ class _$HostProxy implements Host {
     Invocation _$invocation =
         Invocation.method(#something, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
 
-    return await _handle(_$invocation);
+    return await _handle(_$invocation, metadata);
   }
 
   String toString() {
@@ -433,9 +545,11 @@ class _$HostProxy implements Host {
     Invocation _$invocation =
         Invocation.method(#toString, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   void postImplementation() {
@@ -446,9 +560,10 @@ class _$HostProxy implements Host {
     Invocation _$invocation =
         Invocation.method(#postImplementation, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
 
-    _handle(_$invocation);
+    _handle(_$invocation, metadata);
   }
 
   Device implementation(Map dependencies) {
@@ -459,9 +574,12 @@ class _$HostProxy implements Host {
     Invocation _$invocation =
         Invocation.method(#implementation, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   Provision provideRemote(Context context) {
@@ -472,9 +590,12 @@ class _$HostProxy implements Host {
     Invocation _$invocation =
         Invocation.method(#provideRemote, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   Object invoke(Invocation invocation) {
@@ -485,9 +606,12 @@ class _$HostProxy implements Host {
     Invocation _$invocation =
         Invocation.method(#invoke, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   Map<String, dynamic> toJson() {
@@ -498,9 +622,11 @@ class _$HostProxy implements Host {
     Invocation _$invocation =
         Invocation.method(#toJson, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   bool operator ==(Object other) {
@@ -510,9 +636,12 @@ class _$HostProxy implements Host {
 
     Invocation _$invocation = Invocation.method(#==, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   dynamic noSuchMethod(Invocation invocation) {
@@ -523,9 +652,12 @@ class _$HostProxy implements Host {
     Invocation _$invocation =
         Invocation.method(#noSuchMethod, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   InvocationHandlerFunction _handle;
@@ -534,43 +666,59 @@ class _$HostProxy implements Host {
   String get address {
     Invocation invocation = Invocation.getter(#address);
 
-    return _handle(invocation);
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
   }
 
   int get port {
     Invocation invocation = Invocation.getter(#port);
 
-    return _handle(invocation);
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
   }
 
   Blackbird get blackbird {
     Invocation invocation = Invocation.getter(#blackbird);
 
-    return _handle(invocation);
-  }
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Runtime());
+    metadata.isStream = false;
 
-  Blackbird get _blackbird {
-    Invocation invocation = Invocation.getter(#_blackbird);
-
-    return _handle(invocation);
+    return _handle(invocation, metadata);
   }
 
   Host get host {
     Invocation invocation = Invocation.getter(#host);
 
-    return _handle(invocation);
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Runtime());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
   }
 
   int get hashCode {
     Invocation invocation = Invocation.getter(#hashCode);
 
-    return _handle(invocation);
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
   }
 
   Type get runtimeType {
     Invocation invocation = Invocation.getter(#runtimeType);
 
-    return _handle(invocation);
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
   }
 }
 

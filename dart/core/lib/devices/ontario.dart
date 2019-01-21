@@ -10,8 +10,8 @@ export 'package:blackbird/src/ontario/functions/rc_socket.dart';
 part 'ontario.g.dart';
 
 abstract class Ontario extends Device implements I2CMaster {
-  Ontario();
-  factory Ontario.device() => _$OntarioDevice();
+  Ontario._();
+  factory Ontario() => _$OntarioDevice();
 
   AVRConnection get connection;
 

@@ -35,7 +35,10 @@ class StubBuilder extends FilteredDependencyBuilder<RCSocket, AVRConnection> {
 external dynamic get serialport;
 
 RCSocket socket;
+bool done = false;
 load() async {
+  if (done) return;
+  done = true;
   print(serialport);
   // dynamic serialport = window.sessionStorage['serialport'];
   // print(serialport);<
@@ -44,26 +47,32 @@ load() async {
   // var x = window.sessionStorage['somefunc'];
   // print(x('a'));
 
-  SerialPort port = NodeSerialPort('/dev/ttyUSB0', serialport('/dev/ttyUSB0'));
+  NodeSerialPort port =
+      NodeSerialPort('/dev/ttyUSB0', serialport('/dev/ttyUSB0'));
 
   AVRConnection avr = new AVRConnection(port);
 
   StubBuilder builder = new StubBuilder(avr);
 
-  Blackbird blackbird = new Blackbird();
+  Host local = new Host();
+  local.address = 'localhost';
+  local.port = 13334;
+  Blackbird blackbird = new Blackbird(local);
 
-  socket = new RCSocket.device();
+  socket = new RCSocket();
   socket.address = 528;
   socket.blackbird = blackbird;
 
-  addDependencyBuilder(builder);
+  blackbird.addDependencyBuilder(builder);
 
-  socket = blackbird.implementDevice(socket);
+  socket = await blackbird.implementDevice(socket);
   socket.turnOff();
+  socket.state = 0;
   return;
 }
 
 toggle() {
+  load();
   print(socket.state);
   socket.toggle();
   // socket.toggle();

@@ -9,21 +9,21 @@ import 'package:blackbird/devices/example_device.dart';
 main() {
   group('', () {
     test('', () async {
-      Host localA = Host.device();
+      Host localA = Host();
       localA.address = "localhost";
       localA.port = 2000;
-      Host localB = Host.device();
+      Host localB = Host();
       localB.address = "localhost";
       localB.port = 2002;
 
       Blackbird blackbirdA = new Blackbird(localA);
       Blackbird blackbirdB = new Blackbird(localB);
 
-      ADevice testDeviceA = ADevice.device();
+      ADevice testDeviceA = ADevice();
       testDeviceA.identifier = 'A';
       blackbirdA.devices.add(testDeviceA);
 
-      ADevice testDeviceB = ADevice.device();
+      ADevice testDeviceB = ADevice();
       testDeviceB.identifier = 'B';
       blackbirdB.devices.add(testDeviceB);
 

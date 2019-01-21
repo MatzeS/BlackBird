@@ -3,8 +3,8 @@ import 'package:blackbird/blackbird.dart';
 part 'i2c.g.dart';
 
 abstract class I2CSlave extends Device {
-  I2CSlave();
-  factory I2CSlave.device() => _$I2CSlaveDevice();
+  I2CSlave._();
+  factory I2CSlave() => _$I2CSlaveDevice();
   static I2CSlave getRemote(Context context, String uuid) =>
       _$I2CSlaveRmi.getRemote(context, uuid);
   factory I2CSlave.fromJson(Map<String, dynamic> json) =>
@@ -24,6 +24,7 @@ abstract class I2CSlave extends Device {
 }
 
 abstract class I2CMaster extends Device {
+  I2CMaster._();
   static I2CMaster getRemote(Context context, String uuid) =>
       _$I2CMasterRmi.getRemote(context, uuid);
 

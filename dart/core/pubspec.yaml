@@ -9,36 +9,34 @@ environment:
 
 dependencies:
   async:
-  rmi: ^0.0.3
+  rmi: 
+    git:
+      url: https://github.com/MatzeS/dart_rmi
+      ref: develop
+      path: rmi
   tuple:
   json_annotation:
-    path: ../../../dart/json_serializable/json_annotation
   json_serialization:
-    path: ../../../dart/json_serializable/json_serialization
+    git:
+      url: https://github.com/MatzeS/json_serializable
+      ref: feature/blackbird
+      path: json_serialization
 
 dev_dependencies:
   blackbird_common:
     path: ../common
   json_serializable:
-    path: ../../../dart/json_serializable/json_serializable
-  built_value_generator: ^6.1.6
+    git:
+      url: https://github.com/MatzeS/json_serializable
+      ref: feature/blackbird
+      path: json_serializable  
   build_runner: ^1.1.2
   build_test:
   test:
-  rmi_generator: ^0.0.3
+  rmi_generator: 
+    git:
+      url: https://github.com/MatzeS/dart_rmi
+      ref: develop
+      path: rmi_generator
   blackbird_generators:
     path: ../generators
-  source_gen_helpers: 
-    path: ../../../dart/source_gen_helpers
-
-dependency_overrides:
-  rmi: 
-    path: ../../../dart/remote_method_invocation/rmi
-  rmi_generator: 
-    path: ../../../dart/remote_method_invocation/rmi_generator
-  source_gen_helpers:
-    path: ../../../dart/source_gen_helpers
-  json_serializable:
-    path: ../../../dart/json_serializable/json_serializable
-  json_annotation:
-    path: ../../../dart/json_serializable/json_annotation

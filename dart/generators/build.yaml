@@ -5,6 +5,8 @@ targets:
         enabled: true
       blackbird_generators|filtered_dependency_builder_type_generator:
         enabled: true
+      blackbird_generators|device_json_serializable_generator:
+        enabled: true
 
 builders:
   device_generator:
@@ -20,6 +22,14 @@ builders:
     import: "package:blackbird_generators/src/filtered_dependency_builder/generator.dart"
     builder_factories: ["builder"]
     build_extensions: {".dart": [".filtered_dependency_builder.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]
+  device_json_serializable_generator:
+    target: ":blackbird_generators"
+    import: "package:blackbird_generators/src/device_json_serializable_generator.dart"
+    builder_factories: ["builder"]
+    build_extensions: {".dart": [".device_json_serializable.g.part"]}
     auto_apply: dependents
     build_to: cache
     applies_builders: ["source_gen|combining_builder"]

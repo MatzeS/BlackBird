@@ -7,7 +7,7 @@ part of 'ontario.dart';
 // **************************************************************************
 
 class _$OntarioDevice extends Ontario {
-  _$OntarioDevice();
+  _$OntarioDevice() : super._();
 
   Host get host =>
       throw new Exception('only implementation objects are hosted');
@@ -40,7 +40,8 @@ class _$OntarioImplementation extends Ontario {
   AVRConnection _connection;
   Host _host;
 
-  _$OntarioImplementation(Ontario delegate, Map<Symbol, Object> parameters) {
+  _$OntarioImplementation(Ontario delegate, Map<Symbol, Object> parameters)
+      : super._() {
     if (parameters == null) {
       ConstructionInfoException info = new ConstructionInfoException();
       info.dependencies.add(new Dependency(
@@ -92,14 +93,24 @@ class _$OntarioImplementation extends Ontario {
 }
 
 // **************************************************************************
+// DeviceJsonSerializableGenerator
+// **************************************************************************
+
+Ontario _$OntarioFromJson(Map<String, dynamic> json) {
+  return Ontario();
+}
+
+Map<String, dynamic> _$OntarioToJson(Ontario instance) => <String, dynamic>{
+      'json_serializable.className':
+          "asset:blackbird/lib/devices/ontario.dart#Ontario",
+    };
+
+// **************************************************************************
 // InvokerGenerator
 // **************************************************************************
 
 class _$OntarioInvoker {
   static dynamic invoke(Invocation invocation, Ontario target) {
-    if (invocation.isGetter && #connection == invocation.memberName) {
-      return target.connection;
-    }
     if (invocation.isMethod && #writeRegister == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
@@ -147,21 +158,97 @@ class _$OntarioInvoker {
         positionalArguments[2],
       );
     }
+    if (invocation.isGetter && #connection == invocation.memberName) {
+      return target.connection;
+    }
+    if (invocation.isGetter && #blackbird == invocation.memberName) {
+      return target.blackbird;
+    }
+    if (invocation.isSetter && #blackbird == invocation.memberName) {
+      target.blackbird = invocation.positionalArguments[0];
+      return null;
+    }
+    if (invocation.isGetter && #host == invocation.memberName) {
+      return target.host;
+    }
+    if (invocation.isGetter && #hashCode == invocation.memberName) {
+      return target.hashCode;
+    }
+    if (invocation.isGetter && #runtimeType == invocation.memberName) {
+      return target.runtimeType;
+    }
+    if (invocation.isMethod && #postImplementation == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 0; i++)
+        positionalArguments.add(null);
+
+      return target.postImplementation();
+    }
+    if (invocation.isMethod && #implementation == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.implementation(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod && #provideRemote == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.provideRemote(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod && #toJson == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 0; i++)
+        positionalArguments.add(null);
+
+      return target.toJson();
+    }
+    if (invocation.isMethod && #== == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target == positionalArguments[0];
+    }
+    if (invocation.isMethod && #toString == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 0; i++)
+        positionalArguments.add(null);
+
+      return target.toString();
+    }
+    if (invocation.isMethod && #noSuchMethod == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.noSuchMethod(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod && #== == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target == positionalArguments[0];
+    }
   }
 }
-
-// **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
-
-Ontario _$OntarioFromJson(Map<String, dynamic> json) {
-  return Ontario.device();
-}
-
-Map<String, dynamic> _$OntarioToJson(Ontario instance) => <String, dynamic>{
-      'json_serializable.className':
-          "asset:blackbird/lib/devices/ontario.dart#Ontario",
-    };
 
 // **************************************************************************
 // ProxyGenerator
@@ -178,9 +265,13 @@ class _$OntarioProxy implements Ontario {
     Invocation _$invocation =
         Invocation.method(#writeRegister, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   Future<int> readRegister(int slave, int register) async {
@@ -192,9 +283,12 @@ class _$OntarioProxy implements Ontario {
     Invocation _$invocation =
         Invocation.method(#readRegister, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
 
-    return await _handle(_$invocation);
+    return await _handle(_$invocation, metadata);
   }
 
   Future<void> writeRegisters(int slave, int register, List values) async {
@@ -207,9 +301,13 @@ class _$OntarioProxy implements Ontario {
     Invocation _$invocation =
         Invocation.method(#writeRegisters, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
 
-    return await _handle(_$invocation);
+    return await _handle(_$invocation, metadata);
   }
 
   Future<List<int>> readRegisters(int slave, int register, int length) async {
@@ -222,9 +320,13 @@ class _$OntarioProxy implements Ontario {
     Invocation _$invocation =
         Invocation.method(#readRegisters, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
 
-    return await _handle(_$invocation);
+    return await _handle(_$invocation, metadata);
   }
 
   void postImplementation() {
@@ -235,9 +337,10 @@ class _$OntarioProxy implements Ontario {
     Invocation _$invocation =
         Invocation.method(#postImplementation, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
 
-    _handle(_$invocation);
+    _handle(_$invocation, metadata);
   }
 
   Device implementation(Map dependencies) {
@@ -248,9 +351,12 @@ class _$OntarioProxy implements Ontario {
     Invocation _$invocation =
         Invocation.method(#implementation, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   Provision provideRemote(Context context) {
@@ -261,9 +367,12 @@ class _$OntarioProxy implements Ontario {
     Invocation _$invocation =
         Invocation.method(#provideRemote, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   Object invoke(Invocation invocation) {
@@ -274,9 +383,12 @@ class _$OntarioProxy implements Ontario {
     Invocation _$invocation =
         Invocation.method(#invoke, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   Map<String, dynamic> toJson() {
@@ -287,9 +399,11 @@ class _$OntarioProxy implements Ontario {
     Invocation _$invocation =
         Invocation.method(#toJson, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   bool operator ==(Object other) {
@@ -299,9 +413,12 @@ class _$OntarioProxy implements Ontario {
 
     Invocation _$invocation = Invocation.method(#==, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   String toString() {
@@ -312,9 +429,11 @@ class _$OntarioProxy implements Ontario {
     Invocation _$invocation =
         Invocation.method(#toString, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   dynamic noSuchMethod(Invocation invocation) {
@@ -325,9 +444,12 @@ class _$OntarioProxy implements Ontario {
     Invocation _$invocation =
         Invocation.method(#noSuchMethod, arguments, namedArguments);
 
-    MetaFlags meta = new MetaFlags();
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
 
-    return _handle(_$invocation);
+    return _handle(_$invocation, metadata);
   }
 
   InvocationHandlerFunction _handle;
@@ -336,37 +458,50 @@ class _$OntarioProxy implements Ontario {
   AVRConnection get connection {
     Invocation invocation = Invocation.getter(#connection);
 
-    return _handle(invocation);
-  }
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = true;
 
-  Blackbird get _blackbird {
-    Invocation invocation = Invocation.getter(#_blackbird);
-
-    return _handle(invocation);
+    return _handle(invocation, metadata);
   }
 
   Blackbird get blackbird {
     Invocation invocation = Invocation.getter(#blackbird);
 
-    return _handle(invocation);
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
   }
 
   Host get host {
     Invocation invocation = Invocation.getter(#host);
 
-    return _handle(invocation);
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Runtime());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
   }
 
   int get hashCode {
     Invocation invocation = Invocation.getter(#hashCode);
 
-    return _handle(invocation);
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
   }
 
   Type get runtimeType {
     Invocation invocation = Invocation.getter(#runtimeType);
 
-    return _handle(invocation);
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
   }
 }
 

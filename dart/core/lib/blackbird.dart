@@ -5,11 +5,3 @@ export 'src/manager/construction.dart';
 export 'src/connection.dart';
 
 export 'package:rmi/rmi.dart';
-
-class AsDevice {
-  const AsDevice();
-}
-
-class AsImplementation {
-  const AsImplementation();
-}

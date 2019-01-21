@@ -43,7 +43,7 @@ class DeviceVisitor extends BasicDeviceVisitor<String> {
 
     // TODO not clean regarding constructor
     return '''
-      _\$${await className}Device();
+      _\$${await className}Device() : super._();
 
       Host get host => throw new Exception('only implementation objects are hosted');
 

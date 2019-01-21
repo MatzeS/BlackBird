@@ -9,21 +9,17 @@ environment:
 
 dependencies:
   tuple:
-
-dev_dependencies:
   blackbird_common:
     path: ../common
+  source_gen_helpers: 0.0.2
+  json_serializable:
+    git:
+      url: https://github.com/MatzeS/json_serializable
+      ref: feature/blackbird
+      path: json_serializable  
+
+dev_dependencies:
   test:
   source_gen: 
-  source_gen_helpers: 0.0.1
   build_runner: ^1.1.2
   build_test:
-
-  
-dependency_overrides:
-  rmi: 
-    path: ../../../dart/remote_method_invocation/rmi
-  rmi_generator: 
-    path: ../../../dart/remote_method_invocation/rmi_generator
-  source_gen_helpers: 
-    path: ../../../dart/source_gen_helpers
