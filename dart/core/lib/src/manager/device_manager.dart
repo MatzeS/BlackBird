@@ -65,7 +65,7 @@ class AgentManager extends ConstructionManager {
 
     print('construction');
     //CONSTRUCT IT
-    localHandle = constructImplementation();
+    localHandle = await constructImplementation();
 
     return localHandle;
   }
@@ -76,7 +76,7 @@ class LocalDeviceManager extends ConstructionManager {
 
   LocalDeviceManager(Host device, Blackbird blackbird)
       : super(device, blackbird) {
-    localHandle = constructImplementation();
+    constructImplementation().then((d) => localHandle = d);
   }
 
   @override

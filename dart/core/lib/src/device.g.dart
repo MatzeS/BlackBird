@@ -35,6 +35,8 @@ class _$HostDevice extends Host {
 class _$HostImplementation extends Host {
   Blackbird _blackbird;
   Host _host;
+  String _address;
+  int _port;
 
   _$HostImplementation(Host delegate, Map<Symbol, Object> parameters)
       : super._() {
@@ -65,6 +67,7 @@ class _$HostImplementation extends Host {
     }
 
     _blackbird = parameters[#blackbird];
+    _blackbird = parameters[#blackbird];
     _host = parameters[#host];
     _address = delegate.address;
     _port = delegate.port;
@@ -91,10 +94,6 @@ class _$HostImplementation extends Host {
   set port(int _port) => throw new Exception(
       'cannot change device property after implementationconstruction');
   Blackbird get blackbird => _blackbird;
-
-  String _address;
-
-  int _port;
 }
 
 // **************************************************************************

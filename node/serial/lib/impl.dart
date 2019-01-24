@@ -9,14 +9,13 @@ class NodeSerialPort extends SerialPort {
   factory NodeSerialPort(String path, [dynamic port]) {
     StreamController input = new StreamController<List<int>>();
     port.on('data', ([dynamic data]) {
-      print('received $data');
-      input.sink.add(String.fromCharCodes(data));
+      List<int> a = [];
+      for (int i = 0; i < data.length; i++) a.add(data[i]);
+      input.sink.add(a);
     });
 
     StreamController output = new StreamController<List<int>>();
     output.stream.listen((data) {
-      // List<int> sequence = [];
-      // ('' + data).codeUnits.forEach(sequence.add);
       port.write(data);
     });
 
@@ -29,12 +28,4 @@ class NodeSerialPort extends SerialPort {
   }
 
   NodeSerialPort._(Connection<List<int>> connection) : super(connection) {}
-
-  StreamController<String> _input = new StreamController();
-  @override
-  Stream<String> get input => _input.stream;
-
-  StreamController<String> _output = new StreamController();
-  @override
-  StreamSink<String> get output => _output.sink;
 }

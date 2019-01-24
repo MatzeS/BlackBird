@@ -26,6 +26,8 @@ class _$OntarioDevice extends Ontario {
 
   AVRConnection get connection => throw new Exception(
       'cannot get runtime dependencys on device representation');
+  Future<void> sendIR(int ir) =>
+      throw new Exception("you cannot execute stuff on devices");
   Future<void> writeRegister(int slave, int register, int value) =>
       throw new Exception("you cannot execute stuff on devices");
   Future<int> readRegister(int slave, int register) async =>
@@ -72,6 +74,7 @@ class _$OntarioImplementation extends Ontario {
     }
 
     _connection = parameters[#connection];
+    _connection = parameters[#connection];
     _host = parameters[#host];
   }
 
@@ -111,6 +114,16 @@ Map<String, dynamic> _$OntarioToJson(Ontario instance) => <String, dynamic>{
 
 class _$OntarioInvoker {
   static dynamic invoke(Invocation invocation, Ontario target) {
+    if (invocation.isMethod && #sendIR == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.sendIR(
+        positionalArguments[0],
+      );
+    }
     if (invocation.isMethod && #writeRegister == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
@@ -255,6 +268,21 @@ class _$OntarioInvoker {
 // **************************************************************************
 
 class _$OntarioProxy implements Ontario {
+  Future<void> sendIR(int ir) {
+    List<Object> arguments = [];
+    arguments.add(ir);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#sendIR, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
+  }
+
   Future<void> writeRegister(int slave, int register, int value) {
     List<Object> arguments = [];
     arguments.add(slave);

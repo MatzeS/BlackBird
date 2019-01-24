@@ -35,6 +35,7 @@ class _$RCSocketDevice extends RCSocket {
 class _$RCSocketImplementation extends RCSocket {
   AVRConnection _connection;
   Host _host;
+  int _address;
 
   _$RCSocketImplementation(RCSocket delegate, Map<Symbol, Object> parameters)
       : super._() {
@@ -69,6 +70,7 @@ class _$RCSocketImplementation extends RCSocket {
     }
 
     _connection = parameters[#connection];
+    _connection = parameters[#connection];
     _host = parameters[#host];
     _address = delegate.address;
   }
@@ -91,8 +93,6 @@ class _$RCSocketImplementation extends RCSocket {
   set address(int _address) => throw new Exception(
       'cannot change device property after implementationconstruction');
   AVRConnection get connection => _connection;
-
-  int _address;
 }
 
 // **************************************************************************

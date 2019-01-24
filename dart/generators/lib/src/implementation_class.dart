@@ -39,7 +39,12 @@ class ImplementationVisitor extends BasicDeviceVisitor<String> {
     List<Element> list = [];
     list.addAll(await runtimeDependencies);
     list.addAll(await modules);
-    list.where((e) => !e.isSynthetic).forEach((e) {
+    list = list
+        .where((e) => e is PropertyAccessorElement)
+        .map((e) => e as PropertyAccessorElement)
+        .where((e) => e.isGetter)
+        .toList();
+    list.forEach((e) {
       // register dependency
 
       String types = typeList(harmonize(e).item1).join('","');
@@ -54,7 +59,7 @@ class ImplementationVisitor extends BasicDeviceVisitor<String> {
             isModule: ${isSubModule(e)}));
       ''');
     });
-    list.where((e) => !e.isSynthetic).forEach((e) {
+    list.forEach((e) {
       e.metadata.forEach((a) {
         //put annotation to list
         constructionInfo.write('''
@@ -76,18 +81,30 @@ class ImplementationVisitor extends BasicDeviceVisitor<String> {
         .join(' \n');
 
     privateVariables += (await modules)
-        .where((e) => !e.isSynthetic)
+        .where((e) => e is PropertyAccessorElement)
+        .map((e) => e as PropertyAccessorElement)
+        .where((e) => e.isGetter)
+        .map((e) => harmonize(e))
+        .map((e) => '${e.item1} _${e.item2};')
+        .join(' \n');
+
+    privateVariables += (await properties)
+        .where((e) => e is PropertyAccessorElement)
+        .map((e) => e as PropertyAccessorElement)
+        .where((e) => e.isGetter)
+        .where((e) => e.isSynthetic)
         .map((e) => harmonize(e))
         .map((e) => '${e.item1} _${e.item2};')
         .join(' \n');
 
     String assigns = (await runtimeDependencies)
-        .where((e) => !e.isSynthetic)
         .map((e) => '_${e.displayName} = parameters[#${e.displayName}];')
         .join('\n');
 
     assigns += (await modules)
-        .where((e) => !e.isSynthetic)
+        .where((e) => e is PropertyAccessorElement)
+        .map((e) => e as PropertyAccessorElement)
+        .where((e) => e.isGetter)
         .map((e) => '_${e.displayName} = parameters[#${e.displayName}];')
         .join('\n');
 
@@ -140,10 +157,10 @@ class ImplementationVisitor extends BasicDeviceVisitor<String> {
 
   @override
   FutureOr<String> visitPropertyField(FieldElement element) {
-    if (element.getter.isSynthetic)
-      return '''
-      ${element.type.name} _${element.displayName};
-    ''';
+    // if (element.getter.isSynthetic)
+    //   return '''
+    //   ${element.type.name} _${element.displayName};
+    // ''';
   }
 
   /// In fact a property method can do anythign and violate the DI concept,
@@ -171,5 +188,6 @@ class ImplementationVisitor extends BasicDeviceVisitor<String> {
   FutureOr<String> visitModuleSetter(PropertyAccessorElement element) =>
       '=> throw new Exception("cannot change module after implementation construction");';
   @override
-  FutureOr<String> visitModuleField(FieldElement element) => null;
+  FutureOr<String> visitModuleField(FieldElement element) =>
+      null; //TODO check why not werking here, but in private assigns, write tetss
 }

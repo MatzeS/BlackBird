@@ -40,6 +40,7 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
   int _aRuntimeDependency;
   Host _host;
   Device _otherDevice;
+  int _aProperty;
 
   _$SimpleDeviceImplementation(
       SimpleDevice delegate, Map<Symbol, Object> parameters)
@@ -79,6 +80,7 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
     }
 
     _aRuntimeDependency = parameters[#aRuntimeDependency];
+    _aRuntimeDependency = parameters[#aRuntimeDependency];
     _host = parameters[#host];
     _otherDevice = parameters[#otherDevice];
     _aProperty = delegate.aProperty;
@@ -108,8 +110,6 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
   set calculatedProperty(int x) => throw new Exception(
       'cannot change device property after implementationconstruction');
   int get aRuntimeDependency => _aRuntimeDependency;
-
-  int _aProperty;
 }
 
 class _$EvenSimplerDeviceDevice extends EvenSimplerDevice {

@@ -12,7 +12,7 @@ class Connection<T> extends DelegatingStream<T> implements StreamSink<T> {
       : super(stream.asBroadcastStream());
 
   Connection(Connection delegate)
-      : stream = delegate.stream,
+      : stream = delegate.stream.asBroadcastStream(),
         sink = delegate.sink,
         super(delegate.stream) {}
 

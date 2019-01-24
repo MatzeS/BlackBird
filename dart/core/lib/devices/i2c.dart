@@ -3,7 +3,8 @@ import 'package:blackbird/blackbird.dart';
 part 'i2c.g.dart';
 
 abstract class I2CSlave extends Device {
-  I2CSlave._();
+  I2CSlave._(); //TODO remove
+  I2CSlave.extender();
   factory I2CSlave() => _$I2CSlaveDevice();
   static I2CSlave getRemote(Context context, String uuid) =>
       _$I2CSlaveRmi.getRemote(context, uuid);
@@ -13,8 +14,11 @@ abstract class I2CSlave extends Device {
   I2CMaster master;
   int address;
 
-  Future<void> writeRegister(int register, int value) =>
-      master.writeRegister(address, register, value);
+  Future<void> writeRegister(int register, int value) {
+    print(master);
+    master.writeRegister(address, register, value);
+  }
+
   Future<int> readRegister(int register) =>
       master.readRegister(address, register);
   Future<void> writeRegisters(int register, List<int> values) =>

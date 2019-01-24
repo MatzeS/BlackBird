@@ -2,6 +2,7 @@ import 'package:blackbird/src/connection.dart';
 import 'package:blackbird/src/ontario/serial_port.dart';
 import 'dart:async';
 import 'functions/device_identification.dart';
+import 'functions/ir.dart';
 import 'package:async/async.dart';
 
 class AVRPacket {}
@@ -125,13 +126,16 @@ class _PayloadEncoder {
 }
 
 class _PayloadDecoder {
-  static StreamTransformer<List<int>, AVRPacket> asStreamTransformer() =>
-      StreamTransformer.fromHandlers(
-          handleData: (List<int> data, EventSink<AVRPacket> sink) =>
-              new _PayloadDecoder().decode(data, sink));
+  static StreamTransformer<List<int>, AVRPacket> asStreamTransformer() {
+    var d = new _PayloadDecoder();
+    return StreamTransformer.fromHandlers(
+        handleData: (List<int> data, EventSink<AVRPacket> sink) =>
+            d.decode(data, sink));
+  }
 
   _PayloadDecoder() {
     packetparsers.add(new DeviceIdentificationParser());
+    packetparsers.add(new IRParser());
   }
 
   void decode(List<int> data, EventSink<AVRPacket> sink) =>
@@ -141,14 +145,14 @@ class _PayloadDecoder {
   PacketParser getPacketParser(int command) =>
       packetparsers.firstWhere((p) => p.command == command);
 
-  void parsePacket(int command, String data, EventSink<AVRPacket> sink) {
+  void parsePacket(int command, String data, EventSink<AVRPacket> sink) async {
     if (command == 0) return;
     try {
       PacketParser parser = getPacketParser(command);
       AVRPacket packet = parser.parse(data);
       sink.add(packet);
-    } on Exception {
-      print('no parser');
+    } on Object {
+      print('no parser $command');
       return;
     }
   }
@@ -179,6 +183,8 @@ class _PayloadDecoder {
         // else double escape, do nothing
 
         expect = Expect.CMD;
+        dataIndex = 0;
+        data = [];
       } else if (expect == Expect.CMD) {
         command = incomingByte;
 
@@ -190,7 +196,9 @@ class _PayloadDecoder {
         data.add(incomingByte);
         dataIndex++;
 
-        if (dataIndex % 8 == 0) expect = Expect.ESC;
+        if (dataIndex % 8 == 0) {
+          expect = Expect.ESC;
+        }
       } else if (expect == Expect.ESC) {
         for (int i = 0; i < 8; i++)
           if ((incomingByte & (1 << i)) != 0) data[dataIndex - 1 - i] = 0xff;
@@ -201,13 +209,14 @@ class _PayloadDecoder {
           data[dataIndex - 8] = 0xff;
 
         expect = Expect.DATA;
-      }
-      // logger.error("unhandled byte");   //TODO error
+      } else
+        print("unhandled byte $incomingByte"); //TODO error
 
     } on Exception {
       print('exception');
     } on Error catch (e, s) {
       print('error $e');
+      // print(s);
     }
   }
 }

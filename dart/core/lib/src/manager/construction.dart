@@ -37,11 +37,11 @@ abstract class ConstructionManager extends DeviceManager {
     return result;
   }
 
-  Object constructModule(Dependency dependency) {
-    return blackbird.implementDevice(dependency.module);
+  Future<Object> constructModule(Dependency dependency) async {
+    return await blackbird.implementDevice(dependency.module);
   }
 
-  Device constructImplementation() {
+  Future<Device> constructImplementation() async {
     ConstructionInfoException info;
     try {
       device.implementation(null);
@@ -50,17 +50,19 @@ abstract class ConstructionManager extends DeviceManager {
     }
 
     Map<Symbol, Object> dependencies = {};
-    info.dependencies.forEach((d) {
+    var list = info.dependencies.map((d) async {
       Object value;
       if (d.name == #host) {
         value = blackbird.localDevice;
       } else if (d.isModule) {
-        value = constructModule(d);
+        value = await constructModule(d);
       } else if (d.isRuntime) {
-        value = constructDependency(d);
+        value = await constructDependency(d);
       }
       dependencies.putIfAbsent(d.name, () => value);
-    });
+    }).toList();
+
+    await Future.wait(list);
 
     return device.implementation(dependencies);
   }

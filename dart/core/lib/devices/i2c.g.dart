@@ -38,6 +38,7 @@ class _$I2CSlaveDevice extends I2CSlave {
 class _$I2CSlaveImplementation extends I2CSlave {
   Host _host;
   I2CMaster _master;
+  int _address;
 
   _$I2CSlaveImplementation(I2CSlave delegate, Map<Symbol, Object> parameters)
       : super._() {
@@ -92,8 +93,6 @@ class _$I2CSlaveImplementation extends I2CSlave {
   int get address => _address;
   set address(int _address) => throw new Exception(
       'cannot change device property after implementationconstruction');
-
-  int _address;
 }
 
 abstract class _$I2CMasterDevice extends I2CMaster {
