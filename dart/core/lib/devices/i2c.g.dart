@@ -95,32 +95,6 @@ class _$I2CSlaveImplementation extends I2CSlave {
       'cannot change device property after implementationconstruction');
 }
 
-abstract class _$I2CMasterDevice extends I2CMaster {
-  _$I2CMasterDevice() : super._();
-
-  Host get host =>
-      throw new Exception('only implementation objects are hosted');
-
-  I2CMaster implementation(Map<Symbol, Object> dependencies) =>
-      throw new Exception("cannot implement abstract device");
-  @override
-  Object invoke(Invocation invocation) =>
-      throw new Exception('no invocation on devices');
-  Provision provideRemote(Context context) =>
-      throw new Exception('no RMI on devices');
-  I2CMaster getRemote(Context context, String uuid) =>
-      throw new Exception('no RMI on devices');
-
-  Future<void> writeRegister(int slave, int register, int value) =>
-      throw new Exception("you cannot execute stuff on devices");
-  Future<int> readRegister(int slave, int register) =>
-      throw new Exception("you cannot execute stuff on devices");
-  Future<void> writeRegisters(int slave, int register, List values) =>
-      throw new Exception("you cannot execute stuff on devices");
-  Future<List<int>> readRegisters(int slave, int register, int length) =>
-      throw new Exception("you cannot execute stuff on devices");
-}
-
 // **************************************************************************
 // DeviceJsonSerializableGenerator
 // **************************************************************************

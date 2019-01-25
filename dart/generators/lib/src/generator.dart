@@ -14,6 +14,7 @@ import 'device_class.dart';
 import 'implementation_class.dart';
 import 'package:blackbird_common/member_identifier.dart';
 import 'package:tuple/tuple.dart';
+import 'package:blackbird_common/member_identifier.dart';
 //TODO check for no arg construcotr
 
 Builder builder(BuilderOptions options) =>
@@ -32,10 +33,14 @@ class DeviceGenerator extends Generator {
         .annotationsOf(element)
         .isNotEmpty) return false;
 
-    if (TypeChecker.fromUrl("asset:blackbird/lib/src/device.dart#Device")
-        .isAssignableFrom(element)) return true;
+    if (!TypeChecker.fromUrl("asset:blackbird/lib/src/device.dart#Device")
+        .isAssignableFrom(element)) return false;
 
-    return false;
+    if (element is ClassElement && element.isMixin) return false;
+
+    if (deviceClassIsAbstract(element)) return false;
+
+    return true;
   }
 
   @override

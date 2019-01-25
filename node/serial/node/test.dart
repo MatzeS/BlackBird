@@ -7,7 +7,6 @@ import 'package:blackbird/devices/mcp23017.dart';
 import 'package:blackbird/src/manager/dependency_builders.dart';
 import 'package:blackbird/blackbird.dart';
 import 'package:blackbird/src/manager/construction.dart';
-import 'package:blackbird/devices/socket.dart';
 
 part 'test.g.dart';
 

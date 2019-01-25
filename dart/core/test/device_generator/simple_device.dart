@@ -31,6 +31,8 @@ class SomeAnnotation {
 
 abstract class SimpleDevice extends Device {
   SimpleDevice._();
+  static SimpleDevice getRemote(Context context, String uuid) =>
+      _$SimpleDeviceRmi.getRemote(context, uuid);
 
   int aProperty;
 
@@ -56,4 +58,6 @@ abstract class SimpleDevice extends Device {
 abstract class EvenSimplerDevice extends Device {
   EvenSimplerDevice._();
   factory EvenSimplerDevice() => new _$EvenSimplerDeviceDevice();
+  static EvenSimplerDevice getRemote(Context context, String uuid) =>
+      _$EvenSimplerDeviceRmi.getRemote(context, uuid);
 }

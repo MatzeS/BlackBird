@@ -12,7 +12,7 @@ abstract class DeviceManager {
   DeviceManager(this.device, this.blackbird);
 
   Future<Host> get currentHost;
-  Future<bool> get isRemoteHosted async =>
+  Future<bool> get isRemoteHosted async => //TODO check these
       await currentHost != null && await currentHost != blackbird.localDevice;
   Future<bool> get isLocallyHosted async =>
       await currentHost != null && await currentHost == blackbird.localDevice;
@@ -28,13 +28,14 @@ class AgentManager extends ConstructionManager {
   AgentManager(Device device, Blackbird blackbird) : super(device, blackbird);
 
   Future<Device> get remoteHandle async {
-    if (blackbird.localDevice.port == 2002) return null;
-
-    List<Future<Device>> handleFutureList = blackbird.hosts
-        .map((h) => h.getRemoteHandle(device))
+    List<Future<Host>> hostFutures = blackbird.hosts
+        .map((h) => blackbird.interfaceDevice(h))
         .map((f) async => await f)
-        .where((handle) => handle != null)
         .toList();
+    List<Host> hostHandles = await Future.wait(hostFutures);
+    hostHandles = hostHandles.where((h) => h != null).toList();
+    List<Future<Device>> handleFutureList =
+        hostHandles.map((h) => h.getRemoteHandle(device)).toList();
     List<Device> handleList = await Future.wait(handleFutureList);
     if (handleList.isEmpty) return null;
     Device handle = handleList.single;
@@ -51,7 +52,7 @@ class AgentManager extends ConstructionManager {
   @override
   Future<Device> get interfaceDevice async {
     if (localHandle != null) return localHandle;
-    if (remoteHandle != null) return await remoteHandle;
+    if (await remoteHandle != null) return await remoteHandle;
     //TODO
     throw new Exception('not fully implemented?');
   }

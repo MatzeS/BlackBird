@@ -31,7 +31,8 @@ abstract class ConstructionManager extends DeviceManager {
     }
 
     if (result == null) {
-      throw new Exception('no builder succeeded for ${dependency.name}');
+      throw new Exception(
+          'no builder succeeded for ${dependency.name} on $device');
     }
 
     return result;

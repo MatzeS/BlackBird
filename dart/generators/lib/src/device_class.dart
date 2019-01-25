@@ -21,6 +21,9 @@ class DeviceVisitor extends BasicDeviceVisitor<String> {
 
   visitClassElement(ClassElement element) async {
     super.visitClassElement(element);
+
+    _checkDeviceClass(element);
+
     classDeclarationCompleter.complete((await isAbstract ? 'abstract ' : '') +
         'class _\$${element.name}Device extends ${element.name}');
     //TODO generate error when constructor not available
@@ -93,6 +96,8 @@ class DeviceVisitor extends BasicDeviceVisitor<String> {
 
   @override
   FutureOr<String> visitExecutiveMethod(MethodElement element) async {
+    if (element.name == 'getRemote')
+      return null; //TODO this is a bandaid solution
     String arguments = element.parameters.map((p) => p.name).join(',');
     return ' => throw new Exception("you cannot execute stuff on devices");';
     // return '=> ${await _bbhook}${element.displayName}($arguments);';
@@ -109,5 +114,17 @@ class DeviceVisitor extends BasicDeviceVisitor<String> {
   FutureOr<String> visitExecutiveGetter(PropertyAccessorElement element) async {
     return ' => throw new Exception("you cannot execute stuff on devices");';
     // return '=> ${await _bbhook}${element.displayName};';
+  }
+}
+
+_checkDeviceClass(ClassElement element) {
+  var getRemote =
+      element.methods.where((e) => e.name == 'getRemote' && e.isStatic);
+
+  if (getRemote.isEmpty) {
+    log.severe('''No getRemote-method for $element, add the following \n
+        static ${element.displayName} getRemote(Context context, String uuid) =>
+          _\$${element.displayName}Rmi.getRemote(context, uuid);
+    ''');
   }
 }

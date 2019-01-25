@@ -16,31 +16,6 @@ class Blackbird {
   Blackbird(this.localDevice) {
     addDependencyBuilder(new LocalHostBlackbirdInjector(this));
     implementDevice(localDevice);
-
-    // var server = ServerSocket.bind(localDevice.address, localDevice.port);
-    // server.then((server) {
-    //   server.listen((socket) {
-    //     var connection = new HostConnection.fromSocket(socket);
-    //     connection.receive<HandshakePacket>().then((handshake) async {
-    //       Context context = new Context(
-    //           connection.rmiSubConnection, connection.rmiSubConnection);
-
-    //       context.registerDeserializer(
-    //           'asset:blackbird/lib/devices/example_device.dart#ADevice',
-    //           (d) => ADevice()..identifier = d['identifier'] as String);
-    //       context.registerRemoteStubConstructor(
-    //           'asset:blackbird/lib/devices/example_device.dart#ADevice',
-    //           ADevice.getRemote);
-
-    //       var localImpl = await implementDevice(localDevice);
-    //       Provision localProvision = localImpl.provideRemote(context);
-
-    //       //respond
-    //       connection
-    //           .send(new HandshakePacket(localDevice, localProvision.uuid));
-    //     });
-    //   });
-    // });
   }
 
   /// See [DeviceManager.interfaceDevice]

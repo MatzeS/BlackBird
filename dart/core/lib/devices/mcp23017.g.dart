@@ -1,59 +1,142 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'socket.dart';
+part of 'mcp23017.dart';
 
 // **************************************************************************
 // DeviceGenerator
 // **************************************************************************
 
-abstract class _$SocketDevice extends Socket {
-  _$SocketDevice() : super._();
+class _$MCP23017Device extends MCP23017 {
+  _$MCP23017Device() : super._();
 
   Host get host =>
       throw new Exception('only implementation objects are hosted');
 
-  Socket implementation(Map<Symbol, Object> dependencies) =>
-      throw new Exception("cannot implement abstract device");
+  MCP23017 implementation(Map<Symbol, Object> dependencies) =>
+      _$MCP23017Implementation(this, dependencies);
   @override
   Object invoke(Invocation invocation) =>
       throw new Exception('no invocation on devices');
   Provision provideRemote(Context context) =>
       throw new Exception('no RMI on devices');
-  Socket getRemote(Context context, String uuid) =>
+  MCP23017 getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
+  @override
+  Map<String, dynamic> toJson() => _$MCP23017ToJson(this);
 
-  dynamic toggle() =>
+  dynamic turnOn() =>
       throw new Exception("you cannot execute stuff on devices");
-  void writeState(int state) =>
+
+  Future<void> writeRegister(int register, int value) =>
+      throw new Exception("you cannot execute stuff on devices");
+  Future<int> readRegister(int register) =>
+      throw new Exception("you cannot execute stuff on devices");
+  Future<void> writeRegisters(int register, List values) =>
+      throw new Exception("you cannot execute stuff on devices");
+  Future<List<int>> readRegisters(int register, int length) =>
       throw new Exception("you cannot execute stuff on devices");
 }
+
+class _$MCP23017Implementation extends MCP23017 {
+  Host _host;
+  I2CMaster _master;
+  int _address;
+
+  _$MCP23017Implementation(MCP23017 delegate, Map<Symbol, Object> parameters)
+      : super._() {
+    if (parameters == null) {
+      ConstructionInfoException info = new ConstructionInfoException();
+      info.dependencies.add(new Dependency(
+          name: #host,
+          type: [
+            "asset:blackbird/lib/src/device.dart#Host",
+            "asset:blackbird/lib/src/device.dart#Device",
+            "dart:core#Object"
+          ],
+          device: this,
+          module: null,
+          isModule: false));
+      info.dependencies.add(new Dependency(
+          name: #master,
+          type: [
+            "asset:blackbird/lib/devices/i2c.dart#I2CMaster",
+            "asset:blackbird/lib/src/device.dart#Device",
+            "dart:core#Object"
+          ],
+          device: this,
+          module: delegate.master,
+          isModule: true));
+      info[#host].annotations.add(Runtime());
+      throw info;
+    }
+
+    _host = parameters[#host];
+    _master = parameters[#master];
+    _address = delegate.address;
+  }
+
+  Host get host => _host;
+
+  MCP23017 implementation(Map<Symbol, Object> dependencies) =>
+      throw Exception('this is already an implementation');
+  @override
+  Object invoke(Invocation invocation) =>
+      _$MCP23017Invoker.invoke(invocation, this);
+  Provision provideRemote(Context context) =>
+      _$MCP23017Rmi.provideRemote(context, this);
+  MCP23017 getRemote(Context context, String uuid) =>
+      _$MCP23017Rmi.getRemote(context, uuid);
+  @override
+  Map<String, dynamic> toJson() => _$MCP23017ToJson(this);
+
+  I2CMaster get master => _master;
+  set master(I2CMaster _master) => throw new Exception(
+      "cannot change module after implementation construction");
+  int get address => _address;
+  set address(int _address) => throw new Exception(
+      'cannot change device property after implementationconstruction');
+}
+
+// **************************************************************************
+// DeviceJsonSerializableGenerator
+// **************************************************************************
+
+MCP23017 _$MCP23017FromJson(Map<String, dynamic> json) {
+  return MCP23017()..address = json['address'] as int;
+}
+
+Map<String, dynamic> _$MCP23017ToJson(MCP23017 instance) => <String, dynamic>{
+      'address': instance.address,
+      'json_serializable.className':
+          "asset:blackbird/lib/devices/mcp23017.dart#MCP23017",
+    };
 
 // **************************************************************************
 // InvokerGenerator
 // **************************************************************************
 
-class _$SocketInvoker {
-  static dynamic invoke(Invocation invocation, Socket target) {
-    if (invocation.isMethod && #toggle == invocation.memberName) {
+class _$MCP23017Invoker {
+  static dynamic invoke(Invocation invocation, MCP23017 target) {
+    if (invocation.isMethod && #turnOn == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
       for (int i = invocation.positionalArguments.length; i < 0; i++)
         positionalArguments.add(null);
 
-      return target.toggle();
+      return target.turnOn();
     }
-    if (invocation.isGetter && #states == invocation.memberName) {
-      return target.states;
+    if (invocation.isGetter && #master == invocation.memberName) {
+      return target.master;
     }
-    if (invocation.isSetter && #binaryState == invocation.memberName) {
-      target.binaryState = invocation.positionalArguments[0];
+    if (invocation.isSetter && #master == invocation.memberName) {
+      target.master = invocation.positionalArguments[0];
       return null;
     }
-    if (invocation.isGetter && #state == invocation.memberName) {
-      return target.state;
+    if (invocation.isGetter && #address == invocation.memberName) {
+      return target.address;
     }
-    if (invocation.isSetter && #state == invocation.memberName) {
-      target.state = invocation.positionalArguments[0];
+    if (invocation.isSetter && #address == invocation.memberName) {
+      target.address = invocation.positionalArguments[0];
       return null;
     }
     if (invocation.isGetter && #blackbird == invocation.memberName) {
@@ -72,31 +155,48 @@ class _$SocketInvoker {
     if (invocation.isGetter && #runtimeType == invocation.memberName) {
       return target.runtimeType;
     }
-    if (invocation.isMethod && #writeState == invocation.memberName) {
+    if (invocation.isMethod && #writeRegister == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 2; i++)
+        positionalArguments.add(null);
+
+      return target.writeRegister(
+        positionalArguments[0],
+        positionalArguments[1],
+      );
+    }
+    if (invocation.isMethod && #readRegister == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
       for (int i = invocation.positionalArguments.length; i < 1; i++)
         positionalArguments.add(null);
 
-      return target.writeState(
+      return target.readRegister(
         positionalArguments[0],
       );
     }
-    if (invocation.isMethod && #turnOn == invocation.memberName) {
+    if (invocation.isMethod && #writeRegisters == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 0; i++)
+      for (int i = invocation.positionalArguments.length; i < 2; i++)
         positionalArguments.add(null);
 
-      return target.turnOn();
+      return target.writeRegisters(
+        positionalArguments[0],
+        positionalArguments[1],
+      );
     }
-    if (invocation.isMethod && #turnOff == invocation.memberName) {
+    if (invocation.isMethod && #readRegisters == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 0; i++)
+      for (int i = invocation.positionalArguments.length; i < 2; i++)
         positionalArguments.add(null);
 
-      return target.turnOff();
+      return target.readRegisters(
+        positionalArguments[0],
+        positionalArguments[1],
+      );
     }
     if (invocation.isMethod && #postImplementation == invocation.memberName) {
       List<Object> positionalArguments =
@@ -175,38 +275,8 @@ class _$SocketInvoker {
 // ProxyGenerator
 // **************************************************************************
 
-class _$SocketProxy implements Socket {
-  dynamic toggle() {
-    List<Object> arguments = [];
-
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#toggle, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.isStream = false;
-
-    return _handle(_$invocation, metadata);
-  }
-
-  void writeState(int state) {
-    List<Object> arguments = [];
-    arguments.add(state);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#writeState, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.elementMetadata.add(Executive());
-    metadata.isStream = false;
-
-    _handle(_$invocation, metadata);
-  }
-
-  Future<void> turnOn() async {
+class _$MCP23017Proxy implements MCP23017 {
+  dynamic turnOn() {
     List<Object> arguments = [];
 
     Map<Symbol, Object> namedArguments = {};
@@ -217,21 +287,73 @@ class _$SocketProxy implements Socket {
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.isStream = false;
 
-    return await _handle(_$invocation, metadata);
+    return _handle(_$invocation, metadata);
   }
 
-  Future<void> turnOff() async {
+  Future<void> writeRegister(int register, int value) {
     List<Object> arguments = [];
-
+    arguments.add(register);
+    arguments.add(value);
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation =
-        Invocation.method(#turnOff, arguments, namedArguments);
+        Invocation.method(#writeRegister, arguments, namedArguments);
 
     InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
     metadata.isStream = false;
 
-    return await _handle(_$invocation, metadata);
+    return _handle(_$invocation, metadata);
+  }
+
+  Future<int> readRegister(int register) {
+    List<Object> arguments = [];
+    arguments.add(register);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#readRegister, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
+  }
+
+  Future<void> writeRegisters(int register, List values) {
+    List<Object> arguments = [];
+    arguments.add(register);
+    arguments.add(values);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#writeRegisters, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
+  }
+
+  Future<List<int>> readRegisters(int register, int length) {
+    List<Object> arguments = [];
+    arguments.add(register);
+    arguments.add(length);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#readRegisters, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
   }
 
   void postImplementation() {
@@ -358,37 +480,24 @@ class _$SocketProxy implements Socket {
   }
 
   InvocationHandlerFunction _handle;
-  _$SocketProxy(this._handle) : super();
+  _$MCP23017Proxy(this._handle) : super();
 
-  int get states {
-    Invocation invocation = Invocation.getter(#states);
+  I2CMaster get master {
+    Invocation invocation = Invocation.getter(#master);
 
     InvocationMetadata metadata = new InvocationMetadata();
-    metadata.elementMetadata.add(Property());
     metadata.isStream = false;
 
     return _handle(invocation, metadata);
   }
 
-  set state(int state) {
-    Invocation invocation = Invocation.setter(#state, state);
+  int get address {
+    Invocation invocation = Invocation.getter(#address);
 
     InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.elementMetadata.add(Executive());
     metadata.isStream = false;
 
-    _handle(invocation, metadata);
-  }
-
-  set binaryState(bool binaryState) {
-    Invocation invocation = Invocation.setter(#binaryState, binaryState);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.isStream = false;
-
-    _handle(invocation, metadata);
+    return _handle(invocation, metadata);
   }
 
   Blackbird get blackbird {
@@ -436,24 +545,24 @@ class _$SocketProxy implements Socket {
 // RmiGenerator
 // **************************************************************************
 
-class _$SocketRmi {
+class _$MCP23017Rmi {
   static void _registerSerializers(Context context) {}
   static void _registerStubConstructors(Context context) {
     context.registerRemoteStubConstructor(
-        'asset:blackbird/lib/devices/socket.dart#Socket', getRemote);
+        'asset:blackbird/lib/devices/mcp23017.dart#MCP23017', getRemote);
   }
 
-  static Socket getRemote(Context context, String uuid) {
+  static MCP23017 getRemote(Context context, String uuid) {
     _registerSerializers(context);
     _registerStubConstructors(context);
     RmiProxyHandler handler = RmiProxyHandler(context, uuid);
-    return _$SocketProxy(handler.handle);
+    return _$MCP23017Proxy(handler.handle);
   }
 
-  static Provision provideRemote(Context context, Socket target) {
+  static Provision provideRemote(Context context, MCP23017 target) {
     _registerSerializers(context);
     _registerStubConstructors(context);
     return rmiProvideRemote(
-        context, target, 'asset:blackbird/lib/devices/socket.dart#Socket');
+        context, target, 'asset:blackbird/lib/devices/mcp23017.dart#MCP23017');
   }
 }

@@ -1,110 +1,61 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'osram_bulb.dart';
-
-// **************************************************************************
-// DeviceGenerator
-// **************************************************************************
-
-class _$OsramBulbDevice extends OsramBulb {
-  _$OsramBulbDevice() : super._();
-
-  Host get host =>
-      throw new Exception('only implementation objects are hosted');
-
-  OsramBulb implementation(Map<Symbol, Object> dependencies) =>
-      _$OsramBulbImplementation(this, dependencies);
-  @override
-  Object invoke(Invocation invocation) =>
-      throw new Exception('no invocation on devices');
-  Provision provideRemote(Context context) =>
-      throw new Exception('no RMI on devices');
-  OsramBulb getRemote(Context context, String uuid) =>
-      throw new Exception('no RMI on devices');
-  @override
-  Map<String, dynamic> toJson() => _$OsramBulbToJson(this);
-
-  dynamic turnOn() async =>
-      throw new Exception("you cannot execute stuff on devices");
-  dynamic turnOff() async =>
-      throw new Exception("you cannot execute stuff on devices");
-  Ontario ontario;
-}
-
-class _$OsramBulbImplementation extends OsramBulb {
-  Host _host;
-  Ontario _ontario;
-
-  _$OsramBulbImplementation(OsramBulb delegate, Map<Symbol, Object> parameters)
-      : super._() {
-    if (parameters == null) {
-      ConstructionInfoException info = new ConstructionInfoException();
-      info.dependencies.add(new Dependency(
-          name: #host,
-          type: [
-            "asset:blackbird/lib/src/device.dart#Host",
-            "asset:blackbird/lib/src/device.dart#Device",
-            "dart:core#Object"
-          ],
-          device: this,
-          module: null,
-          isModule: false));
-      info.dependencies.add(new Dependency(
-          name: #ontario,
-          type: [
-            "asset:blackbird/lib/devices/ontario.dart#Ontario",
-            "asset:blackbird/lib/src/device.dart#Device",
-            "dart:core#Object"
-          ],
-          device: this,
-          module: delegate.ontario,
-          isModule: true));
-      info[#host].annotations.add(Runtime());
-      throw info;
-    }
-
-    _host = parameters[#host];
-    _ontario = parameters[#ontario];
-  }
-
-  Host get host => _host;
-
-  OsramBulb implementation(Map<Symbol, Object> dependencies) =>
-      throw Exception('this is already an implementation');
-  @override
-  Object invoke(Invocation invocation) =>
-      _$OsramBulbInvoker.invoke(invocation, this);
-  Provision provideRemote(Context context) =>
-      _$OsramBulbRmi.provideRemote(context, this);
-  OsramBulb getRemote(Context context, String uuid) =>
-      _$OsramBulbRmi.getRemote(context, uuid);
-  @override
-  Map<String, dynamic> toJson() => _$OsramBulbToJson(this);
-
-  Ontario get ontario => _ontario;
-  set ontario(Ontario _ontario) => throw new Exception(
-      "cannot change module after implementation construction");
-}
-
-// **************************************************************************
-// DeviceJsonSerializableGenerator
-// **************************************************************************
-
-OsramBulb _$OsramBulbFromJson(Map<String, dynamic> json) {
-  return OsramBulb();
-}
-
-Map<String, dynamic> _$OsramBulbToJson(OsramBulb instance) => <String, dynamic>{
-      'json_serializable.className':
-          "asset:blackbird/lib/devices/osram_bulb.dart#OsramBulb",
-    };
+part of 'outlet.dart';
 
 // **************************************************************************
 // InvokerGenerator
 // **************************************************************************
 
-class _$OsramBulbInvoker {
-  static dynamic invoke(Invocation invocation, OsramBulb target) {
+class _$OutletInvoker {
+  static dynamic invoke(Invocation invocation, Outlet target) {
+    if (invocation.isMethod && #toggle == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 0; i++)
+        positionalArguments.add(null);
+
+      return target.toggle();
+    }
+    if (invocation.isGetter && #states == invocation.memberName) {
+      return target.states;
+    }
+    if (invocation.isSetter && #binaryState == invocation.memberName) {
+      target.binaryState = invocation.positionalArguments[0];
+      return null;
+    }
+    if (invocation.isGetter && #state == invocation.memberName) {
+      return target.state;
+    }
+    if (invocation.isSetter && #state == invocation.memberName) {
+      target.state = invocation.positionalArguments[0];
+      return null;
+    }
+    if (invocation.isGetter && #blackbird == invocation.memberName) {
+      return target.blackbird;
+    }
+    if (invocation.isSetter && #blackbird == invocation.memberName) {
+      target.blackbird = invocation.positionalArguments[0];
+      return null;
+    }
+    if (invocation.isGetter && #host == invocation.memberName) {
+      return target.host;
+    }
+    if (invocation.isGetter && #hashCode == invocation.memberName) {
+      return target.hashCode;
+    }
+    if (invocation.isGetter && #runtimeType == invocation.memberName) {
+      return target.runtimeType;
+    }
+    if (invocation.isMethod && #writeState == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.writeState(
+        positionalArguments[0],
+      );
+    }
     if (invocation.isMethod && #turnOn == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
@@ -120,37 +71,6 @@ class _$OsramBulbInvoker {
         positionalArguments.add(null);
 
       return target.turnOff();
-    }
-    if (invocation.isMethod && #== == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 1; i++)
-        positionalArguments.add(null);
-
-      return target == positionalArguments[0];
-    }
-    if (invocation.isGetter && #ontario == invocation.memberName) {
-      return target.ontario;
-    }
-    if (invocation.isSetter && #ontario == invocation.memberName) {
-      target.ontario = invocation.positionalArguments[0];
-      return null;
-    }
-    if (invocation.isGetter && #hashCode == invocation.memberName) {
-      return target.hashCode;
-    }
-    if (invocation.isGetter && #blackbird == invocation.memberName) {
-      return target.blackbird;
-    }
-    if (invocation.isSetter && #blackbird == invocation.memberName) {
-      target.blackbird = invocation.positionalArguments[0];
-      return null;
-    }
-    if (invocation.isGetter && #host == invocation.memberName) {
-      return target.host;
-    }
-    if (invocation.isGetter && #runtimeType == invocation.memberName) {
-      return target.runtimeType;
     }
     if (invocation.isMethod && #postImplementation == invocation.memberName) {
       List<Object> positionalArguments =
@@ -188,6 +108,14 @@ class _$OsramBulbInvoker {
 
       return target.toJson();
     }
+    if (invocation.isMethod && #== == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target == positionalArguments[0];
+    }
     if (invocation.isMethod && #toString == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
@@ -221,8 +149,38 @@ class _$OsramBulbInvoker {
 // ProxyGenerator
 // **************************************************************************
 
-class _$OsramBulbProxy implements OsramBulb {
-  dynamic turnOn() async {
+class _$OutletProxy implements Outlet {
+  dynamic toggle() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#toggle, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
+  }
+
+  void writeState(int state) {
+    List<Object> arguments = [];
+    arguments.add(state);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#writeState, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Executive());
+    metadata.isStream = false;
+
+    _handle(_$invocation, metadata);
+  }
+
+  Future<void> turnOn() async {
     List<Object> arguments = [];
 
     Map<Symbol, Object> namedArguments = {};
@@ -236,7 +194,7 @@ class _$OsramBulbProxy implements OsramBulb {
     return await _handle(_$invocation, metadata);
   }
 
-  dynamic turnOff() async {
+  Future<void> turnOff() async {
     List<Object> arguments = [];
 
     Map<Symbol, Object> namedArguments = {};
@@ -248,21 +206,6 @@ class _$OsramBulbProxy implements OsramBulb {
     metadata.isStream = false;
 
     return await _handle(_$invocation, metadata);
-  }
-
-  bool operator ==(Object other) {
-    List<Object> arguments = [];
-    arguments.add(other);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation = Invocation.method(#==, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.elementMetadata.add(Ignore());
-    metadata.isStream = false;
-
-    return _handle(_$invocation, metadata);
   }
 
   void postImplementation() {
@@ -342,6 +285,21 @@ class _$OsramBulbProxy implements OsramBulb {
     return _handle(_$invocation, metadata);
   }
 
+  bool operator ==(Object other) {
+    List<Object> arguments = [];
+    arguments.add(other);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation = Invocation.method(#==, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
+  }
+
   String toString() {
     List<Object> arguments = [];
 
@@ -374,26 +332,37 @@ class _$OsramBulbProxy implements OsramBulb {
   }
 
   InvocationHandlerFunction _handle;
-  _$OsramBulbProxy(this._handle) : super();
+  _$OutletProxy(this._handle) : super();
 
-  Ontario get ontario {
-    Invocation invocation = Invocation.getter(#ontario);
+  int get states {
+    Invocation invocation = Invocation.getter(#states);
 
     InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Property());
     metadata.isStream = false;
 
     return _handle(invocation, metadata);
   }
 
-  int get hashCode {
-    Invocation invocation = Invocation.getter(#hashCode);
+  set state(int state) {
+    Invocation invocation = Invocation.setter(#state, state);
 
     InvocationMetadata metadata = new InvocationMetadata();
-    metadata.elementMetadata.add(Ignore());
-    metadata.elementMetadata.add(override);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Executive());
     metadata.isStream = false;
 
-    return _handle(invocation, metadata);
+    _handle(invocation, metadata);
+  }
+
+  set binaryState(bool binaryState) {
+    Invocation invocation = Invocation.setter(#binaryState, binaryState);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    _handle(invocation, metadata);
   }
 
   Blackbird get blackbird {
@@ -416,6 +385,16 @@ class _$OsramBulbProxy implements OsramBulb {
     return _handle(invocation, metadata);
   }
 
+  int get hashCode {
+    Invocation invocation = Invocation.getter(#hashCode);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
   Type get runtimeType {
     Invocation invocation = Invocation.getter(#runtimeType);
 
@@ -431,26 +410,24 @@ class _$OsramBulbProxy implements OsramBulb {
 // RmiGenerator
 // **************************************************************************
 
-class _$OsramBulbRmi {
+class _$OutletRmi {
   static void _registerSerializers(Context context) {}
   static void _registerStubConstructors(Context context) {
     context.registerRemoteStubConstructor(
-        'asset:blackbird/lib/devices/ontario.dart#Ontario', Ontario.getRemote);
-    context.registerRemoteStubConstructor(
-        'asset:blackbird/lib/devices/osram_bulb.dart#OsramBulb', getRemote);
+        'asset:blackbird/lib/devices/outlet.dart#Outlet', getRemote);
   }
 
-  static OsramBulb getRemote(Context context, String uuid) {
+  static Outlet getRemote(Context context, String uuid) {
     _registerSerializers(context);
     _registerStubConstructors(context);
     RmiProxyHandler handler = RmiProxyHandler(context, uuid);
-    return _$OsramBulbProxy(handler.handle);
+    return _$OutletProxy(handler.handle);
   }
 
-  static Provision provideRemote(Context context, OsramBulb target) {
+  static Provision provideRemote(Context context, Outlet target) {
     _registerSerializers(context);
     _registerStubConstructors(context);
-    return rmiProvideRemote(context, target,
-        'asset:blackbird/lib/devices/osram_bulb.dart#OsramBulb');
+    return rmiProvideRemote(
+        context, target, 'asset:blackbird/lib/devices/outlet.dart#Outlet');
   }
 }

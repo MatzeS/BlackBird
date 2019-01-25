@@ -34,6 +34,8 @@ const BLUE4 = 0xff58a7;
 abstract class OsramBulb extends Device {
   OsramBulb._() : super();
   factory OsramBulb() => _$OsramBulbDevice();
+  static OsramBulb getRemote(Context context, String uuid) =>
+      _$OsramBulbRmi.getRemote(context, uuid);
 
   Ontario ontario;
   _send(int data) => ontario.sendIR(data);
@@ -45,5 +47,17 @@ abstract class OsramBulb extends Device {
 
   turnOff() async {
     _send(OFF);
+  }
+
+  @Ignore()
+  operator ==(Object other) {
+    if (other is! OsramBulb) return false;
+    return true;
+  }
+
+  @Ignore()
+  @override
+  int get hashCode {
+    return 1234;
   }
 }

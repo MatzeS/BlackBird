@@ -1,9 +1,12 @@
 import 'package:blackbird/blackbird.dart';
 import 'common.dart';
 
-// part 'output.g.dart';
+part 'output.g.dart';
 
 abstract class DiscreteOutput extends Device {
+  static DiscreteOutput getRemote(Context context, String uuid) =>
+      _$DiscreteOutputRmi.getRemote(context, uuid);
+
   @Property()
   int get states;
 

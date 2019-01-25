@@ -240,6 +240,13 @@ abstract class Host extends Device {
     return 'Host($address/$port)';
   }
 
+  @Ignore()
+  operator ==(Object other) {
+    if (other is! Host) return false;
+    Host host = other as Host;
+    return address == host.address;
+  }
+
   static Host getRemote(Context context, String uuid) =>
       _$HostRmi.getRemote(context, uuid);
   static Host fromJson(Map<String, dynamic> json) => _$HostFromJson(json);

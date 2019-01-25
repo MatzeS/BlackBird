@@ -1,5 +1,5 @@
 import '../connection.dart';
-import 'package:blackbird/devices/socket.dart';
+import 'package:blackbird/devices/outlet.dart';
 import 'package:blackbird/blackbird.dart';
 import 'package:rmi/remote_method_invocation.dart';
 import 'package:rmi/invoker.dart';
@@ -8,9 +8,11 @@ import 'package:blackbird/devices/common.dart';
 
 part 'rc_socket.g.dart';
 
-abstract class RCSocket extends Socket {
+abstract class RCSocket extends Outlet {
   RCSocket._() : super();
   factory RCSocket() => _$RCSocketDevice();
+  static RCSocket getRemote(Context context, String uuid) =>
+      _$RCSocketRmi.getRemote(context, uuid);
 
   //TODO remove
   @Runtime()

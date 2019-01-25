@@ -1,9 +1,12 @@
 import 'package:blackbird/blackbird.dart';
 import 'common.dart';
 
-// part 'input.g.dart';
+part 'input.g.dart';
 
 abstract class DiscreteInput extends Device {
+  static DiscreteInput getRemote(Context context, String uuid) =>
+      _$DiscreteInputRmi.getRemote(context, uuid);
+
   /// The number of descrete states
   @Property()
   int get states;
@@ -15,6 +18,9 @@ abstract class DiscreteInput extends Device {
 }
 
 abstract class DiscreteInterruptInput extends DiscreteInput {
+  static DiscreteInterruptInput getRemote(Context context, String uuid) =>
+      _$DiscreteInterruptInputRmi.getRemote(context, uuid);
+
   int _state;
   get state async => _state;
 

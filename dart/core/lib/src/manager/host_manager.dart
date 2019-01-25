@@ -8,6 +8,7 @@ import 'dart:convert';
 import 'package:json_serialization/json_serialization.dart';
 import 'package:async/async.dart';
 import 'package:blackbird/devices/example_device.dart';
+import 'package:blackbird/devices/osram_bulb.dart';
 
 class HostManager extends DeviceManager {
   HostManager(Host device, Blackbird blackbird) : super(device, blackbird);
@@ -25,6 +26,12 @@ class HostManager extends DeviceManager {
   }
 
   Future<void> connect() async {
+    if (device.address != '192.168.0.205') {
+      print('WARNING not connecting to $device');
+      return null;
+    }
+
+    print('connecting to $device');
     Socket socket = await Socket.connect(device.address, device.port);
     HostConnection connection = HostConnection.fromSocket(socket);
 
@@ -36,6 +43,10 @@ class HostManager extends DeviceManager {
     context.registerRemoteStubConstructor(
         'asset:blackbird/lib/devices/example_device.dart#ADevice',
         ADevice.getRemote);
+    context.registerRemoteStubConstructor(
+        'asset:blackbird/lib/devices/osram_bulb.dart#OsramBulb',
+        OsramBulb.getRemote);
+
     var localImpl = await blackbird.implementDevice(blackbird.localDevice);
     Provision localProvision = localImpl.provideRemote(context);
 
@@ -74,8 +85,6 @@ class HostConnection extends Connection<BlackbirdPacket> {
 
 Connection<List<int>> connectionFromSocket(Socket socket) =>
     new Connection.fromParts(socket.asBroadcastStream(), socket);
-
-typedef Object FromJson(Map<String, dynamic> json);
 
 class HostConnectionTransformer
     extends SimpleConnectionTransformer<String, BlackbirdPacket> {
