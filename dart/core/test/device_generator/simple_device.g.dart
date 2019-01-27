@@ -21,6 +21,7 @@ class _$SimpleDeviceDevice extends SimpleDevice {
       throw new Exception('no RMI on devices');
   SimpleDevice getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
+  get hooks => _$SimpleDeviceHooks;
   @override
   Map<String, dynamic> toJson() => _$SimpleDeviceToJson(this);
 
@@ -100,6 +101,8 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
   @override
   Map<String, dynamic> toJson() => _$SimpleDeviceToJson(this);
 
+  get hooks => _$SimpleDeviceHooks;
+
   int get aProperty => _aProperty;
   set aProperty(int _aProperty) => throw new Exception(
       'cannot change device property after implementationconstruction');
@@ -110,6 +113,15 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
   set calculatedProperty(int x) => throw new Exception(
       'cannot change device property after implementationconstruction');
   int get aRuntimeDependency => _aRuntimeDependency;
+}
+
+Map<String, dynamic> get _$SimpleDeviceHooks {
+  return {
+    "classURL":
+        "asset:blackbird/test/device_generator/simple_device.dart#SimpleDevice",
+    "remote": _$SimpleDeviceRmi.getRemote,
+    "fromJson": _$SimpleDeviceFromJson
+  };
 }
 
 class _$EvenSimplerDeviceDevice extends EvenSimplerDevice {
@@ -127,6 +139,7 @@ class _$EvenSimplerDeviceDevice extends EvenSimplerDevice {
       throw new Exception('no RMI on devices');
   EvenSimplerDevice getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
+  get hooks => _$EvenSimplerDeviceHooks;
   @override
   Map<String, dynamic> toJson() => _$EvenSimplerDeviceToJson(this);
 }
@@ -169,6 +182,17 @@ class _$EvenSimplerDeviceImplementation extends EvenSimplerDevice {
       _$EvenSimplerDeviceRmi.getRemote(context, uuid);
   @override
   Map<String, dynamic> toJson() => _$EvenSimplerDeviceToJson(this);
+
+  get hooks => _$EvenSimplerDeviceHooks;
+}
+
+Map<String, dynamic> get _$EvenSimplerDeviceHooks {
+  return {
+    "classURL":
+        "asset:blackbird/test/device_generator/simple_device.dart#EvenSimplerDevice",
+    "remote": _$EvenSimplerDeviceRmi.getRemote,
+    "fromJson": _$EvenSimplerDeviceFromJson
+  };
 }
 
 // **************************************************************************
@@ -256,6 +280,9 @@ class _$SimpleDeviceInvoker {
     }
     if (invocation.isGetter && #runtimeType == invocation.memberName) {
       return target.runtimeType;
+    }
+    if (invocation.isGetter && #hooks == invocation.memberName) {
+      return target.hooks;
     }
     if (invocation.isMethod && #postImplementation == invocation.memberName) {
       List<Object> positionalArguments =
@@ -347,6 +374,9 @@ class _$EvenSimplerDeviceInvoker {
     }
     if (invocation.isGetter && #runtimeType == invocation.memberName) {
       return target.runtimeType;
+    }
+    if (invocation.isGetter && #hooks == invocation.memberName) {
+      return target.hooks;
     }
     if (invocation.isMethod && #postImplementation == invocation.memberName) {
       List<Object> positionalArguments =
@@ -662,6 +692,16 @@ class _$SimpleDeviceProxy implements SimpleDevice {
 
     return _handle(invocation, metadata);
   }
+
+  Map<String, dynamic> get hooks {
+    Invocation invocation = Invocation.getter(#hooks);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
 }
 
 class _$EvenSimplerDeviceProxy implements EvenSimplerDevice {
@@ -823,6 +863,16 @@ class _$EvenSimplerDeviceProxy implements EvenSimplerDevice {
 
   Type get runtimeType {
     Invocation invocation = Invocation.getter(#runtimeType);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
+  Map<String, dynamic> get hooks {
+    Invocation invocation = Invocation.getter(#hooks);
 
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.elementMetadata.add(Ignore());

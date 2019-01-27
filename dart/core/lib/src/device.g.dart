@@ -21,6 +21,7 @@ class _$HostDevice extends Host {
       throw new Exception('no RMI on devices');
   Host getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
+  get hooks => _$HostHooks;
   @override
   Map<String, dynamic> toJson() => _$HostToJson(this);
 
@@ -87,6 +88,8 @@ class _$HostImplementation extends Host {
   @override
   Map<String, dynamic> toJson() => _$HostToJson(this);
 
+  get hooks => _$HostHooks;
+
   String get address => _address;
   set address(String _address) => throw new Exception(
       'cannot change device property after implementationconstruction');
@@ -94,6 +97,14 @@ class _$HostImplementation extends Host {
   set port(int _port) => throw new Exception(
       'cannot change device property after implementationconstruction');
   Blackbird get blackbird => _blackbird;
+}
+
+Map<String, dynamic> get _$HostHooks {
+  return {
+    "classURL": "asset:blackbird/lib/src/device.dart#Host",
+    "remote": _$HostRmi.getRemote,
+    "fromJson": _$HostFromJson
+  };
 }
 
 // **************************************************************************
@@ -196,6 +207,9 @@ class _$DeviceInvoker {
     if (invocation.isGetter && #runtimeType == invocation.memberName) {
       return target.runtimeType;
     }
+    if (invocation.isGetter && #hooks == invocation.memberName) {
+      return target.hooks;
+    }
     if (invocation.isMethod && #== == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
@@ -274,6 +288,9 @@ class _$HostInvoker {
     }
     if (invocation.isGetter && #runtimeType == invocation.memberName) {
       return target.runtimeType;
+    }
+    if (invocation.isGetter && #hooks == invocation.memberName) {
+      return target.hooks;
     }
     if (invocation.isMethod && #postImplementation == invocation.memberName) {
       List<Object> positionalArguments =
@@ -502,6 +519,16 @@ class _$DeviceProxy implements Device {
 
     return _handle(invocation, metadata);
   }
+
+  Map<String, dynamic> get hooks {
+    Invocation invocation = Invocation.getter(#hooks);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
 }
 
 class _$HostProxy implements Host {
@@ -712,6 +739,16 @@ class _$HostProxy implements Host {
 
   Type get runtimeType {
     Invocation invocation = Invocation.getter(#runtimeType);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
+  Map<String, dynamic> get hooks {
+    Invocation invocation = Invocation.getter(#hooks);
 
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.elementMetadata.add(Ignore());

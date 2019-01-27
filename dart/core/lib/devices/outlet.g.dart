@@ -46,6 +46,9 @@ class _$OutletInvoker {
     if (invocation.isGetter && #runtimeType == invocation.memberName) {
       return target.runtimeType;
     }
+    if (invocation.isGetter && #hooks == invocation.memberName) {
+      return target.hooks;
+    }
     if (invocation.isMethod && #writeState == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
@@ -397,6 +400,16 @@ class _$OutletProxy implements Outlet {
 
   Type get runtimeType {
     Invocation invocation = Invocation.getter(#runtimeType);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
+  Map<String, dynamic> get hooks {
+    Invocation invocation = Invocation.getter(#hooks);
 
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.elementMetadata.add(Ignore());

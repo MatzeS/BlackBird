@@ -21,6 +21,7 @@ class _$OntarioDevice extends Ontario {
       throw new Exception('no RMI on devices');
   Ontario getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
+  get hooks => _$OntarioHooks;
   @override
   Map<String, dynamic> toJson() => _$OntarioToJson(this);
 
@@ -92,7 +93,17 @@ class _$OntarioImplementation extends Ontario {
   @override
   Map<String, dynamic> toJson() => _$OntarioToJson(this);
 
+  get hooks => _$OntarioHooks;
+
   AVRConnection get connection => _connection;
+}
+
+Map<String, dynamic> get _$OntarioHooks {
+  return {
+    "classURL": "asset:blackbird/lib/devices/ontario.dart#Ontario",
+    "remote": _$OntarioRmi.getRemote,
+    "fromJson": _$OntarioFromJson
+  };
 }
 
 // **************************************************************************
@@ -189,6 +200,9 @@ class _$OntarioInvoker {
     }
     if (invocation.isGetter && #runtimeType == invocation.memberName) {
       return target.runtimeType;
+    }
+    if (invocation.isGetter && #hooks == invocation.memberName) {
+      return target.hooks;
     }
     if (invocation.isMethod && #postImplementation == invocation.memberName) {
       List<Object> positionalArguments =
@@ -524,6 +538,16 @@ class _$OntarioProxy implements Ontario {
 
   Type get runtimeType {
     Invocation invocation = Invocation.getter(#runtimeType);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
+  Map<String, dynamic> get hooks {
+    Invocation invocation = Invocation.getter(#hooks);
 
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.elementMetadata.add(Ignore());

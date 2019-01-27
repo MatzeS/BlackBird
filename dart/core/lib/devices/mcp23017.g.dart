@@ -21,6 +21,7 @@ class _$MCP23017Device extends MCP23017 {
       throw new Exception('no RMI on devices');
   MCP23017 getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
+  get hooks => _$MCP23017Hooks;
   @override
   Map<String, dynamic> toJson() => _$MCP23017ToJson(this);
 
@@ -89,12 +90,22 @@ class _$MCP23017Implementation extends MCP23017 {
   @override
   Map<String, dynamic> toJson() => _$MCP23017ToJson(this);
 
+  get hooks => _$MCP23017Hooks;
+
   I2CMaster get master => _master;
   set master(I2CMaster _master) => throw new Exception(
       "cannot change module after implementation construction");
   int get address => _address;
   set address(int _address) => throw new Exception(
       'cannot change device property after implementationconstruction');
+}
+
+Map<String, dynamic> get _$MCP23017Hooks {
+  return {
+    "classURL": "asset:blackbird/lib/devices/mcp23017.dart#MCP23017",
+    "remote": _$MCP23017Rmi.getRemote,
+    "fromJson": _$MCP23017FromJson
+  };
 }
 
 // **************************************************************************
@@ -154,6 +165,9 @@ class _$MCP23017Invoker {
     }
     if (invocation.isGetter && #runtimeType == invocation.memberName) {
       return target.runtimeType;
+    }
+    if (invocation.isGetter && #hooks == invocation.memberName) {
+      return target.hooks;
     }
     if (invocation.isMethod && #writeRegister == invocation.memberName) {
       List<Object> positionalArguments =
@@ -532,6 +546,16 @@ class _$MCP23017Proxy implements MCP23017 {
 
   Type get runtimeType {
     Invocation invocation = Invocation.getter(#runtimeType);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
+  Map<String, dynamic> get hooks {
+    Invocation invocation = Invocation.getter(#hooks);
 
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.elementMetadata.add(Ignore());

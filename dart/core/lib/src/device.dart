@@ -213,6 +213,9 @@ abstract class Device implements RmiTarget {
 
   @Ignore()
   noSuchMethod(Invocation invocation);
+
+  @Ignore()
+  Map<String, dynamic> get hooks;
 }
 
 /// A host is a device running a blackbird instance and possibly hosting implementation objects

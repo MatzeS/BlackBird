@@ -10,10 +10,11 @@ environment:
 dependencies:
   async:
   rmi: 
-    git:
-      url: https://github.com/MatzeS/dart_rmi
-      ref: develop
-      path: rmi
+    path: ../../../dart/remote_method_invocation/rmi
+    # git:
+    #   url: https://github.com/MatzeS/dart_rmi
+    #   ref: develop
+    #   path: rmi
   tuple:
   json_annotation:
   json_serialization:

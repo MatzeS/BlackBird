@@ -21,6 +21,7 @@ class _$OsramBulbDevice extends OsramBulb {
       throw new Exception('no RMI on devices');
   OsramBulb getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
+  get hooks => _$OsramBulbHooks;
   @override
   Map<String, dynamic> toJson() => _$OsramBulbToJson(this);
 
@@ -81,9 +82,19 @@ class _$OsramBulbImplementation extends OsramBulb {
   @override
   Map<String, dynamic> toJson() => _$OsramBulbToJson(this);
 
+  get hooks => _$OsramBulbHooks;
+
   Ontario get ontario => _ontario;
   set ontario(Ontario _ontario) => throw new Exception(
       "cannot change module after implementation construction");
+}
+
+Map<String, dynamic> get _$OsramBulbHooks {
+  return {
+    "classURL": "asset:blackbird/lib/devices/osram_bulb.dart#OsramBulb",
+    "remote": _$OsramBulbRmi.getRemote,
+    "fromJson": _$OsramBulbFromJson
+  };
 }
 
 // **************************************************************************
@@ -151,6 +162,9 @@ class _$OsramBulbInvoker {
     }
     if (invocation.isGetter && #runtimeType == invocation.memberName) {
       return target.runtimeType;
+    }
+    if (invocation.isGetter && #hooks == invocation.memberName) {
+      return target.hooks;
     }
     if (invocation.isMethod && #postImplementation == invocation.memberName) {
       List<Object> positionalArguments =
@@ -418,6 +432,16 @@ class _$OsramBulbProxy implements OsramBulb {
 
   Type get runtimeType {
     Invocation invocation = Invocation.getter(#runtimeType);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
+  Map<String, dynamic> get hooks {
+    Invocation invocation = Invocation.getter(#hooks);
 
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.elementMetadata.add(Ignore());

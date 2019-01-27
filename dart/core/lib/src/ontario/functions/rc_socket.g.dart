@@ -21,6 +21,7 @@ class _$RCSocketDevice extends RCSocket {
       throw new Exception('no RMI on devices');
   RCSocket getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
+  get hooks => _$RCSocketHooks;
   @override
   Map<String, dynamic> toJson() => _$RCSocketToJson(this);
 
@@ -89,10 +90,21 @@ class _$RCSocketImplementation extends RCSocket {
   @override
   Map<String, dynamic> toJson() => _$RCSocketToJson(this);
 
+  get hooks => _$RCSocketHooks;
+
   int get address => _address;
   set address(int _address) => throw new Exception(
       'cannot change device property after implementationconstruction');
   AVRConnection get connection => _connection;
+}
+
+Map<String, dynamic> get _$RCSocketHooks {
+  return {
+    "classURL":
+        "asset:blackbird/lib/src/ontario/functions/rc_socket.dart#RCSocket",
+    "remote": _$RCSocketRmi.getRemote,
+    "fromJson": _$RCSocketFromJson
+  };
 }
 
 // **************************************************************************
@@ -164,6 +176,9 @@ class _$RCSocketInvoker {
     }
     if (invocation.isGetter && #runtimeType == invocation.memberName) {
       return target.runtimeType;
+    }
+    if (invocation.isGetter && #hooks == invocation.memberName) {
+      return target.hooks;
     }
     if (invocation.isMethod && #toggle == invocation.memberName) {
       List<Object> positionalArguments =
@@ -533,6 +548,16 @@ class _$RCSocketProxy implements RCSocket {
 
   Type get runtimeType {
     Invocation invocation = Invocation.getter(#runtimeType);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
+  Map<String, dynamic> get hooks {
+    Invocation invocation = Invocation.getter(#hooks);
 
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.elementMetadata.add(Ignore());

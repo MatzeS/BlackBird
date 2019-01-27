@@ -31,8 +31,8 @@ void setupDomum(String name) {
     throw new Exception('unknown identifier');
 
   blackbird = new Blackbird(local);
-  blackbird.devices.add(companion);
-  blackbird.devices.add(york);
+  blackbird.addDevice(companion);
+  blackbird.addDevice(york);
   blackbird.devices.remove(local);
 
   ontario = new Ontario();

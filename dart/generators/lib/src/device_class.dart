@@ -59,6 +59,7 @@ class DeviceVisitor extends BasicDeviceVisitor<String> {
           throw new Exception('no RMI on devices');
       $name getRemote(Context context, String uuid) =>
           throw new Exception('no RMI on devices');
+      get hooks => _\$${await className}Hooks;
       $serialization
     ''';
   }

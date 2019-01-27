@@ -26,7 +26,7 @@ class HostManager extends DeviceManager {
   }
 
   Future<void> connect() async {
-    if (device.address != '192.168.0.205') {
+    if (device.address != '192.168.0.205' || device.port == 2002) {
       print('WARNING not connecting to $device');
       return null;
     }
@@ -35,17 +35,10 @@ class HostManager extends DeviceManager {
     Socket socket = await Socket.connect(device.address, device.port);
     HostConnection connection = HostConnection.fromSocket(socket);
 
-    Context context =
-        new Context(connection.rmiSubConnection, connection.rmiSubConnection);
-    context.registerDeserializer(
-        'asset:blackbird/lib/devices/example_device.dart#ADevice',
-        (d) => ADevice()..identifier = d['identifier'] as String);
-    context.registerRemoteStubConstructor(
-        'asset:blackbird/lib/devices/example_device.dart#ADevice',
-        ADevice.getRemote);
-    context.registerRemoteStubConstructor(
-        'asset:blackbird/lib/devices/osram_bulb.dart#OsramBulb',
-        OsramBulb.getRemote);
+    Context context = new Context(
+        connection.rmiSubConnection, connection.rmiSubConnection,
+        serialization: blackbird.serialization,
+        remoteStubProvider: blackbird.remoteStubProvider);
 
     var localImpl = await blackbird.implementDevice(blackbird.localDevice);
     Provision localProvision = localImpl.provideRemote(context);

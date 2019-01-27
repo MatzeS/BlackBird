@@ -21,6 +21,7 @@ class _$I2CSlaveDevice extends I2CSlave {
       throw new Exception('no RMI on devices');
   I2CSlave getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
+  get hooks => _$I2CSlaveHooks;
   @override
   Map<String, dynamic> toJson() => _$I2CSlaveToJson(this);
 
@@ -87,12 +88,22 @@ class _$I2CSlaveImplementation extends I2CSlave {
   @override
   Map<String, dynamic> toJson() => _$I2CSlaveToJson(this);
 
+  get hooks => _$I2CSlaveHooks;
+
   I2CMaster get master => _master;
   set master(I2CMaster _master) => throw new Exception(
       "cannot change module after implementation construction");
   int get address => _address;
   set address(int _address) => throw new Exception(
       'cannot change device property after implementationconstruction');
+}
+
+Map<String, dynamic> get _$I2CSlaveHooks {
+  return {
+    "classURL": "asset:blackbird/lib/devices/i2c.dart#I2CSlave",
+    "remote": _$I2CSlaveRmi.getRemote,
+    "fromJson": _$I2CSlaveFromJson
+  };
 }
 
 // **************************************************************************
@@ -187,6 +198,9 @@ class _$I2CSlaveInvoker {
     }
     if (invocation.isGetter && #runtimeType == invocation.memberName) {
       return target.runtimeType;
+    }
+    if (invocation.isGetter && #hooks == invocation.memberName) {
+      return target.hooks;
     }
     if (invocation.isMethod && #postImplementation == invocation.memberName) {
       List<Object> positionalArguments =
@@ -325,6 +339,9 @@ class _$I2CMasterInvoker {
     }
     if (invocation.isGetter && #runtimeType == invocation.memberName) {
       return target.runtimeType;
+    }
+    if (invocation.isGetter && #hooks == invocation.memberName) {
+      return target.hooks;
     }
     if (invocation.isMethod && #postImplementation == invocation.memberName) {
       List<Object> positionalArguments =
@@ -653,6 +670,16 @@ class _$I2CSlaveProxy implements I2CSlave {
 
     return _handle(invocation, metadata);
   }
+
+  Map<String, dynamic> get hooks {
+    Invocation invocation = Invocation.getter(#hooks);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
 }
 
 class _$I2CMasterProxy implements I2CMaster {
@@ -888,6 +915,16 @@ class _$I2CMasterProxy implements I2CMaster {
 
   Type get runtimeType {
     Invocation invocation = Invocation.getter(#runtimeType);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
+  Map<String, dynamic> get hooks {
+    Invocation invocation = Invocation.getter(#hooks);
 
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.elementMetadata.add(Ignore());

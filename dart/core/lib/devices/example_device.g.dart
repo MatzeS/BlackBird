@@ -21,6 +21,7 @@ class _$ADeviceDevice extends ADevice {
       throw new Exception('no RMI on devices');
   ADevice getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
+  get hooks => _$ADeviceHooks;
   @override
   Map<String, dynamic> toJson() => _$ADeviceToJson(this);
 
@@ -68,9 +69,19 @@ class _$ADeviceImplementation extends ADevice {
   @override
   Map<String, dynamic> toJson() => _$ADeviceToJson(this);
 
+  get hooks => _$ADeviceHooks;
+
   String get identifier => _identifier;
   set identifier(String _identifier) => throw new Exception(
       'cannot change device property after implementationconstruction');
+}
+
+Map<String, dynamic> get _$ADeviceHooks {
+  return {
+    "classURL": "asset:blackbird/lib/devices/example_device.dart#ADevice",
+    "remote": _$ADeviceRmi.getRemote,
+    "fromJson": _$ADeviceFromJson
+  };
 }
 
 // **************************************************************************
@@ -141,6 +152,9 @@ class _$ADeviceInvoker {
     }
     if (invocation.isGetter && #runtimeType == invocation.memberName) {
       return target.runtimeType;
+    }
+    if (invocation.isGetter && #hooks == invocation.memberName) {
+      return target.hooks;
     }
     if (invocation.isMethod && #postImplementation == invocation.memberName) {
       List<Object> positionalArguments =
@@ -386,6 +400,16 @@ class _$ADeviceProxy implements ADevice {
 
   Type get runtimeType {
     Invocation invocation = Invocation.getter(#runtimeType);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
+  Map<String, dynamic> get hooks {
+    Invocation invocation = Invocation.getter(#hooks);
 
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.elementMetadata.add(Ignore());

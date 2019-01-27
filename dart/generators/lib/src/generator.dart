@@ -15,6 +15,7 @@ import 'implementation_class.dart';
 import 'package:blackbird_common/member_identifier.dart';
 import 'package:tuple/tuple.dart';
 import 'package:blackbird_common/member_identifier.dart';
+import 'hooks.dart';
 //TODO check for no arg construcotr
 
 Builder builder(BuilderOptions options) =>
@@ -120,6 +121,7 @@ class DeviceGenerator extends Generator {
     if (!await deviceVisitor.isAbstract) {
       output.write(await implementationOutput.output);
     }
+    output.write(generateHooks(ce));
     return output.toString();
   }
 }

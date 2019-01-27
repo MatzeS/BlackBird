@@ -139,6 +139,8 @@ class ImplementationVisitor extends BasicDeviceVisitor<String> {
         _\$${name}Rmi.getRemote(context, uuid);
       @override
       Map<String, dynamic> toJson() => _\$${name}ToJson(this);
+      
+      get hooks => _\$${await className}Hooks;
     ''';
   }
 
