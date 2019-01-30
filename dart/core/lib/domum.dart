@@ -2,6 +2,7 @@ import 'blackbird.dart';
 import 'package:blackbird/devices/ontario.dart';
 import 'package:blackbird/devices/osram_bulb.dart';
 import 'package:blackbird/devices/mcp23017.dart';
+import 'package:blackbird/devices/example_device.dart';
 
 Host york;
 Host companion;
@@ -15,6 +16,8 @@ Blackbird blackbird;
 Host local;
 
 void setupDomum(String name) {
+  registerDevices();
+
   york = new Host();
   york.address = "192.168.0.205";
   york.port = 1337;
@@ -33,7 +36,7 @@ void setupDomum(String name) {
   blackbird = new Blackbird(local);
   blackbird.addDevice(companion);
   blackbird.addDevice(york);
-  blackbird.devices.remove(local);
+  blackbird.cluster.devices.remove(local);
 
   ontario = new Ontario();
   bulb = new OsramBulb();
@@ -45,4 +48,11 @@ void setupDomum(String name) {
 
   socket = new RCSocket();
   socket.address = 528;
+}
+
+void registerDevices() {
+  blackbird.registerHooks(ADevice().hooks);
+  blackbird.registerHooks(OsramBulb().hooks);
+  blackbird.registerHooks(RCSocket().hooks);
+  blackbird.registerHooks(MCP23017().hooks);
 }

@@ -1,46 +1,39 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:blackbird/blackbird.dart';
-import 'construction.dart';
-import 'packets.dart';
 import 'package:blackbird/src/connection.dart';
-import 'dart:convert';
+
+import 'packets.dart';
 import 'package:json_serialization/json_serialization.dart';
-import 'package:async/async.dart';
-import 'package:blackbird/devices/example_device.dart';
-import 'package:blackbird/devices/osram_bulb.dart';
 
 class HostManager extends DeviceManager {
   HostManager(Host device, Blackbird blackbird) : super(device, blackbird);
 
-  @override
-  Future<Device> get implementDevice =>
-      throw new Exception('cannot implement host devices');
-
   Host get device => super.device;
 
-  Device _remoteHandle;
-  Future<Device> get remoteHandle async {
-    if (_remoteHandle == null) await connect();
-    return _remoteHandle;
+  //TODO think about this, see Device.isAvailable, its just not accurate
+  @override
+  Future<Host> get currentHost async => device;
+
+  @override
+  Future<Device> get interfaceDevice async => await _remoteHandle;
+
+  Device _remoteHandleCache;
+  Future<Device> get _remoteHandle async {
+    if (_remoteHandleCache == null) await connect();
+    return _remoteHandleCache;
   }
 
   Future<void> connect() async {
-    if (device.address != '192.168.0.205' || device.port == 2002) {
-      print('WARNING not connecting to $device');
-      return null;
-    }
-
     print('connecting to $device');
     Socket socket = await Socket.connect(device.address, device.port);
     HostConnection connection = HostConnection.fromSocket(socket);
 
-    Context context = new Context(
-        connection.rmiSubConnection, connection.rmiSubConnection,
-        serialization: blackbird.serialization,
-        remoteStubProvider: blackbird.remoteStubProvider);
+    Context context = blackbird.helpers.createContext(
+        connection.rmiSubConnection, connection.rmiSubConnection);
 
-    var localImpl = await blackbird.implementDevice(blackbird.localDevice);
+    var localImpl = await blackbird.interfaceDevice(blackbird.localDevice);
     Provision localProvision = localImpl.provideRemote(context);
 
     var answer =
@@ -48,44 +41,35 @@ class HostManager extends DeviceManager {
     connection
         .send(new HandshakePacket(blackbird.localDevice, localProvision.uuid));
 
-    _remoteHandle = Host.getRemote(context, (await answer).rmiUuid);
+    _remoteHandleCache = Host.getRemote(context, (await answer).rmiUuid);
   }
-
-  @override
-  Future<Host> get currentHost async => device;
-
-  @override
-  Future<Device> get interfaceDevice async => await remoteHandle;
 }
 
-class BlackbirdPacket {}
+class HostConnectionPacket {}
 
-class HostConnection extends Connection<BlackbirdPacket> {
+class HostConnection extends Connection<HostConnectionPacket> {
   HostConnection(Connection<String> delegate)
       : super(delegate.transformConnection(new HostConnectionTransformer())) {}
 
   HostConnection.fromSocket(Socket socket)
       : this(connectionFromSocket(socket).asStringConnection());
 
+  /// creates a rmi sub connection by wrapping the rmi packets
   Connection<String> get rmiSubConnection => this.transformConnection(
-          ConnectionTransformer<BlackbirdPacket, String>.fromFunctions(
-              (String data, EventSink<BlackbirdPacket> sink) =>
+          ConnectionTransformer<HostConnectionPacket, String>.fromFunctions(
+              (String data, EventSink<HostConnectionPacket> sink) =>
                   sink.add(new RmiWrapperPacket(data)),
-              (BlackbirdPacket data, EventSink<String> sink) {
+              (HostConnectionPacket data, EventSink<String> sink) {
         if (data is RmiWrapperPacket) sink.add(data.wrapped);
       }));
 }
 
-Connection<List<int>> connectionFromSocket(Socket socket) =>
-    new Connection.fromParts(socket.asBroadcastStream(), socket);
-
 class HostConnectionTransformer
-    extends SimpleConnectionTransformer<String, BlackbirdPacket> {
+    extends SimpleConnectionTransformer<String, HostConnectionPacket> {
   HostConnectionTransformer() {
     serialization.registerDeserializer(
         'asset:blackbird/lib/src/manager/packets.dart#HandshakePacket',
         (d) => HandshakePacket.fromJson(d));
-
     serialization.registerDeserializer(
         'asset:blackbird/lib/src/manager/packets.dart#RmiWrapperPacket',
         (d) => RmiWrapperPacket.fromJson(d));
@@ -93,11 +77,11 @@ class HostConnectionTransformer
 
   JsonSerialization serialization = new JsonSerialization();
 
-  void encode(BlackbirdPacket data, EventSink<String> sink) {
+  void encode(HostConnectionPacket data, EventSink<String> sink) {
     sink.add(_serialize(data));
   }
 
-  void decode(String data, EventSink<BlackbirdPacket> sink) {
+  void decode(String data, EventSink<HostConnectionPacket> sink) {
     sink.add(_deserialize(data));
   }
 

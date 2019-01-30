@@ -21,16 +21,16 @@ main() {
 
       ADevice testDeviceA = ADevice();
       testDeviceA.identifier = 'A';
-      blackbirdA.devices.add(testDeviceA);
+      blackbirdA.cluster.devices.add(testDeviceA);
 
       ADevice testDeviceB = ADevice();
       testDeviceB.identifier = 'B';
-      blackbirdB.devices.add(testDeviceB);
+      blackbirdB.cluster.devices.add(testDeviceB);
 
-      (await blackbirdB.implementDevice(testDeviceB)).executive("local");
+      (await blackbirdB.interfaceDevice(testDeviceB)).executive("local");
 
-      blackbirdA.devices.add(localB);
-      blackbirdB.devices.add(localA);
+      blackbirdA.cluster.devices.add(localB);
+      blackbirdB.cluster.devices.add(localA);
 
       expect(testDeviceA, testDeviceB);
 

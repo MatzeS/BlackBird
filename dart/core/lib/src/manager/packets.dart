@@ -1,10 +1,10 @@
-import 'host_manager.dart';
 import 'package:blackbird/blackbird.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 part 'packets.g.dart';
 
 @JsonSerializable()
-class HandshakePacket extends BlackbirdPacket {
+class HandshakePacket extends HostConnectionPacket {
   final Host self;
   final String rmiUuid;
 
@@ -15,9 +15,8 @@ class HandshakePacket extends BlackbirdPacket {
       _$HandshakePacketFromJson(json);
 }
 
-/// Wrapps RMI Packets
 @JsonSerializable()
-class RmiWrapperPacket extends BlackbirdPacket {
+class RmiWrapperPacket extends HostConnectionPacket {
   final String wrapped;
   RmiWrapperPacket(this.wrapped);
 

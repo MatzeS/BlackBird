@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:convert';
 
 import 'package:async/async.dart';
 
@@ -148,3 +147,6 @@ abstract class SimpleConnectionTransformer<S, T>
     return StreamTransformer.fromHandlers(handleData: decode).bind(stream);
   }
 }
+
+Connection<List<int>> connectionFromSocket(Socket socket) =>
+    new Connection.fromParts(socket.asBroadcastStream(), socket);

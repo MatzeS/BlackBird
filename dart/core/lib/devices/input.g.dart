@@ -30,14 +30,14 @@ class _$BinaryInputInvoker {
     if (invocation.isGetter && #host == invocation.memberName) {
       return target.host;
     }
+    if (invocation.isGetter && #hooks == invocation.memberName) {
+      return target.hooks;
+    }
     if (invocation.isGetter && #hashCode == invocation.memberName) {
       return target.hashCode;
     }
     if (invocation.isGetter && #runtimeType == invocation.memberName) {
       return target.runtimeType;
-    }
-    if (invocation.isGetter && #hooks == invocation.memberName) {
-      return target.hooks;
     }
     if (invocation.isMethod && #== == invocation.memberName) {
       List<Object> positionalArguments =
@@ -46,14 +46,6 @@ class _$BinaryInputInvoker {
         positionalArguments.add(null);
 
       return target == positionalArguments[0];
-    }
-    if (invocation.isMethod && #postImplementation == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 0; i++)
-        positionalArguments.add(null);
-
-      return target.postImplementation();
     }
     if (invocation.isMethod && #implementation == invocation.memberName) {
       List<Object> positionalArguments =
@@ -130,22 +122,14 @@ class _$DiscreteInputInvoker {
     if (invocation.isGetter && #host == invocation.memberName) {
       return target.host;
     }
+    if (invocation.isGetter && #hooks == invocation.memberName) {
+      return target.hooks;
+    }
     if (invocation.isGetter && #hashCode == invocation.memberName) {
       return target.hashCode;
     }
     if (invocation.isGetter && #runtimeType == invocation.memberName) {
       return target.runtimeType;
-    }
-    if (invocation.isGetter && #hooks == invocation.memberName) {
-      return target.hooks;
-    }
-    if (invocation.isMethod && #postImplementation == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 0; i++)
-        positionalArguments.add(null);
-
-      return target.postImplementation();
     }
     if (invocation.isMethod && #implementation == invocation.memberName) {
       List<Object> positionalArguments =
@@ -241,14 +225,14 @@ class _$DiscreteInterruptInputInvoker {
     if (invocation.isGetter && #host == invocation.memberName) {
       return target.host;
     }
+    if (invocation.isGetter && #hooks == invocation.memberName) {
+      return target.hooks;
+    }
     if (invocation.isGetter && #hashCode == invocation.memberName) {
       return target.hashCode;
     }
     if (invocation.isGetter && #runtimeType == invocation.memberName) {
       return target.runtimeType;
-    }
-    if (invocation.isGetter && #hooks == invocation.memberName) {
-      return target.hooks;
     }
     if (invocation.isMethod && #implementation == invocation.memberName) {
       List<Object> positionalArguments =
@@ -362,20 +346,6 @@ class _$BinaryInputProxy implements BinaryInput {
     metadata.isStream = false;
 
     return _handle(_$invocation, metadata);
-  }
-
-  void postImplementation() {
-    List<Object> arguments = [];
-
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#postImplementation, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.isStream = false;
-
-    _handle(_$invocation, metadata);
   }
 
   Device implementation(Map dependencies) {
@@ -531,20 +501,6 @@ class _$BinaryInputProxy implements BinaryInput {
 }
 
 class _$DiscreteInputProxy implements DiscreteInput {
-  void postImplementation() {
-    List<Object> arguments = [];
-
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#postImplementation, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.isStream = false;
-
-    _handle(_$invocation, metadata);
-  }
-
   Device implementation(Map dependencies) {
     List<Object> arguments = [];
     arguments.add(dependencies);
@@ -697,6 +653,16 @@ class _$DiscreteInputProxy implements DiscreteInput {
     return _handle(invocation, metadata);
   }
 
+  Map<String, dynamic> get hooks {
+    Invocation invocation = Invocation.getter(#hooks);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
   int get hashCode {
     Invocation invocation = Invocation.getter(#hashCode);
 
@@ -709,16 +675,6 @@ class _$DiscreteInputProxy implements DiscreteInput {
 
   Type get runtimeType {
     Invocation invocation = Invocation.getter(#runtimeType);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.elementMetadata.add(Ignore());
-    metadata.isStream = false;
-
-    return _handle(invocation, metadata);
-  }
-
-  Map<String, dynamic> get hooks {
-    Invocation invocation = Invocation.getter(#hooks);
 
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.elementMetadata.add(Ignore());
@@ -905,6 +861,16 @@ class _$DiscreteInterruptInputProxy implements DiscreteInterruptInput {
     return _handle(invocation, metadata);
   }
 
+  Map<String, dynamic> get hooks {
+    Invocation invocation = Invocation.getter(#hooks);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
   int get hashCode {
     Invocation invocation = Invocation.getter(#hashCode);
 
@@ -917,16 +883,6 @@ class _$DiscreteInterruptInputProxy implements DiscreteInterruptInput {
 
   Type get runtimeType {
     Invocation invocation = Invocation.getter(#runtimeType);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.elementMetadata.add(Ignore());
-    metadata.isStream = false;
-
-    return _handle(invocation, metadata);
-  }
-
-  Map<String, dynamic> get hooks {
-    Invocation invocation = Invocation.getter(#hooks);
 
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.elementMetadata.add(Ignore());

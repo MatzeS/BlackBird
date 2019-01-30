@@ -1,7 +1,9 @@
+import 'dart:async';
+
 import 'package:blackbird/blackbird.dart';
 import 'construction.dart';
 
-/// Manages a device implementation
+/// Manages the implementation of a device in the cluster
 ///
 /// In particular the manager ensures there is only one device implementation object in the cluster.
 /// It either provides a handle of the implementation object on a remote host (RMI)
@@ -11,24 +13,46 @@ abstract class DeviceManager {
   final Device device;
   DeviceManager(this.device, this.blackbird);
 
-  Future<Host> get currentHost;
-  Future<bool> get isRemoteHosted async => //TODO check these
-      await currentHost != null && await currentHost != blackbird.localDevice;
+  Future<bool> get isAvailable async => await currentHost != null;
+  Future<bool> get isRemoteHosted async =>
+      await isAvailable && await currentHost != blackbird.localDevice;
   Future<bool> get isLocallyHosted async =>
-      await currentHost != null && await currentHost == blackbird.localDevice;
-  Future<bool> get isAvailable async =>
-      await isRemoteHosted || await isLocallyHosted;
+      await isAvailable && await currentHost == blackbird.localDevice;
 
+  Future<Host> get currentHost;
   Future<Device> get interfaceDevice;
-  Future<Device> get implementDevice;
 }
 
+/// An agent is the opposite of a host
+/// A device that is managed by a host and does not run a blackbird instance
 class AgentManager extends ConstructionManager {
-  Device localHandle;
   AgentManager(Device device, Blackbird blackbird) : super(device, blackbird);
 
-  Future<Device> get remoteHandle async {
-    List<Future<Host>> hostFutures = blackbird.hosts
+  /// stores the device implementation that was constructed within this blackbird instance
+  Device _localHandle;
+
+  @override
+  Future<Host> get currentHost async {
+    if (_localHandle != null) return blackbird.localDevice;
+
+    return (await _remoteHandle)?.host;
+  }
+
+  @override
+  Future<Device> get interfaceDevice async {
+    if (await isLocallyHosted) return _localHandle;
+    if (await isRemoteHosted) return await _remoteHandle;
+
+    print("constructing $device on ${blackbird.localDevice}");
+    _localHandle = await constructImplementation();
+    return _localHandle;
+  }
+
+  /// Checks if the device is already implemented in the cluster
+  /// and provides the remote handle.
+  /// TODO test, also error handleing
+  Future<Device> get _remoteHandle async {
+    List<Future<Host>> hostFutures = blackbird.cluster.hosts
         .map((h) => blackbird.interfaceDevice(h))
         .map((f) async => await f)
         .toList();
@@ -41,54 +65,19 @@ class AgentManager extends ConstructionManager {
     Device handle = handleList.single;
     return handle;
   }
-
-  @override
-  Future<Host> get currentHost async {
-    if (localHandle != null) return blackbird.localDevice;
-
-    return (await remoteHandle)?.host;
-  }
-
-  @override
-  Future<Device> get interfaceDevice async {
-    if (localHandle != null) return localHandle;
-    if (await remoteHandle != null) return await remoteHandle;
-    //TODO
-    throw new Exception('not fully implemented?');
-  }
-
-  @override
-  Future<Device> get implementDevice async {
-    print("implementing $device on ${blackbird.localDevice}");
-    if (await isRemoteHosted)
-      throw new Exception('cannot implement remote hosted device'); //TODO
-    if (await isLocallyHosted) return localHandle;
-
-    print('construction');
-    //CONSTRUCT IT
-    localHandle = await constructImplementation();
-
-    return localHandle;
-  }
 }
 
+/// Manages the local device
 class LocalDeviceManager extends ConstructionManager {
-  Device localHandle;
+  Completer<Device> _localHandle;
 
   LocalDeviceManager(Host device, Blackbird blackbird)
       : super(device, blackbird) {
-    constructImplementation().then((d) => localHandle = d);
+    _localHandle.complete(constructImplementation());
   }
 
   @override
-  Future<Device> get implementDevice async => localHandle;
-  @override
-  Future<Device> get interfaceDevice => implementDevice;
+  Future<Device> get interfaceDevice => _localHandle.future;
   @override
   Future<Host> get currentHost async => device;
-
-  //TODO not sure on this one
-  Device get remoteHandle {
-    throw new Exception('local is not remote');
-  }
 }

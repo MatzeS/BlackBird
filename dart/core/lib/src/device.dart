@@ -1,9 +1,6 @@
-import 'dart:io';
-
 import 'package:rmi/rmi.dart';
+
 import 'package:blackbird/blackbird.dart';
-import 'main.dart';
-import 'package:json_annotation/json_annotation.dart';
 
 part 'device.g.dart';
 
@@ -136,6 +133,7 @@ abstract class Device implements RmiTarget {
   Blackbird _blackbird;
 
   /// The blackbird instance the device object is associated with
+  /// TODO remove
   @Ignore()
   Blackbird get blackbird {
     if (_blackbird == null) {
@@ -166,13 +164,15 @@ abstract class Device implements RmiTarget {
   @Runtime()
   Host get host;
 
-  /// May be overwritten in order to perform some setup routine after creation of the implementation object
-  void postImplementation() {}
-
   /// Creates the implementation object
   /// This should not be called or implemented manually
   @Ignore()
   Device implementation(Map<Symbol, Object> dependencies);
+
+  /// Links to static methods of the device (e.g getRemote/fromJson)
+  /// This should not be called or implemented manually
+  @Ignore()
+  Map<String, dynamic> get hooks;
 
   /// Makes the object available for RMI
   /// Noted here for the Ignore annotation
@@ -213,9 +213,6 @@ abstract class Device implements RmiTarget {
 
   @Ignore()
   noSuchMethod(Invocation invocation);
-
-  @Ignore()
-  Map<String, dynamic> get hooks;
 }
 
 /// A host is a device running a blackbird instance and possibly hosting implementation objects
@@ -231,7 +228,7 @@ abstract class Host extends Device {
   Blackbird get blackbird;
 
   Future<Device> getRemoteHandle(@NotAsRmi() Device device) async {
-    return await blackbird.implementDevice(device);
+    return await blackbird.localGetRemoteHandle(device);
   }
 
   Future<void> something(String text) async {

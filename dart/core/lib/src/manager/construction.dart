@@ -8,7 +8,7 @@ abstract class ConstructionManager extends DeviceManager {
 
   Object constructDependency(Dependency dependency) {
     if (dependency.isSuperModule) {
-      return blackbird.implementDevice(dependency.module);
+      return blackbird.interfaceDevice(dependency.module);
     } else if (dependency.isSubModule) {
       throw new Exception('not yet implemented');
     } else if (dependency.isRuntime) {
@@ -21,7 +21,7 @@ abstract class ConstructionManager extends DeviceManager {
   Object constructRuntimeDependency(Dependency dependency) {
     Object result;
 
-    for (DependencyBuilder builder in blackbird.dependencyBuilders) {
+    for (DependencyBuilder builder in blackbird.helpers.dependencyBuilders) {
       try {
         result = builder.build(dependency);
         break;
@@ -39,7 +39,7 @@ abstract class ConstructionManager extends DeviceManager {
   }
 
   Future<Object> constructModule(Dependency dependency) async {
-    return await blackbird.implementDevice(dependency.module);
+    return await blackbird.interfaceDevice(dependency.module);
   }
 
   Future<Device> constructImplementation() async {
