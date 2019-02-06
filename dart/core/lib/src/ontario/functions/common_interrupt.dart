@@ -6,7 +6,6 @@ class CommonInterruptParser extends PacketParser {
 
   @override
   AVRPacket parse(String data) {
-    // print('common interrupt raised');
     return new CommonInterruptResponse();
   }
 }

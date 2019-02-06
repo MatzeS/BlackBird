@@ -4,33 +4,35 @@ import 'package:blackbird/devices/ontario.dart';
 import 'output.dart';
 part 'osram_bulb.g.dart';
 
-const ON = 0xffe01f;
-const OFF = 0xff609f;
-const BRIGHTER = 0xff00ff;
-const DIMMER = 0xff40bf;
+class Code {
+  static const ON = 0xffe01f;
+  static const OFF = 0xff609f;
+  static const BRIGHTER = 0xff00ff;
+  static const DIMMER = 0xff40bf;
 
-const RED = 0xff10ef;
-const GREEN = 0xff906f;
-const BLUE = 0xff50af;
-const WHITE = 0xffc03f;
+  static const RED = 0xff10ef;
+  static const GREEN = 0xff906f;
+  static const BLUE = 0xff50af;
+  static const WHITE = 0xffc03f;
 
-const FLASH = 0xfff00f;
-const STROBE = 0xffc837;
-const SMOOTH = 0xffe817;
-const MODE = 0xffd827;
+  static const FLASH = 0xfff00f;
+  static const STROBE = 0xffc837;
+  static const SMOOTH = 0xffe817;
+  static const MODE = 0xffd827;
 
-const RED1 = 0xff30cf;
-const RED2 = 0xff08f7;
-const RED3 = 0xff28d7;
-const RED4 = 0xff18e7;
-const GREEN1 = 0xffb04f;
-const GREEN2 = 0xff8877;
-const GREEN3 = 0xffa857;
-const GREEN4 = 0xff9867;
-const BLUE1 = 0xff708f;
-const BLUE2 = 0xff48b7;
-const BLUE3 = 0xff6897;
-const BLUE4 = 0xff58a7;
+  static const RED1 = 0xff30cf;
+  static const RED2 = 0xff08f7;
+  static const RED3 = 0xff28d7;
+  static const RED4 = 0xff18e7;
+  static const GREEN1 = 0xffb04f;
+  static const GREEN2 = 0xff8877;
+  static const GREEN3 = 0xffa857;
+  static const GREEN4 = 0xff9867;
+  static const BLUE1 = 0xff708f;
+  static const BLUE2 = 0xff48b7;
+  static const BLUE3 = 0xff6897;
+  static const BLUE4 = 0xff58a7;
+}
 
 abstract class OsramBulb extends Device with BinaryOutput, BufferedOutput {
   OsramBulb._() : super();
@@ -41,13 +43,24 @@ abstract class OsramBulb extends Device with BinaryOutput, BufferedOutput {
   Ontario ontario;
   _send(int data) => ontario.sendIR(data);
 
-  turnOn() async {
-    _send(ON);
-    _send(WHITE);
+  toggle() => state = state == ON ? OFF : ON;
+
+  @override
+  void writeState(int state) {
+    if (state == ON) {
+      _send(Code.ON);
+      _send(Code.WHITE);
+    } else {
+      _send(Code.OFF);
+    }
   }
 
-  turnOff() async {
-    _send(OFF);
+  brighten() async {
+    _send(Code.BRIGHTER);
+  }
+
+  dim() async {
+    _send(Code.DIMMER);
   }
 
   @Ignore()
@@ -60,14 +73,5 @@ abstract class OsramBulb extends Device with BinaryOutput, BufferedOutput {
   @override
   int get hashCode {
     return 1234;
-  }
-
-  toggle() => state = state == ON ? OFF : ON;
-
-  void writeState(int state) {
-    if (state == ON)
-      turnOn();
-    else
-      turnOff();
   }
 }

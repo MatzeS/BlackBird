@@ -32,10 +32,8 @@ class IRParser extends PacketParser {
     int value =
         (data[4] << 0) + (data[3] << 8) + (data[2] << 16) + (data[1] << 24);
 
-    //print(value.toRadixString(16));
-
     if (data[0] == 10)
-      return new IRReceiveResponse(0);
+      return new IRReceiveResponse(value);
     else
       throw new Exception('deocde error');
   }

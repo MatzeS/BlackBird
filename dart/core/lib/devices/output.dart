@@ -1,6 +1,7 @@
 import 'package:blackbird/blackbird.dart';
 import 'common.dart';
 
+export 'common.dart';
 part 'output.g.dart';
 
 abstract class DiscreteOutput extends Device {

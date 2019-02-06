@@ -25,13 +25,13 @@ class _$OsramBulbDevice extends OsramBulb {
   @override
   Map<String, dynamic> toJson() => _$OsramBulbToJson(this);
 
-  Future<void> turnOn() async =>
-      throw new Exception("you cannot execute stuff on devices");
-  Future<void> turnOff() async =>
-      throw new Exception("you cannot execute stuff on devices");
   dynamic toggle() =>
       throw new Exception("you cannot execute stuff on devices");
   void writeState(int state) =>
+      throw new Exception("you cannot execute stuff on devices");
+  dynamic brighten() async =>
+      throw new Exception("you cannot execute stuff on devices");
+  dynamic dim() async =>
       throw new Exception("you cannot execute stuff on devices");
   Ontario ontario;
 }
@@ -120,30 +120,6 @@ Map<String, dynamic> _$OsramBulbToJson(OsramBulb instance) => <String, dynamic>{
 
 class _$OsramBulbInvoker {
   static dynamic invoke(Invocation invocation, OsramBulb target) {
-    if (invocation.isMethod && #turnOn == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 0; i++)
-        positionalArguments.add(null);
-
-      return target.turnOn();
-    }
-    if (invocation.isMethod && #turnOff == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 0; i++)
-        positionalArguments.add(null);
-
-      return target.turnOff();
-    }
-    if (invocation.isMethod && #== == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 1; i++)
-        positionalArguments.add(null);
-
-      return target == positionalArguments[0];
-    }
     if (invocation.isMethod && #toggle == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
@@ -161,6 +137,30 @@ class _$OsramBulbInvoker {
       return target.writeState(
         positionalArguments[0],
       );
+    }
+    if (invocation.isMethod && #brighten == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 0; i++)
+        positionalArguments.add(null);
+
+      return target.brighten();
+    }
+    if (invocation.isMethod && #dim == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 0; i++)
+        positionalArguments.add(null);
+
+      return target.dim();
+    }
+    if (invocation.isMethod && #== == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target == positionalArguments[0];
     }
     if (invocation.isGetter && #ontario == invocation.memberName) {
       return target.ontario;
@@ -248,6 +248,22 @@ class _$OsramBulbInvoker {
         positionalArguments[0],
       );
     }
+    if (invocation.isMethod && #turnOn == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 0; i++)
+        positionalArguments.add(null);
+
+      return target.turnOn();
+    }
+    if (invocation.isMethod && #turnOff == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 0; i++)
+        positionalArguments.add(null);
+
+      return target.turnOff();
+    }
     if (invocation.isMethod && #== == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
@@ -264,49 +280,6 @@ class _$OsramBulbInvoker {
 // **************************************************************************
 
 class _$OsramBulbProxy implements OsramBulb {
-  Future<void> turnOn() async {
-    List<Object> arguments = [];
-
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#turnOn, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.isStream = false;
-
-    return await _handle(_$invocation, metadata);
-  }
-
-  Future<void> turnOff() async {
-    List<Object> arguments = [];
-
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#turnOff, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.isStream = false;
-
-    return await _handle(_$invocation, metadata);
-  }
-
-  bool operator ==(Object other) {
-    List<Object> arguments = [];
-    arguments.add(other);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation = Invocation.method(#==, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.elementMetadata.add(Ignore());
-    metadata.isStream = false;
-
-    return _handle(_$invocation, metadata);
-  }
-
   dynamic toggle() {
     List<Object> arguments = [];
 
@@ -331,9 +304,53 @@ class _$OsramBulbProxy implements OsramBulb {
 
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(override);
     metadata.isStream = false;
 
     _handle(_$invocation, metadata);
+  }
+
+  dynamic brighten() async {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#brighten, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return await _handle(_$invocation, metadata);
+  }
+
+  dynamic dim() async {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#dim, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return await _handle(_$invocation, metadata);
+  }
+
+  bool operator ==(Object other) {
+    List<Object> arguments = [];
+    arguments.add(other);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation = Invocation.method(#==, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
   }
 
   Device implementation(Map dependencies) {
@@ -428,6 +445,34 @@ class _$OsramBulbProxy implements OsramBulb {
     metadata.isStream = false;
 
     return _handle(_$invocation, metadata);
+  }
+
+  Future<void> turnOn() async {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#turnOn, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return await _handle(_$invocation, metadata);
+  }
+
+  Future<void> turnOff() async {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#turnOff, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return await _handle(_$invocation, metadata);
   }
 
   InvocationHandlerFunction _handle;

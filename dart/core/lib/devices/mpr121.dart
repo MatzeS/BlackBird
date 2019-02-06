@@ -240,7 +240,7 @@ abstract class MPR121 extends I2CSlave {
     touchStatus.then((ts) => _lastTouchStatus = ts);
 
     var sc = new StreamController<TouchEvent>();
-    _touchEventStream = sc.stream;
+    _touchEventStream = sc.stream.asBroadcastStream();
 
     commonInterrupt.listen((data) async {
       int ts = await touchStatus;

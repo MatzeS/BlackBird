@@ -66,8 +66,8 @@ void a() async {
 
   await blackbird.interfaceDevice(ontario);
   bulbe = await blackbird.interfaceDevice(bulbe);
-  // bulb.turnOn();
-  // await Future.delayed(Duration(milliseconds: 500));
+  bulbe.turnOn();
+  await Future.delayed(Duration(milliseconds: 500));
   bulbe.turnOff();
   await Future.delayed(Duration(milliseconds: 500));
   bulbe.turnOn();
@@ -123,35 +123,33 @@ void start() async {
   await Future.delayed(Duration(milliseconds: 500));
   print('sr done ${await mpr.electrodeEnable}');
 
-  // await mpr.writeBitBlock(BitBlocks.AC_ACE, 1);
-  // await mpr.writeRegister(0x7D, 0xFF);
-  // await mpr.writeRegister(0x7E, 0x0);
-  // await mpr.writeRegister(0x7F, 0xFF ~/ 2);
-
   List<Electrode> electrodes = [];
   for (int i = 0; i < 8; i++) {
     electrodes.add(mpr.electorde(i));
   }
 
-  // Electrode e0 = mpr.electorde(0);
-  // Electrode e1 = mpr.electorde(1);
-
   var config = ElectrodeConfig(0x3F ~/ 2, 4, 470, 100, 80);
-  // var config2 = ElectrodeConfig(0x3F ~/ 2, 4, 470, 100, 80);
-  for (int i = 1; i < 8; i++) await electrodes[i].loadConfig(config);
-  // await electrodes[1].loadConfig(config);
-  // await electrodes[2].loadConfig(config);
-  // await electrodes[3].loadConfig(config);
-  // await electrodes[4].loadConfig(config2);
-  // await e1.loadConfig(config);
+  for (int i = 0; i < 7; i++) await electrodes[i].loadConfig(config);
 
   await mpr.setElectrodeEnable(8);
   print('enabled: ${await mpr.electrodeEnable}');
 
-  electrodes[1]
+  mpr.touchEvent.listen(print);
+
+  electrodes[6]
       .change
       .where((t) => t == Transition.TOUCHED)
       .listen((e) => bulbe.toggle());
+
+  electrodes[4]
+      .change
+      .where((t) => t == Transition.TOUCHED)
+      .listen((e) => bulbe.dim());
+
+  electrodes[3]
+      .change
+      .where((t) => t == Transition.TOUCHED)
+      .listen((e) => bulbe.brighten());
 
   while (true) {
     // String text = '';
