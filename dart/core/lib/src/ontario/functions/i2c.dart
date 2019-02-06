@@ -32,8 +32,9 @@ class I2CParser extends PacketParser {
 
     int slaveAddress = data[1];
     int registerAddress = data[2];
-    List<int> readData = data.getRange(3, data.length);
+    List<int> readData = data.getRange(3, data.length).toList();
 
+    // print('i2c received');
     return new I2CReadResponse(slaveAddress, registerAddress, readData);
   }
 }
@@ -49,5 +50,5 @@ class I2CWriteQuery extends TransmittableAVRPacket {
   /// Write Flag 0x00
   @override
   List<int> get payload =>
-      [0x00, slaveAddress, registerAddress].followedBy(data);
+      [0x00, slaveAddress, registerAddress].followedBy(data).toList();
 }

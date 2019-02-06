@@ -1,6 +1,7 @@
 import 'package:blackbird/blackbird.dart';
 import 'package:blackbird/src/ontario/functions/ir.dart';
 import 'package:blackbird/devices/ontario.dart';
+import 'output.dart';
 part 'osram_bulb.g.dart';
 
 const ON = 0xffe01f;
@@ -31,7 +32,7 @@ const BLUE2 = 0xff48b7;
 const BLUE3 = 0xff6897;
 const BLUE4 = 0xff58a7;
 
-abstract class OsramBulb extends Device {
+abstract class OsramBulb extends Device with BinaryOutput, BufferedOutput {
   OsramBulb._() : super();
   factory OsramBulb() => _$OsramBulbDevice();
   static OsramBulb getRemote(Context context, String uuid) =>
@@ -59,5 +60,14 @@ abstract class OsramBulb extends Device {
   @override
   int get hashCode {
     return 1234;
+  }
+
+  toggle() => state = state == ON ? OFF : ON;
+
+  void writeState(int state) {
+    if (state == ON)
+      turnOn();
+    else
+      turnOff();
   }
 }

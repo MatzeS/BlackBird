@@ -12,20 +12,19 @@ class HostManager extends DeviceManager {
 
   Host get device => super.device;
 
-  //TODO think about this, see Device.isAvailable, its just not accurate
-  @override
-  Future<Host> get currentHost async => device;
+  Device _remoteHandle;
+
+  bool get isRemoteHandlePresent => _remoteHandle != null;
+  bool get isLocallyHosted => false;
 
   @override
-  Future<Device> get interfaceDevice async => await _remoteHandle;
-
-  Device _remoteHandleCache;
-  Future<Device> get _remoteHandle async {
-    if (_remoteHandleCache == null) await connect();
-    return _remoteHandleCache;
+  Future<Device> get interfaceDevice async {
+    await _acquireRemoteHandle();
+    //TODO error
+    return _remoteHandle;
   }
 
-  Future<void> connect() async {
+  Future<void> _acquireRemoteHandle() async {
     print('connecting to $device');
     Socket socket = await Socket.connect(device.address, device.port);
     HostConnection connection = HostConnection.fromSocket(socket);
@@ -41,7 +40,7 @@ class HostManager extends DeviceManager {
     connection
         .send(new HandshakePacket(blackbird.localDevice, localProvision.uuid));
 
-    _remoteHandleCache = Host.getRemote(context, (await answer).rmiUuid);
+    _remoteHandle = Host.getRemote(context, (await answer).rmiUuid);
   }
 }
 

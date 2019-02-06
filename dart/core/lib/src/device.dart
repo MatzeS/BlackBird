@@ -220,6 +220,7 @@ abstract class Host extends Device {
   Host._();
   factory Host() => _$HostDevice();
 
+  String name;
   //TODO inetaddress?
   String address;
   int port;
@@ -228,16 +229,20 @@ abstract class Host extends Device {
   Blackbird get blackbird;
 
   Future<Device> getRemoteHandle(@NotAsRmi() Device device) async {
+    print('get remote is on $name $this ${blackbird.localDevice} $device');
     return await blackbird.localGetRemoteHandle(device);
   }
 
   Future<void> something(String text) async {
-    print('well $address $text');
+    print('well ${toString()} $text');
   }
 
   @Ignore()
   String toString() {
-    return 'Host($address/$port)';
+    if (name != null)
+      return name;
+    else
+      return 'Host($address/$port)';
   }
 
   @Ignore()

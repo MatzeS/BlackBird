@@ -2,9 +2,37 @@ import 'package:blackbird/blackbird.dart';
 import 'device_manager.dart';
 import 'dependency_builders.dart';
 
+/// Provides dependencies and injects them into device implementations
 abstract class ConstructionManager extends DeviceManager {
   ConstructionManager(Device device, Blackbird blackbird)
       : super(device, blackbird);
+
+  Future<Device> constructImplementation() async {
+    print('${blackbird.localDevice} constructing $device');
+    ConstructionInfoException info;
+    try {
+      device.implementation(null);
+    } on ConstructionInfoException catch (e) {
+      info = e;
+    }
+
+    Map<Symbol, Object> dependencies = {};
+    var list = info.dependencies.map((d) async {
+      Object value;
+      if (d.name == #host) {
+        value = blackbird.localDevice;
+      } else if (d.isModule) {
+        value = await constructModule(d);
+      } else if (d.isRuntime) {
+        value = await constructDependency(d);
+      }
+      dependencies.putIfAbsent(d.name, () => value);
+    }).toList();
+
+    await Future.wait(list);
+
+    return device.implementation(dependencies);
+  }
 
   Object constructDependency(Dependency dependency) {
     if (dependency.isSuperModule) {
@@ -40,32 +68,6 @@ abstract class ConstructionManager extends DeviceManager {
 
   Future<Object> constructModule(Dependency dependency) async {
     return await blackbird.interfaceDevice(dependency.module);
-  }
-
-  Future<Device> constructImplementation() async {
-    ConstructionInfoException info;
-    try {
-      device.implementation(null);
-    } on ConstructionInfoException catch (e) {
-      info = e;
-    }
-
-    Map<Symbol, Object> dependencies = {};
-    var list = info.dependencies.map((d) async {
-      Object value;
-      if (d.name == #host) {
-        value = blackbird.localDevice;
-      } else if (d.isModule) {
-        value = await constructModule(d);
-      } else if (d.isRuntime) {
-        value = await constructDependency(d);
-      }
-      dependencies.putIfAbsent(d.name, () => value);
-    }).toList();
-
-    await Future.wait(list);
-
-    return device.implementation(dependencies);
   }
 }
 

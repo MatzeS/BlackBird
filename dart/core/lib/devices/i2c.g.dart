@@ -25,6 +25,16 @@ class _$I2CSlaveDevice extends I2CSlave {
   @override
   Map<String, dynamic> toJson() => _$I2CSlaveToJson(this);
 
+  Stream<void> get commonInterrupt =>
+      throw new Exception("you cannot execute stuff on devices");
+  Future<void> writeBit(int register, int bit, bool value) async =>
+      throw new Exception("you cannot execute stuff on devices");
+  Future<bool> readBit(int register, int bit) async =>
+      throw new Exception("you cannot execute stuff on devices");
+  Future<int> readBits(int register, int lsb, int numBits) async =>
+      throw new Exception("you cannot execute stuff on devices");
+  Future<void> writeBits(int register, int lsb, int numBits, int value) async =>
+      throw new Exception("you cannot execute stuff on devices");
   Future<void> writeRegister(int register, int value) =>
       throw new Exception("you cannot execute stuff on devices");
   Future<int> readRegister(int register) =>
@@ -126,6 +136,54 @@ Map<String, dynamic> _$I2CSlaveToJson(I2CSlave instance) => <String, dynamic>{
 
 class _$I2CSlaveInvoker {
   static dynamic invoke(Invocation invocation, I2CSlave target) {
+    if (invocation.isMethod && #writeBit == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 3; i++)
+        positionalArguments.add(null);
+
+      return target.writeBit(
+        positionalArguments[0],
+        positionalArguments[1],
+        positionalArguments[2],
+      );
+    }
+    if (invocation.isMethod && #readBit == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 2; i++)
+        positionalArguments.add(null);
+
+      return target.readBit(
+        positionalArguments[0],
+        positionalArguments[1],
+      );
+    }
+    if (invocation.isMethod && #readBits == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 3; i++)
+        positionalArguments.add(null);
+
+      return target.readBits(
+        positionalArguments[0],
+        positionalArguments[1],
+        positionalArguments[2],
+      );
+    }
+    if (invocation.isMethod && #writeBits == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 4; i++)
+        positionalArguments.add(null);
+
+      return target.writeBits(
+        positionalArguments[0],
+        positionalArguments[1],
+        positionalArguments[2],
+        positionalArguments[3],
+      );
+    }
     if (invocation.isMethod && #writeRegister == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
@@ -182,6 +240,9 @@ class _$I2CSlaveInvoker {
     if (invocation.isSetter && #address == invocation.memberName) {
       target.address = invocation.positionalArguments[0];
       return null;
+    }
+    if (invocation.isGetter && #commonInterrupt == invocation.memberName) {
+      return target.commonInterrupt;
     }
     if (invocation.isGetter && #blackbird == invocation.memberName) {
       return target.blackbird;
@@ -316,6 +377,9 @@ class _$I2CMasterInvoker {
         positionalArguments[2],
       );
     }
+    if (invocation.isGetter && #commonInterrupt == invocation.memberName) {
+      return target.commonInterrupt;
+    }
     if (invocation.isGetter && #blackbird == invocation.memberName) {
       return target.blackbird;
     }
@@ -405,6 +469,82 @@ class _$I2CMasterInvoker {
 // **************************************************************************
 
 class _$I2CSlaveProxy implements I2CSlave {
+  Future<void> writeBit(int register, int bit, bool value) async {
+    List<Object> arguments = [];
+    arguments.add(register);
+    arguments.add(bit);
+    arguments.add(value);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#writeBit, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return await _handle(_$invocation, metadata);
+  }
+
+  Future<bool> readBit(int register, int bit) async {
+    List<Object> arguments = [];
+    arguments.add(register);
+    arguments.add(bit);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#readBit, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return await _handle(_$invocation, metadata);
+  }
+
+  Future<int> readBits(int register, int lsb, int numBits) async {
+    List<Object> arguments = [];
+    arguments.add(register);
+    arguments.add(lsb);
+    arguments.add(numBits);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#readBits, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return await _handle(_$invocation, metadata);
+  }
+
+  Future<void> writeBits(int register, int lsb, int numBits, int value) async {
+    List<Object> arguments = [];
+    arguments.add(register);
+    arguments.add(lsb);
+    arguments.add(numBits);
+    arguments.add(value);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#writeBits, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return await _handle(_$invocation, metadata);
+  }
+
   Future<void> writeRegister(int register, int value) {
     List<Object> arguments = [];
     arguments.add(register);
@@ -597,6 +737,15 @@ class _$I2CSlaveProxy implements I2CSlave {
 
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
+  Stream<void> get commonInterrupt {
+    Invocation invocation = Invocation.getter(#commonInterrupt);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = true;
 
     return _handle(invocation, metadata);
   }
@@ -838,6 +987,15 @@ class _$I2CMasterProxy implements I2CMaster {
 
   InvocationHandlerFunction _handle;
   _$I2CMasterProxy(this._handle) : super();
+
+  Stream<void> get commonInterrupt {
+    Invocation invocation = Invocation.getter(#commonInterrupt);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = true;
+
+    return _handle(invocation, metadata);
+  }
 
   Blackbird get blackbird {
     Invocation invocation = Invocation.getter(#blackbird);

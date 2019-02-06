@@ -10,11 +10,9 @@ int significantNumber = 123456789;
 class Manager extends ConstructionManager {
   Manager(Device device, Blackbird blackbird) : super(device, blackbird);
   @override
-  Future<Host> get currentHost =>
-      throw new Exception('not implemented for test');
+  bool get isLocallyHosted => null;
   @override
-  Future<Device> get implementDevice =>
-      throw new Exception('not implemented for test');
+  bool get isRemoteHandlePresent => null;
   @override
   Future<Device> get interfaceDevice =>
       throw new Exception('not implemented for test');

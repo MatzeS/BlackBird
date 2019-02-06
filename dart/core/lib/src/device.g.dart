@@ -36,6 +36,7 @@ class _$HostDevice extends Host {
 class _$HostImplementation extends Host {
   Blackbird _blackbird;
   Host _host;
+  String _name;
   String _address;
   int _port;
 
@@ -70,6 +71,7 @@ class _$HostImplementation extends Host {
     _blackbird = parameters[#blackbird];
     _blackbird = parameters[#blackbird];
     _host = parameters[#host];
+    _name = delegate.name;
     _address = delegate.address;
     _port = delegate.port;
   }
@@ -90,6 +92,9 @@ class _$HostImplementation extends Host {
 
   get hooks => _$HostHooks;
 
+  String get name => _name;
+  set name(String _name) => throw new Exception(
+      'cannot change device property after implementationconstruction');
   String get address => _address;
   set address(String _address) => throw new Exception(
       'cannot change device property after implementationconstruction');
@@ -113,11 +118,13 @@ Map<String, dynamic> get _$HostHooks {
 
 Host _$HostFromJson(Map<String, dynamic> json) {
   return Host()
+    ..name = json['name'] as String
     ..address = json['address'] as String
     ..port = json['port'] as int;
 }
 
 Map<String, dynamic> _$HostToJson(Host instance) => <String, dynamic>{
+      'name': instance.name,
       'address': instance.address,
       'port': instance.port,
       'json_serializable.className': "asset:blackbird/lib/src/device.dart#Host",
@@ -250,6 +257,13 @@ class _$HostInvoker {
         positionalArguments.add(null);
 
       return target == positionalArguments[0];
+    }
+    if (invocation.isGetter && #name == invocation.memberName) {
+      return target.name;
+    }
+    if (invocation.isSetter && #name == invocation.memberName) {
+      target.name = invocation.positionalArguments[0];
+      return null;
     }
     if (invocation.isGetter && #address == invocation.memberName) {
       return target.address;
@@ -644,6 +658,15 @@ class _$HostProxy implements Host {
 
   InvocationHandlerFunction _handle;
   _$HostProxy(this._handle) : super();
+
+  String get name {
+    Invocation invocation = Invocation.getter(#name);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
 
   String get address {
     Invocation invocation = Invocation.getter(#address);

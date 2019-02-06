@@ -27,11 +27,15 @@ class _$OntarioDevice extends Ontario {
 
   AVRConnection get connection => throw new Exception(
       'cannot get runtime dependencys on device representation');
+  Stream<void> get commonInterrupt =>
+      throw new Exception("you cannot execute stuff on devices");
   Future<void> sendIR(int ir) =>
       throw new Exception("you cannot execute stuff on devices");
   Future<void> writeRegister(int slave, int register, int value) =>
       throw new Exception("you cannot execute stuff on devices");
   Future<int> readRegister(int slave, int register) async =>
+      throw new Exception("you cannot execute stuff on devices");
+  dynamic setupCommonInterruptStream() =>
       throw new Exception("you cannot execute stuff on devices");
   Future<void> writeRegisters(int slave, int register, List values) async =>
       throw new Exception("you cannot execute stuff on devices");
@@ -158,6 +162,15 @@ class _$OntarioInvoker {
         positionalArguments[1],
       );
     }
+    if (invocation.isMethod &&
+        #setupCommonInterruptStream == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 0; i++)
+        positionalArguments.add(null);
+
+      return target.setupCommonInterruptStream();
+    }
     if (invocation.isMethod && #writeRegisters == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
@@ -184,6 +197,9 @@ class _$OntarioInvoker {
     }
     if (invocation.isGetter && #connection == invocation.memberName) {
       return target.connection;
+    }
+    if (invocation.isGetter && #commonInterrupt == invocation.memberName) {
+      return target.commonInterrupt;
     }
     if (invocation.isGetter && #blackbird == invocation.memberName) {
       return target.blackbird;
@@ -323,6 +339,20 @@ class _$OntarioProxy implements Ontario {
     metadata.isStream = false;
 
     return await _handle(_$invocation, metadata);
+  }
+
+  dynamic setupCommonInterruptStream() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation = Invocation.method(
+        #setupCommonInterruptStream, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
   }
 
   Future<void> writeRegisters(int slave, int register, List values) async {
@@ -477,6 +507,15 @@ class _$OntarioProxy implements Ontario {
 
   AVRConnection get connection {
     Invocation invocation = Invocation.getter(#connection);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = true;
+
+    return _handle(invocation, metadata);
+  }
+
+  Stream<void> get commonInterrupt {
+    Invocation invocation = Invocation.getter(#commonInterrupt);
 
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.isStream = true;

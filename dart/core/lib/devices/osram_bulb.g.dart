@@ -25,9 +25,13 @@ class _$OsramBulbDevice extends OsramBulb {
   @override
   Map<String, dynamic> toJson() => _$OsramBulbToJson(this);
 
-  dynamic turnOn() async =>
+  Future<void> turnOn() async =>
       throw new Exception("you cannot execute stuff on devices");
-  dynamic turnOff() async =>
+  Future<void> turnOff() async =>
+      throw new Exception("you cannot execute stuff on devices");
+  dynamic toggle() =>
+      throw new Exception("you cannot execute stuff on devices");
+  void writeState(int state) =>
       throw new Exception("you cannot execute stuff on devices");
   Ontario ontario;
 }
@@ -140,6 +144,24 @@ class _$OsramBulbInvoker {
 
       return target == positionalArguments[0];
     }
+    if (invocation.isMethod && #toggle == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 0; i++)
+        positionalArguments.add(null);
+
+      return target.toggle();
+    }
+    if (invocation.isMethod && #writeState == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.writeState(
+        positionalArguments[0],
+      );
+    }
     if (invocation.isGetter && #ontario == invocation.memberName) {
       return target.ontario;
     }
@@ -165,6 +187,20 @@ class _$OsramBulbInvoker {
     }
     if (invocation.isGetter && #runtimeType == invocation.memberName) {
       return target.runtimeType;
+    }
+    if (invocation.isGetter && #states == invocation.memberName) {
+      return target.states;
+    }
+    if (invocation.isSetter && #binaryState == invocation.memberName) {
+      target.binaryState = invocation.positionalArguments[0];
+      return null;
+    }
+    if (invocation.isGetter && #state == invocation.memberName) {
+      return target.state;
+    }
+    if (invocation.isSetter && #state == invocation.memberName) {
+      target.state = invocation.positionalArguments[0];
+      return null;
     }
     if (invocation.isMethod && #implementation == invocation.memberName) {
       List<Object> positionalArguments =
@@ -228,7 +264,7 @@ class _$OsramBulbInvoker {
 // **************************************************************************
 
 class _$OsramBulbProxy implements OsramBulb {
-  dynamic turnOn() async {
+  Future<void> turnOn() async {
     List<Object> arguments = [];
 
     Map<Symbol, Object> namedArguments = {};
@@ -242,7 +278,7 @@ class _$OsramBulbProxy implements OsramBulb {
     return await _handle(_$invocation, metadata);
   }
 
-  dynamic turnOff() async {
+  Future<void> turnOff() async {
     List<Object> arguments = [];
 
     Map<Symbol, Object> namedArguments = {};
@@ -269,6 +305,35 @@ class _$OsramBulbProxy implements OsramBulb {
     metadata.isStream = false;
 
     return _handle(_$invocation, metadata);
+  }
+
+  dynamic toggle() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#toggle, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
+  }
+
+  void writeState(int state) {
+    List<Object> arguments = [];
+    arguments.add(state);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#writeState, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    _handle(_$invocation, metadata);
   }
 
   Device implementation(Map dependencies) {
@@ -423,6 +488,34 @@ class _$OsramBulbProxy implements OsramBulb {
 
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.elementMetadata.add(Ignore());
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
+  int get states {
+    Invocation invocation = Invocation.getter(#states);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
+  set binaryState(bool binaryState) {
+    Invocation invocation = Invocation.setter(#binaryState, binaryState);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    _handle(invocation, metadata);
+  }
+
+  int get state {
+    Invocation invocation = Invocation.getter(#state);
+
+    InvocationMetadata metadata = new InvocationMetadata();
     metadata.isStream = false;
 
     return _handle(invocation, metadata);

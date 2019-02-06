@@ -1,5 +1,6 @@
 import 'package:blackbird/blackbird.dart';
 import 'package:blackbird/domum.dart';
+import 'package:logging/logging.dart';
 import 'package:dart_node_serialport/serial_port_module.dart';
 import 'package:test/test.dart';
 import 'package:dart_node_serialport/impl.dart';
@@ -44,28 +45,7 @@ void setupNodeServer() {
 
     Connection<String> subconnection =
         Connection<String>.fromParts(input.stream, output.sink);
-
-    var connection = new HostConnection(subconnection);
-    connection.receive<HandshakePacket>().then((handshake) async {
-      Context context =
-          new Context(connection.rmiSubConnection, connection.rmiSubConnection);
-
-      context.registerDeserializer(
-          'asset:blackbird/lib/devices/example_device.dart#ADevice',
-          (d) => ADevice()..identifier = d['identifier'] as String);
-      context.registerDeserializer(
-          'asset:blackbird/lib/devices/osram_bulb.dart#OsramBulb',
-          (d) => OsramBulb());
-      context.registerRemoteStubConstructor(
-          'asset:blackbird/lib/devices/example_device.dart#ADevice',
-          ADevice.getRemote);
-
-      var localImpl = await blackbird.implementDevice(localDevice);
-      Provision localProvision = localImpl.provideRemote(context);
-
-      //respond
-      connection.send(new HandshakePacket(localDevice, localProvision.uuid));
-    });
+    blackbird.registerHostConnection(subconnection);
   });
   server.on('error', (err) {
     throw err;
@@ -76,7 +56,12 @@ void setupNodeServer() {
 }
 
 main() async {
-  var p = '/dev/ttyUSB1';
+  Logger.root.level = Level.ALL;
+  Logger.root.onRecord.listen((LogRecord rec) {
+    print('${rec.level.name}: ${rec.time}: ${rec.message}');
+  });
+
+  var p = '/dev/ttyUSB0';
   SerialPort port = NodeSerialPort(p, newSerialPort(p));
 
   AVRConnection avr = new AVRConnection(port);
@@ -97,7 +82,7 @@ main() async {
   // socket.address = 528;
   // // socket.ontario =
 
-  bulb = await blackbird.implementDevice(bulb);
+  bulb = await blackbird.interfaceDevice(bulb);
   bulb.turnOff();
   await Future.delayed(Duration(milliseconds: 500));
   bulb.turnOn();

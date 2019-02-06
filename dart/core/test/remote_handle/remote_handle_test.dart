@@ -12,9 +12,11 @@ main() {
       Host localA = Host();
       localA.address = "localhost";
       localA.port = 2000;
+      localA.name = 'Host A';
       Host localB = Host();
       localB.address = "localhost";
       localB.port = 2002;
+      localB.name = 'Host b';
 
       Blackbird blackbirdA = new Blackbird(localA);
       Blackbird blackbirdB = new Blackbird(localB);
@@ -33,13 +35,17 @@ main() {
       blackbirdB.cluster.devices.add(localA);
 
       expect(testDeviceA, testDeviceB);
+      expect(testDeviceA.hashCode, testDeviceB.hashCode);
 
-      Host handleOfBOnA = await blackbirdA.interfaceDevice(localB);
-      await handleOfBOnA.something('test');
+      Host handleOfHostBOnA = await blackbirdA.interfaceDevice(localB);
 
-      ADevice remoteImplementationofB =
-          await handleOfBOnA.getRemoteHandle(testDeviceB);
-      await remoteImplementationofB.executive("some");
+      expect(localB.name, handleOfHostBOnA.name);
+
+      await handleOfHostBOnA.something('test');
+
+      ADevice remoteDeviceB =
+          await handleOfHostBOnA.getRemoteHandle(testDeviceB);
+      await remoteDeviceB.executive("some");
     }, tags: "current");
   });
 }

@@ -9,7 +9,7 @@ abstract class ADevice extends Device {
   factory ADevice() => _$ADeviceDevice();
 
   Future<void> executive(String data) async {
-    print('well this is going well $identifier, $data');
+    print('on $host device $identifier, executive: $data');
   }
 
   @Property()

@@ -1,42 +1,95 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'mcp23017.dart';
+part of 'mpr121.dart';
 
 // **************************************************************************
 // DeviceGenerator
 // **************************************************************************
 
-class _$MCP23017Device extends MCP23017 {
-  _$MCP23017Device() : super._();
+class _$MPR121Device extends MPR121 {
+  _$MPR121Device() : super._();
 
   Host get host =>
       throw new Exception('only implementation objects are hosted');
 
-  MCP23017 implementation(Map<Symbol, Object> dependencies) =>
-      _$MCP23017Implementation(this, dependencies);
+  MPR121 implementation(Map<Symbol, Object> dependencies) =>
+      _$MPR121Implementation(this, dependencies);
   @override
   Object invoke(Invocation invocation) =>
       throw new Exception('no invocation on devices');
   Provision provideRemote(Context context) =>
       throw new Exception('no RMI on devices');
-  MCP23017 getRemote(Context context, String uuid) =>
+  MPR121 getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
-  get hooks => _$MCP23017Hooks;
+  get hooks => _$MPR121Hooks;
   @override
-  Map<String, dynamic> toJson() => _$MCP23017ToJson(this);
+  Map<String, dynamic> toJson() => _$MPR121ToJson(this);
 
-  dynamic turnOn() =>
+  dynamic get touchDebounce =>
       throw new Exception("you cannot execute stuff on devices");
-  dynamic turnOff() =>
+  dynamic get releaseDebounce =>
       throw new Exception("you cannot execute stuff on devices");
-  Future<void> writePortBit(
-          Port port, Register register, int bit, bool value) =>
+  dynamic get firstFilterIterations =>
       throw new Exception("you cannot execute stuff on devices");
-  Future<void> writePortRegister(Port port, Register register, int value) =>
+  dynamic get chargeDischargeCurrent =>
       throw new Exception("you cannot execute stuff on devices");
-  Future<bool> readPortBit(Port port, Register register, int bit) =>
+  dynamic get chargeDischargeTime =>
       throw new Exception("you cannot execute stuff on devices");
-  Future<int> readPortRegister(Port port, Register register) =>
+  dynamic get secondFilterIterations =>
+      throw new Exception("you cannot execute stuff on devices");
+  dynamic get electrodeSampleInterval =>
+      throw new Exception("you cannot execute stuff on devices");
+  dynamic get calibrationLock =>
+      throw new Exception("you cannot execute stuff on devices");
+  dynamic get proximityEnable =>
+      throw new Exception("you cannot execute stuff on devices");
+  dynamic get electrodeEnable =>
+      throw new Exception("you cannot execute stuff on devices");
+  dynamic get autoConfigurationFailFlag async =>
+      throw new Exception("you cannot execute stuff on devices");
+  dynamic get autoReconfigurationFailflag async =>
+      throw new Exception("you cannot execute stuff on devices");
+  dynamic get touchStatus async =>
+      throw new Exception("you cannot execute stuff on devices");
+  Stream<TouchEvent> get touchEvent =>
+      throw new Exception("you cannot execute stuff on devices");
+  Future<void> stopModeOperation(operation) async =>
+      throw new Exception("you cannot execute stuff on devices");
+  Future<int> read16Bit(int register) async =>
+      throw new Exception("you cannot execute stuff on devices");
+  Future<void> write16Bit(int register, int value) async =>
+      throw new Exception("you cannot execute stuff on devices");
+  Future<int> readOffsetRegister(int baseRegister, int registerSkip, int offset,
+          int registerWidth) async =>
+      throw new Exception("you cannot execute stuff on devices");
+  Future<void> writeOffsetRegister(int baseRegister, int registerSkip,
+          int offset, int registerWidth, int value) async =>
+      throw new Exception("you cannot execute stuff on devices");
+  Future<int> readBitBlock(BitBlock bitBlock) =>
+      throw new Exception("you cannot execute stuff on devices");
+  Future<void> writeBitBlock(BitBlock bitBlock, int value) =>
+      throw new Exception("you cannot execute stuff on devices");
+  dynamic setTouchDebounce(int value) =>
+      throw new Exception("you cannot execute stuff on devices");
+  dynamic setReleaseDebounce(int value) =>
+      throw new Exception("you cannot execute stuff on devices");
+  dynamic setFirstFilterIterations(int value) =>
+      throw new Exception("you cannot execute stuff on devices");
+  dynamic setChargeDischargeCurrent(int value) =>
+      throw new Exception("you cannot execute stuff on devices");
+  dynamic setChargeDischargeTime(int value) =>
+      throw new Exception("you cannot execute stuff on devices");
+  dynamic setSecondFilterIterations(int value) =>
+      throw new Exception("you cannot execute stuff on devices");
+  dynamic setElectrodeSampleInterval(int value) =>
+      throw new Exception("you cannot execute stuff on devices");
+  dynamic setCalibrationLock(int value) =>
+      throw new Exception("you cannot execute stuff on devices");
+  dynamic setProximityEnable(int value) =>
+      throw new Exception("you cannot execute stuff on devices");
+  dynamic setElectrodeEnable(int value) =>
+      throw new Exception("you cannot execute stuff on devices");
+  Future<void> softReset() =>
       throw new Exception("you cannot execute stuff on devices");
 
   Stream<void> get commonInterrupt =>
@@ -59,12 +112,12 @@ class _$MCP23017Device extends MCP23017 {
       throw new Exception("you cannot execute stuff on devices");
 }
 
-class _$MCP23017Implementation extends MCP23017 {
+class _$MPR121Implementation extends MPR121 {
   Host _host;
   I2CMaster _master;
   int _address;
 
-  _$MCP23017Implementation(MCP23017 delegate, Map<Symbol, Object> parameters)
+  _$MPR121Implementation(MPR121 delegate, Map<Symbol, Object> parameters)
       : super._() {
     if (parameters == null) {
       ConstructionInfoException info = new ConstructionInfoException();
@@ -99,19 +152,19 @@ class _$MCP23017Implementation extends MCP23017 {
 
   Host get host => _host;
 
-  MCP23017 implementation(Map<Symbol, Object> dependencies) =>
+  MPR121 implementation(Map<Symbol, Object> dependencies) =>
       throw Exception('this is already an implementation');
   @override
   Object invoke(Invocation invocation) =>
-      _$MCP23017Invoker.invoke(invocation, this);
+      _$MPR121Invoker.invoke(invocation, this);
   Provision provideRemote(Context context) =>
-      _$MCP23017Rmi.provideRemote(context, this);
-  MCP23017 getRemote(Context context, String uuid) =>
-      _$MCP23017Rmi.getRemote(context, uuid);
+      _$MPR121Rmi.provideRemote(context, this);
+  MPR121 getRemote(Context context, String uuid) =>
+      _$MPR121Rmi.getRemote(context, uuid);
   @override
-  Map<String, dynamic> toJson() => _$MCP23017ToJson(this);
+  Map<String, dynamic> toJson() => _$MPR121ToJson(this);
 
-  get hooks => _$MCP23017Hooks;
+  get hooks => _$MPR121Hooks;
 
   I2CMaster get master => _master;
   set master(I2CMaster _master) => throw new Exception(
@@ -121,11 +174,11 @@ class _$MCP23017Implementation extends MCP23017 {
       'cannot change device property after implementationconstruction');
 }
 
-Map<String, dynamic> get _$MCP23017Hooks {
+Map<String, dynamic> get _$MPR121Hooks {
   return {
-    "classURL": "asset:blackbird/lib/devices/mcp23017.dart#MCP23017",
-    "remote": _$MCP23017Rmi.getRemote,
-    "fromJson": _$MCP23017FromJson
+    "classURL": "asset:blackbird/lib/devices/mpr121.dart#MPR121",
+    "remote": _$MPR121Rmi.getRemote,
+    "fromJson": _$MPR121FromJson
   };
 }
 
@@ -133,85 +186,271 @@ Map<String, dynamic> get _$MCP23017Hooks {
 // DeviceJsonSerializableGenerator
 // **************************************************************************
 
-MCP23017 _$MCP23017FromJson(Map<String, dynamic> json) {
-  return MCP23017()..address = json['address'] as int;
+MPR121 _$MPR121FromJson(Map<String, dynamic> json) {
+  return MPR121()..address = json['address'] as int;
 }
 
-Map<String, dynamic> _$MCP23017ToJson(MCP23017 instance) => <String, dynamic>{
+Map<String, dynamic> _$MPR121ToJson(MPR121 instance) => <String, dynamic>{
       'address': instance.address,
       'json_serializable.className':
-          "asset:blackbird/lib/devices/mcp23017.dart#MCP23017",
+          "asset:blackbird/lib/devices/mpr121.dart#MPR121",
     };
 
 // **************************************************************************
 // InvokerGenerator
 // **************************************************************************
 
-class _$MCP23017Invoker {
-  static dynamic invoke(Invocation invocation, MCP23017 target) {
-    if (invocation.isMethod && #turnOn == invocation.memberName) {
+class _$MPR121Invoker {
+  static dynamic invoke(Invocation invocation, MPR121 target) {
+    if (invocation.isMethod && #stopModeOperation == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 0; i++)
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
         positionalArguments.add(null);
 
-      return target.turnOn();
+      return target.stopModeOperation(
+        positionalArguments[0],
+      );
     }
-    if (invocation.isMethod && #turnOff == invocation.memberName) {
+    if (invocation.isMethod && #read16Bit == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 0; i++)
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
         positionalArguments.add(null);
 
-      return target.turnOff();
+      return target.read16Bit(
+        positionalArguments[0],
+      );
     }
-    if (invocation.isMethod && #writePortBit == invocation.memberName) {
+    if (invocation.isMethod && #write16Bit == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 2; i++)
+        positionalArguments.add(null);
+
+      return target.write16Bit(
+        positionalArguments[0],
+        positionalArguments[1],
+      );
+    }
+    if (invocation.isMethod && #readOffsetRegister == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
       for (int i = invocation.positionalArguments.length; i < 4; i++)
         positionalArguments.add(null);
 
-      return target.writePortBit(
+      return target.readOffsetRegister(
         positionalArguments[0],
         positionalArguments[1],
         positionalArguments[2],
         positionalArguments[3],
       );
     }
-    if (invocation.isMethod && #writePortRegister == invocation.memberName) {
+    if (invocation.isMethod && #writeOffsetRegister == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 3; i++)
+      for (int i = invocation.positionalArguments.length; i < 5; i++)
         positionalArguments.add(null);
 
-      return target.writePortRegister(
+      return target.writeOffsetRegister(
         positionalArguments[0],
         positionalArguments[1],
         positionalArguments[2],
+        positionalArguments[3],
+        positionalArguments[4],
       );
     }
-    if (invocation.isMethod && #readPortBit == invocation.memberName) {
+    if (invocation.isMethod && #readBitBlock == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 3; i++)
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
         positionalArguments.add(null);
 
-      return target.readPortBit(
+      return target.readBitBlock(
         positionalArguments[0],
-        positionalArguments[1],
-        positionalArguments[2],
       );
     }
-    if (invocation.isMethod && #readPortRegister == invocation.memberName) {
+    if (invocation.isMethod && #writeBitBlock == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
       for (int i = invocation.positionalArguments.length; i < 2; i++)
         positionalArguments.add(null);
 
-      return target.readPortRegister(
+      return target.writeBitBlock(
         positionalArguments[0],
         positionalArguments[1],
       );
+    }
+    if (invocation.isMethod && #setTouchDebounce == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.setTouchDebounce(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod && #setReleaseDebounce == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.setReleaseDebounce(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod &&
+        #setFirstFilterIterations == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.setFirstFilterIterations(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod &&
+        #setChargeDischargeCurrent == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.setChargeDischargeCurrent(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod &&
+        #setChargeDischargeTime == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.setChargeDischargeTime(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod &&
+        #setSecondFilterIterations == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.setSecondFilterIterations(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod &&
+        #setElectrodeSampleInterval == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.setElectrodeSampleInterval(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod && #setCalibrationLock == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.setCalibrationLock(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod && #setProximityEnable == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.setProximityEnable(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod && #setElectrodeEnable == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.setElectrodeEnable(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod && #softReset == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 0; i++)
+        positionalArguments.add(null);
+
+      return target.softReset();
+    }
+    if (invocation.isMethod && #electorde == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.electorde(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isGetter && #touchDebounce == invocation.memberName) {
+      return target.touchDebounce;
+    }
+    if (invocation.isGetter && #releaseDebounce == invocation.memberName) {
+      return target.releaseDebounce;
+    }
+    if (invocation.isGetter &&
+        #firstFilterIterations == invocation.memberName) {
+      return target.firstFilterIterations;
+    }
+    if (invocation.isGetter &&
+        #chargeDischargeCurrent == invocation.memberName) {
+      return target.chargeDischargeCurrent;
+    }
+    if (invocation.isGetter && #chargeDischargeTime == invocation.memberName) {
+      return target.chargeDischargeTime;
+    }
+    if (invocation.isGetter &&
+        #secondFilterIterations == invocation.memberName) {
+      return target.secondFilterIterations;
+    }
+    if (invocation.isGetter &&
+        #electrodeSampleInterval == invocation.memberName) {
+      return target.electrodeSampleInterval;
+    }
+    if (invocation.isGetter && #calibrationLock == invocation.memberName) {
+      return target.calibrationLock;
+    }
+    if (invocation.isGetter && #proximityEnable == invocation.memberName) {
+      return target.proximityEnable;
+    }
+    if (invocation.isGetter && #electrodeEnable == invocation.memberName) {
+      return target.electrodeEnable;
+    }
+    if (invocation.isGetter &&
+        #autoConfigurationFailFlag == invocation.memberName) {
+      return target.autoConfigurationFailFlag;
+    }
+    if (invocation.isGetter &&
+        #autoReconfigurationFailflag == invocation.memberName) {
+      return target.autoReconfigurationFailflag;
+    }
+    if (invocation.isGetter && #touchStatus == invocation.memberName) {
+      return target.touchStatus;
+    }
+    if (invocation.isGetter && #touchEvent == invocation.memberName) {
+      return target.touchEvent;
     }
     if (invocation.isGetter && #master == invocation.memberName) {
       return target.master;
@@ -409,68 +648,125 @@ class _$MCP23017Invoker {
 // ProxyGenerator
 // **************************************************************************
 
-class _$MCP23017Proxy implements MCP23017 {
-  dynamic turnOn() {
+class _$MPR121Proxy implements MPR121 {
+  Future<void> stopModeOperation(operation) async {
     List<Object> arguments = [];
-
+    arguments.add(operation);
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation =
-        Invocation.method(#turnOn, arguments, namedArguments);
+        Invocation.method(#stopModeOperation, arguments, namedArguments);
 
     InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
     metadata.isStream = false;
 
-    return _handle(_$invocation, metadata);
+    return await _handle(_$invocation, metadata);
   }
 
-  dynamic turnOff() {
+  Future<int> read16Bit(int register) async {
     List<Object> arguments = [];
-
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#turnOff, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.isStream = false;
-
-    return _handle(_$invocation, metadata);
-  }
-
-  Future<void> writePortBit(Port port, Register register, int bit, bool value) {
-    List<Object> arguments = [];
-    arguments.add(port);
     arguments.add(register);
-    arguments.add(bit);
-    arguments.add(value);
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation =
-        Invocation.method(#writePortBit, arguments, namedArguments);
+        Invocation.method(#read16Bit, arguments, namedArguments);
 
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
     metadata.isStream = false;
 
-    return _handle(_$invocation, metadata);
+    return await _handle(_$invocation, metadata);
   }
 
-  Future<void> writePortRegister(Port port, Register register, int value) {
+  Future<void> write16Bit(int register, int value) async {
     List<Object> arguments = [];
-    arguments.add(port);
     arguments.add(register);
     arguments.add(value);
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation =
-        Invocation.method(#writePortRegister, arguments, namedArguments);
+        Invocation.method(#write16Bit, arguments, namedArguments);
 
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return await _handle(_$invocation, metadata);
+  }
+
+  Future<int> readOffsetRegister(
+      int baseRegister, int registerSkip, int offset, int registerWidth) async {
+    List<Object> arguments = [];
+    arguments.add(baseRegister);
+    arguments.add(registerSkip);
+    arguments.add(offset);
+    arguments.add(registerWidth);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#readOffsetRegister, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return await _handle(_$invocation, metadata);
+  }
+
+  Future<void> writeOffsetRegister(int baseRegister, int registerSkip,
+      int offset, int registerWidth, int value) async {
+    List<Object> arguments = [];
+    arguments.add(baseRegister);
+    arguments.add(registerSkip);
+    arguments.add(offset);
+    arguments.add(registerWidth);
+    arguments.add(value);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#writeOffsetRegister, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return await _handle(_$invocation, metadata);
+  }
+
+  Future<int> readBitBlock(BitBlock bitBlock) {
+    List<Object> arguments = [];
+    arguments.add(bitBlock);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#readBitBlock, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
+  }
+
+  Future<void> writeBitBlock(BitBlock bitBlock, int value) {
+    List<Object> arguments = [];
+    arguments.add(bitBlock);
+    arguments.add(value);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#writeBitBlock, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
     metadata.positionalArgumentMetadata.add([]);
     metadata.positionalArgumentMetadata.add([]);
     metadata.isStream = false;
@@ -478,37 +774,181 @@ class _$MCP23017Proxy implements MCP23017 {
     return _handle(_$invocation, metadata);
   }
 
-  Future<bool> readPortBit(Port port, Register register, int bit) {
+  dynamic setTouchDebounce(int value) {
     List<Object> arguments = [];
-    arguments.add(port);
-    arguments.add(register);
-    arguments.add(bit);
+    arguments.add(value);
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation =
-        Invocation.method(#readPortBit, arguments, namedArguments);
+        Invocation.method(#setTouchDebounce, arguments, namedArguments);
 
     InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
     metadata.positionalArgumentMetadata.add([]);
     metadata.isStream = false;
 
     return _handle(_$invocation, metadata);
   }
 
-  Future<int> readPortRegister(Port port, Register register) {
+  dynamic setReleaseDebounce(int value) {
     List<Object> arguments = [];
-    arguments.add(port);
-    arguments.add(register);
+    arguments.add(value);
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation =
-        Invocation.method(#readPortRegister, arguments, namedArguments);
+        Invocation.method(#setReleaseDebounce, arguments, namedArguments);
 
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
+  }
+
+  dynamic setFirstFilterIterations(int value) {
+    List<Object> arguments = [];
+    arguments.add(value);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#setFirstFilterIterations, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
     metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
+  }
+
+  dynamic setChargeDischargeCurrent(int value) {
+    List<Object> arguments = [];
+    arguments.add(value);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation = Invocation.method(
+        #setChargeDischargeCurrent, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
+  }
+
+  dynamic setChargeDischargeTime(int value) {
+    List<Object> arguments = [];
+    arguments.add(value);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#setChargeDischargeTime, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
+  }
+
+  dynamic setSecondFilterIterations(int value) {
+    List<Object> arguments = [];
+    arguments.add(value);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation = Invocation.method(
+        #setSecondFilterIterations, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
+  }
+
+  dynamic setElectrodeSampleInterval(int value) {
+    List<Object> arguments = [];
+    arguments.add(value);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation = Invocation.method(
+        #setElectrodeSampleInterval, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
+  }
+
+  dynamic setCalibrationLock(int value) {
+    List<Object> arguments = [];
+    arguments.add(value);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#setCalibrationLock, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
+  }
+
+  dynamic setProximityEnable(int value) {
+    List<Object> arguments = [];
+    arguments.add(value);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#setProximityEnable, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
+  }
+
+  dynamic setElectrodeEnable(int value) {
+    List<Object> arguments = [];
+    arguments.add(value);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#setElectrodeEnable, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
+  }
+
+  Future<void> softReset() {
+    List<Object> arguments = [];
+
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#softReset, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
+  }
+
+  Electrode electorde(int index) {
+    List<Object> arguments = [];
+    arguments.add(index);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#electorde, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.elementMetadata.add(Ignore());
     metadata.isStream = false;
 
     return _handle(_$invocation, metadata);
@@ -766,7 +1206,133 @@ class _$MCP23017Proxy implements MCP23017 {
   }
 
   InvocationHandlerFunction _handle;
-  _$MCP23017Proxy(this._handle) : super();
+  _$MPR121Proxy(this._handle) : super();
+
+  dynamic get touchDebounce {
+    Invocation invocation = Invocation.getter(#touchDebounce);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
+  dynamic get releaseDebounce {
+    Invocation invocation = Invocation.getter(#releaseDebounce);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
+  dynamic get firstFilterIterations {
+    Invocation invocation = Invocation.getter(#firstFilterIterations);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
+  dynamic get chargeDischargeCurrent {
+    Invocation invocation = Invocation.getter(#chargeDischargeCurrent);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
+  dynamic get chargeDischargeTime {
+    Invocation invocation = Invocation.getter(#chargeDischargeTime);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
+  dynamic get secondFilterIterations {
+    Invocation invocation = Invocation.getter(#secondFilterIterations);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
+  dynamic get electrodeSampleInterval {
+    Invocation invocation = Invocation.getter(#electrodeSampleInterval);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
+  dynamic get calibrationLock {
+    Invocation invocation = Invocation.getter(#calibrationLock);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
+  dynamic get proximityEnable {
+    Invocation invocation = Invocation.getter(#proximityEnable);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
+  dynamic get electrodeEnable {
+    Invocation invocation = Invocation.getter(#electrodeEnable);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
+  dynamic get autoConfigurationFailFlag async {
+    Invocation invocation = Invocation.getter(#autoConfigurationFailFlag);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return await _handle(invocation, metadata);
+  }
+
+  dynamic get autoReconfigurationFailflag async {
+    Invocation invocation = Invocation.getter(#autoReconfigurationFailflag);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return await _handle(invocation, metadata);
+  }
+
+  dynamic get touchStatus async {
+    Invocation invocation = Invocation.getter(#touchStatus);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return await _handle(invocation, metadata);
+  }
+
+  Stream<TouchEvent> get touchEvent {
+    Invocation invocation = Invocation.getter(#touchEvent);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = true;
+
+    return _handle(invocation, metadata);
+  }
 
   I2CMaster get master {
     Invocation invocation = Invocation.getter(#master);
@@ -850,24 +1416,24 @@ class _$MCP23017Proxy implements MCP23017 {
 // RmiGenerator
 // **************************************************************************
 
-class _$MCP23017Rmi {
+class _$MPR121Rmi {
   static void _registerSerializers(Context context) {}
   static void _registerStubConstructors(Context context) {
     context.registerRemoteStubConstructor(
-        'asset:blackbird/lib/devices/mcp23017.dart#MCP23017', getRemote);
+        'asset:blackbird/lib/devices/mpr121.dart#MPR121', getRemote);
   }
 
-  static MCP23017 getRemote(Context context, String uuid) {
+  static MPR121 getRemote(Context context, String uuid) {
     _registerSerializers(context);
     _registerStubConstructors(context);
     RmiProxyHandler handler = RmiProxyHandler(context, uuid);
-    return _$MCP23017Proxy(handler.handle);
+    return _$MPR121Proxy(handler.handle);
   }
 
-  static Provision provideRemote(Context context, MCP23017 target) {
+  static Provision provideRemote(Context context, MPR121 target) {
     _registerSerializers(context);
     _registerStubConstructors(context);
     return rmiProvideRemote(
-        context, target, 'asset:blackbird/lib/devices/mcp23017.dart#MCP23017');
+        context, target, 'asset:blackbird/lib/devices/mpr121.dart#MPR121');
   }
 }

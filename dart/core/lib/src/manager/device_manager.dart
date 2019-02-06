@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:blackbird/blackbird.dart';
 import 'construction.dart';
 
+enum Hosting { local, remote, unknown }
+
 /// Manages the implementation of a device in the cluster
 ///
 /// In particular the manager ensures there is only one device implementation object in the cluster.
@@ -13,14 +15,20 @@ abstract class DeviceManager {
   final Device device;
   DeviceManager(this.device, this.blackbird);
 
-  Future<bool> get isAvailable async => await currentHost != null;
-  Future<bool> get isRemoteHosted async =>
-      await isAvailable && await currentHost != blackbird.localDevice;
-  Future<bool> get isLocallyHosted async =>
-      await isAvailable && await currentHost == blackbird.localDevice;
-
-  Future<Host> get currentHost;
   Future<Device> get interfaceDevice;
+
+  bool get isLocallyHosted;
+  bool get isRemoteHandlePresent;
+
+  // Hosting get hosting;
+
+  // Future<Host> get currentHost;
+
+  // Future<bool> get isAvailable async => await currentHost != null;
+  // Future<bool> get isRemoteHosted async =>
+  //     await isAvailable && await currentHost != blackbird.localDevice;
+  // Future<bool> get isLocallyHosted async =>
+  //     await isAvailable && await currentHost == blackbird.localDevice;
 }
 
 /// An agent is the opposite of a host
@@ -30,18 +38,18 @@ class AgentManager extends ConstructionManager {
 
   /// stores the device implementation that was constructed within this blackbird instance
   Device _localHandle;
+  Device _remoteHandle;
 
-  @override
-  Future<Host> get currentHost async {
-    if (_localHandle != null) return blackbird.localDevice;
-
-    return (await _remoteHandle)?.host;
-  }
+  bool get isLocallyHosted => _localHandle != null;
+  bool get isRemoteHandlePresent => _remoteHandle != null;
 
   @override
   Future<Device> get interfaceDevice async {
-    if (await isLocallyHosted) return _localHandle;
-    if (await isRemoteHosted) return await _remoteHandle;
+    if (isLocallyHosted) return _localHandle;
+    if (isRemoteHandlePresent) return _remoteHandle;
+
+    _acquireRemoteHandle();
+    if (isRemoteHandlePresent) return _remoteHandle;
 
     print("constructing $device on ${blackbird.localDevice}");
     _localHandle = await constructImplementation();
@@ -51,7 +59,7 @@ class AgentManager extends ConstructionManager {
   /// Checks if the device is already implemented in the cluster
   /// and provides the remote handle.
   /// TODO test, also error handleing
-  Future<Device> get _remoteHandle async {
+  Future<void> _acquireRemoteHandle() async {
     List<Future<Host>> hostFutures = blackbird.cluster.hosts
         .map((h) => blackbird.interfaceDevice(h))
         .map((f) async => await f)
@@ -63,13 +71,13 @@ class AgentManager extends ConstructionManager {
     List<Device> handleList = await Future.wait(handleFutureList);
     if (handleList.isEmpty) return null;
     Device handle = handleList.single;
-    return handle;
+    _remoteHandle = handle;
   }
 }
 
 /// Manages the local device
 class LocalDeviceManager extends ConstructionManager {
-  Completer<Device> _localHandle;
+  Completer<Device> _localHandle = new Completer();
 
   LocalDeviceManager(Host device, Blackbird blackbird)
       : super(device, blackbird) {
@@ -78,6 +86,10 @@ class LocalDeviceManager extends ConstructionManager {
 
   @override
   Future<Device> get interfaceDevice => _localHandle.future;
+
   @override
-  Future<Host> get currentHost async => device;
+  bool get isLocallyHosted => true;
+
+  @override
+  bool get isRemoteHandlePresent => false;
 }

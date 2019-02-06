@@ -3,6 +3,8 @@ import 'package:blackbird/src/ontario/serial_port.dart';
 import 'dart:async';
 import 'functions/device_identification.dart';
 import 'functions/ir.dart';
+import 'functions/i2c.dart';
+import 'functions/common_interrupt.dart';
 import 'package:async/async.dart';
 
 class AVRPacket {}
@@ -136,6 +138,8 @@ class _PayloadDecoder {
   _PayloadDecoder() {
     packetparsers.add(new DeviceIdentificationParser());
     packetparsers.add(new IRParser());
+    packetparsers.add(new I2CParser());
+    packetparsers.add(new CommonInterruptParser());
   }
 
   void decode(List<int> data, EventSink<AVRPacket> sink) =>
@@ -151,8 +155,8 @@ class _PayloadDecoder {
       PacketParser parser = getPacketParser(command);
       AVRPacket packet = parser.parse(data);
       sink.add(packet);
-    } on Object {
-      print('no parser $command');
+    } on Object catch (e) {
+      print('no parser $command / $e');
       return;
     }
   }

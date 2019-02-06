@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-
+import 'package:synchronized/synchronized.dart';
 import 'package:async/async.dart';
 
 class Connection<T> extends DelegatingStream<T> implements StreamSink<T> {
@@ -49,23 +49,29 @@ class Connection<T> extends DelegatingStream<T> implements StreamSink<T> {
     return future;
   }
 
+  Lock lock = new Lock();
+
   Future<R> sendAndReceive<R>(T request,
       {bool filter(R packet), Duration timeout, num tries = 1}) async {
-    Future<R> receiver = receive<R>(filter: filter, timeout: timeout);
-    R receivedPacket;
-    for (int i = 0; i < tries; i++) {
-      try {
-        send(request);
-        receivedPacket = await receiver;
-      } on TimeoutException {
-        continue;
+    return await lock.synchronized(() async {
+      Future<R> receiver = receive<R>(filter: filter, timeout: timeout);
+      R receivedPacket;
+      for (int i = 0; i < tries; i++) {
+        try {
+          // print('sending request');
+          send(request);
+          receivedPacket = await receiver;
+        } on TimeoutException {
+          // receiver = receive<R>(filter: filter, timeout: timeout);
+          continue;
+        }
+        break;
       }
-      break;
-    }
-    if (receivedPacket == null)
-      throw new TimeoutException('no packet received');
+      if (receivedPacket == null)
+        throw new TimeoutException('no packet received');
 
-    return receivedPacket;
+      return receivedPacket;
+    });
   }
 
   Connection<String> asStringConnection() {

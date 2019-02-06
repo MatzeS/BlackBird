@@ -99,16 +99,24 @@ class Blackbird {
   }
 
   DeviceManager _createManager(Device device) {
+    print('$localDevice creates $device manager');
     if (device == localDevice)
       return new LocalDeviceManager(device, this);
     else if (device is Host)
       return new HostManager(device, this);
-    else
+    else {
+      print('$device is agent');
       return AgentManager(device, this);
+    }
   }
 
   /// TODO probably removed
   Future<Device> localGetRemoteHandle(Device device) async {
+    print('on $localDevice local Get Remote $device ${_managers[device]}');
+    if (!getManager(device).isLocallyHosted) {
+      print('wa;lwkdjf;lkasdjf;lksadjfkas;f');
+      return null;
+    }
     return await interfaceDevice(device);
   }
 }
