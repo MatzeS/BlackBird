@@ -56,7 +56,7 @@ class Electrode {
 
   Future<void> loadConfig(ElectrodeConfig config) async {
     await mpr.stopModeOperation(() async {
-      await setChargeCurrent(config.chargeCurrent);
+      await   setChargeCurrent(config.chargeCurrent);
       await setChargeTime(config.chargeTime);
       await setBaseLineValue(config.baselineValue);
       await setTouchThreshold(config.touchThreshold);

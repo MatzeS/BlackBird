@@ -10,8 +10,6 @@ environment:
 dependencies:
   blackbird:
     path: ../dart/core
-  blackbird_ontario:
-    path: ../dart/ontario
   dart_node_serialport:
     path: ../node/serial
   

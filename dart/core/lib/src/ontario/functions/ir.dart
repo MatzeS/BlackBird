@@ -21,6 +21,9 @@ class IRReceiveResponse extends AVRPacket {
   final int data;
 
   IRReceiveResponse(this.data);
+
+  @override
+  String toString() => 'IRResponse[${data.toRadixString(16)}]';
 }
 
 class IRParser extends PacketParser {

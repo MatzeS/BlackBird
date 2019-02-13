@@ -1,71 +1,60 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'ontario.dart';
+part of 'apple_remote.dart';
 
 // **************************************************************************
 // DeviceGenerator
 // **************************************************************************
 
-class _$OntarioDevice extends Ontario {
-  _$OntarioDevice() : super._();
+class _$AppleRemoteDevice extends AppleRemote {
+  _$AppleRemoteDevice() : super._();
 
   Host get host =>
       throw new Exception('only implementation objects are hosted');
 
-  Ontario implementation(Map<Symbol, Object> dependencies) =>
-      _$OntarioImplementation(this, dependencies);
+  AppleRemote implementation(Map<Symbol, Object> dependencies) =>
+      _$AppleRemoteImplementation(this, dependencies);
   @override
   Object invoke(Invocation invocation) =>
       throw new Exception('no invocation on devices');
   Provision provideRemote(Context context) =>
       throw new Exception('no RMI on devices');
-  Ontario getRemote(Context context, String uuid) =>
+  AppleRemote getRemote(Context context, String uuid) =>
       throw new Exception('no RMI on devices');
-  get hooks => _$OntarioHooks;
+  get hooks => _$AppleRemoteHooks;
   @override
-  Map<String, dynamic> toJson() => _$OntarioToJson(this);
+  Map<String, dynamic> toJson() => _$AppleRemoteToJson(this);
 
-  AVRConnection get connection => throw new Exception(
-      'cannot get runtime dependencys on device representation');
-  Stream<int> get receive =>
+  Stream<int> get keyCode =>
       throw new Exception("you cannot execute stuff on devices");
-  Stream<void> get commonInterrupt =>
+  Stream<void> get up =>
       throw new Exception("you cannot execute stuff on devices");
-  Future<void> sendIR(int ir) =>
+  Stream<void> get down =>
       throw new Exception("you cannot execute stuff on devices");
-  Future<void> writeRegister(int slave, int register, int value) =>
+  Stream<void> get right =>
       throw new Exception("you cannot execute stuff on devices");
-  Future<int> readRegister(int slave, int register) async =>
+  Stream<void> get left =>
       throw new Exception("you cannot execute stuff on devices");
-  dynamic setupCommonInterruptStream() =>
+  Stream<void> get play =>
       throw new Exception("you cannot execute stuff on devices");
-  Future<void> writeRegisters(int slave, int register, List values) async =>
+  Stream<void> get menu =>
       throw new Exception("you cannot execute stuff on devices");
-  Future<List<int>> readRegisters(int slave, int register, int length) async =>
+  Stream<void> get center =>
       throw new Exception("you cannot execute stuff on devices");
+
+  IRReceiver receiver;
 }
 
-class _$OntarioImplementation extends Ontario {
-  AVRConnection _connection;
+class _$AppleRemoteImplementation extends AppleRemote {
   Host _host;
+  IRReceiver _receiver;
+  int _address;
 
-  _$OntarioImplementation(Ontario delegate, Map<Symbol, Object> parameters)
+  _$AppleRemoteImplementation(
+      AppleRemote delegate, Map<Symbol, Object> parameters)
       : super._() {
     if (parameters == null) {
       ConstructionInfoException info = new ConstructionInfoException();
-      info.dependencies.add(new Dependency(
-          name: #connection,
-          type: [
-            "asset:blackbird/lib/src/ontario/connection.dart#AVRConnection",
-            "asset:blackbird/lib/src/connection.dart#Connection",
-            "asset:async/lib/src/delegate/stream.dart#DelegatingStream",
-            "dart:async#StreamView",
-            "dart:async#Stream",
-            "dart:core#Object"
-          ],
-          device: this,
-          module: null,
-          isModule: false));
       info.dependencies.add(new Dependency(
           name: #host,
           type: [
@@ -76,39 +65,54 @@ class _$OntarioImplementation extends Ontario {
           device: this,
           module: null,
           isModule: false));
+      info.dependencies.add(new Dependency(
+          name: #receiver,
+          type: [
+            "asset:blackbird/lib/devices/ir_receiver.dart#IRReceiver",
+            "asset:blackbird/lib/src/device.dart#Device",
+            "dart:core#Object"
+          ],
+          device: this,
+          module: delegate.receiver,
+          isModule: true));
       info[#host].annotations.add(Runtime());
       throw info;
     }
 
-    _connection = parameters[#connection];
-    _connection = parameters[#connection];
     _host = parameters[#host];
+    _receiver = parameters[#receiver];
+    _address = delegate.address;
   }
 
   Host get host => _host;
 
-  Ontario implementation(Map<Symbol, Object> dependencies) =>
+  AppleRemote implementation(Map<Symbol, Object> dependencies) =>
       throw Exception('this is already an implementation');
   @override
   Object invoke(Invocation invocation) =>
-      _$OntarioInvoker.invoke(invocation, this);
+      _$AppleRemoteInvoker.invoke(invocation, this);
   Provision provideRemote(Context context) =>
-      _$OntarioRmi.provideRemote(context, this);
-  Ontario getRemote(Context context, String uuid) =>
-      _$OntarioRmi.getRemote(context, uuid);
+      _$AppleRemoteRmi.provideRemote(context, this);
+  AppleRemote getRemote(Context context, String uuid) =>
+      _$AppleRemoteRmi.getRemote(context, uuid);
   @override
-  Map<String, dynamic> toJson() => _$OntarioToJson(this);
+  Map<String, dynamic> toJson() => _$AppleRemoteToJson(this);
 
-  get hooks => _$OntarioHooks;
+  get hooks => _$AppleRemoteHooks;
 
-  AVRConnection get connection => _connection;
+  int get address => _address;
+  set address(int _address) => throw new Exception(
+      'cannot change device property after implementationconstruction');
+  IRReceiver get receiver => _receiver;
+  set receiver(IRReceiver _receiver) => throw new Exception(
+      "cannot change module after implementation construction");
 }
 
-Map<String, dynamic> get _$OntarioHooks {
+Map<String, dynamic> get _$AppleRemoteHooks {
   return {
-    "classURL": "asset:blackbird/lib/devices/ontario.dart#Ontario",
-    "remote": _$OntarioRmi.getRemote,
-    "fromJson": _$OntarioFromJson
+    "classURL": "asset:blackbird/lib/devices/apple_remote.dart#AppleRemote",
+    "remote": _$AppleRemoteRmi.getRemote,
+    "fromJson": _$AppleRemoteFromJson
   };
 }
 
@@ -116,95 +120,60 @@ Map<String, dynamic> get _$OntarioHooks {
 // DeviceJsonSerializableGenerator
 // **************************************************************************
 
-Ontario _$OntarioFromJson(Map<String, dynamic> json) {
-  return Ontario();
+AppleRemote _$AppleRemoteFromJson(Map<String, dynamic> json) {
+  return AppleRemote()..address = json['address'] as int;
 }
 
-Map<String, dynamic> _$OntarioToJson(Ontario instance) => <String, dynamic>{
+Map<String, dynamic> _$AppleRemoteToJson(AppleRemote instance) =>
+    <String, dynamic>{
+      'address': instance.address,
       'json_serializable.className':
-          "asset:blackbird/lib/devices/ontario.dart#Ontario",
+          "asset:blackbird/lib/devices/apple_remote.dart#AppleRemote",
     };
 
 // **************************************************************************
 // InvokerGenerator
 // **************************************************************************
 
-class _$OntarioInvoker {
-  static dynamic invoke(Invocation invocation, Ontario target) {
-    if (invocation.isMethod && #sendIR == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 1; i++)
-        positionalArguments.add(null);
-
-      return target.sendIR(
-        positionalArguments[0],
-      );
+class _$AppleRemoteInvoker {
+  static dynamic invoke(Invocation invocation, AppleRemote target) {
+    if (invocation.isGetter && #address == invocation.memberName) {
+      return target.address;
     }
-    if (invocation.isMethod && #writeRegister == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 3; i++)
-        positionalArguments.add(null);
-
-      return target.writeRegister(
-        positionalArguments[0],
-        positionalArguments[1],
-        positionalArguments[2],
-      );
+    if (invocation.isSetter && #address == invocation.memberName) {
+      target.address = invocation.positionalArguments[0];
+      return null;
     }
-    if (invocation.isMethod && #readRegister == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 2; i++)
-        positionalArguments.add(null);
-
-      return target.readRegister(
-        positionalArguments[0],
-        positionalArguments[1],
-      );
+    if (invocation.isGetter && #receiver == invocation.memberName) {
+      return target.receiver;
     }
-    if (invocation.isMethod &&
-        #setupCommonInterruptStream == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 0; i++)
-        positionalArguments.add(null);
-
-      return target.setupCommonInterruptStream();
+    if (invocation.isSetter && #receiver == invocation.memberName) {
+      target.receiver = invocation.positionalArguments[0];
+      return null;
     }
-    if (invocation.isMethod && #writeRegisters == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 3; i++)
-        positionalArguments.add(null);
-
-      return target.writeRegisters(
-        positionalArguments[0],
-        positionalArguments[1],
-        positionalArguments[2],
-      );
+    if (invocation.isGetter && #keyCode == invocation.memberName) {
+      return target.keyCode;
     }
-    if (invocation.isMethod && #readRegisters == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 3; i++)
-        positionalArguments.add(null);
-
-      return target.readRegisters(
-        positionalArguments[0],
-        positionalArguments[1],
-        positionalArguments[2],
-      );
+    if (invocation.isGetter && #up == invocation.memberName) {
+      return target.up;
     }
-    if (invocation.isGetter && #connection == invocation.memberName) {
-      return target.connection;
+    if (invocation.isGetter && #down == invocation.memberName) {
+      return target.down;
     }
-    if (invocation.isGetter && #receive == invocation.memberName) {
-      return target.receive;
+    if (invocation.isGetter && #right == invocation.memberName) {
+      return target.right;
     }
-    if (invocation.isGetter && #commonInterrupt == invocation.memberName) {
-      return target.commonInterrupt;
+    if (invocation.isGetter && #left == invocation.memberName) {
+      return target.left;
+    }
+    if (invocation.isGetter && #play == invocation.memberName) {
+      return target.play;
+    }
+    if (invocation.isGetter && #menu == invocation.memberName) {
+      return target.menu;
+    }
+    if (invocation.isGetter && #center == invocation.memberName) {
+      return target.center;
     }
     if (invocation.isGetter && #blackbird == invocation.memberName) {
       return target.blackbird;
@@ -294,110 +263,7 @@ class _$OntarioInvoker {
 // ProxyGenerator
 // **************************************************************************
 
-class _$OntarioProxy implements Ontario {
-  Future<void> sendIR(int ir) {
-    List<Object> arguments = [];
-    arguments.add(ir);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#sendIR, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.isStream = false;
-
-    return _handle(_$invocation, metadata);
-  }
-
-  Future<void> writeRegister(int slave, int register, int value) {
-    List<Object> arguments = [];
-    arguments.add(slave);
-    arguments.add(register);
-    arguments.add(value);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#writeRegister, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.isStream = false;
-
-    return _handle(_$invocation, metadata);
-  }
-
-  Future<int> readRegister(int slave, int register) async {
-    List<Object> arguments = [];
-    arguments.add(slave);
-    arguments.add(register);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#readRegister, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.isStream = false;
-
-    return await _handle(_$invocation, metadata);
-  }
-
-  dynamic setupCommonInterruptStream() {
-    List<Object> arguments = [];
-
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation = Invocation.method(
-        #setupCommonInterruptStream, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.isStream = false;
-
-    return _handle(_$invocation, metadata);
-  }
-
-  Future<void> writeRegisters(int slave, int register, List values) async {
-    List<Object> arguments = [];
-    arguments.add(slave);
-    arguments.add(register);
-    arguments.add(values);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#writeRegisters, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.isStream = false;
-
-    return await _handle(_$invocation, metadata);
-  }
-
-  Future<List<int>> readRegisters(int slave, int register, int length) async {
-    List<Object> arguments = [];
-    arguments.add(slave);
-    arguments.add(register);
-    arguments.add(length);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#readRegisters, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.isStream = false;
-
-    return await _handle(_$invocation, metadata);
-  }
-
+class _$AppleRemoteProxy implements AppleRemote {
   Device implementation(Map dependencies) {
     List<Object> arguments = [];
     arguments.add(dependencies);
@@ -508,10 +374,28 @@ class _$OntarioProxy implements Ontario {
   }
 
   InvocationHandlerFunction _handle;
-  _$OntarioProxy(this._handle) : super();
+  _$AppleRemoteProxy(this._handle) : super();
 
-  AVRConnection get connection {
-    Invocation invocation = Invocation.getter(#connection);
+  int get address {
+    Invocation invocation = Invocation.getter(#address);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
+  IRReceiver get receiver {
+    Invocation invocation = Invocation.getter(#receiver);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
+  Stream<int> get keyCode {
+    Invocation invocation = Invocation.getter(#keyCode);
 
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.isStream = true;
@@ -519,8 +403,8 @@ class _$OntarioProxy implements Ontario {
     return _handle(invocation, metadata);
   }
 
-  Stream<int> get receive {
-    Invocation invocation = Invocation.getter(#receive);
+  Stream<void> get up {
+    Invocation invocation = Invocation.getter(#up);
 
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.isStream = true;
@@ -528,8 +412,53 @@ class _$OntarioProxy implements Ontario {
     return _handle(invocation, metadata);
   }
 
-  Stream<void> get commonInterrupt {
-    Invocation invocation = Invocation.getter(#commonInterrupt);
+  Stream<void> get down {
+    Invocation invocation = Invocation.getter(#down);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = true;
+
+    return _handle(invocation, metadata);
+  }
+
+  Stream<void> get right {
+    Invocation invocation = Invocation.getter(#right);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = true;
+
+    return _handle(invocation, metadata);
+  }
+
+  Stream<void> get left {
+    Invocation invocation = Invocation.getter(#left);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = true;
+
+    return _handle(invocation, metadata);
+  }
+
+  Stream<void> get play {
+    Invocation invocation = Invocation.getter(#play);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = true;
+
+    return _handle(invocation, metadata);
+  }
+
+  Stream<void> get menu {
+    Invocation invocation = Invocation.getter(#menu);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = true;
+
+    return _handle(invocation, metadata);
+  }
+
+  Stream<void> get center {
+    Invocation invocation = Invocation.getter(#center);
 
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.isStream = true;
@@ -592,24 +521,27 @@ class _$OntarioProxy implements Ontario {
 // RmiGenerator
 // **************************************************************************
 
-class _$OntarioRmi {
+class _$AppleRemoteRmi {
   static void _registerSerializers(Context context) {}
   static void _registerStubConstructors(Context context) {
     context.registerRemoteStubConstructor(
-        'asset:blackbird/lib/devices/ontario.dart#Ontario', getRemote);
+        'asset:blackbird/lib/devices/ir_receiver.dart#IRReceiver',
+        IRReceiver.getRemote);
+    context.registerRemoteStubConstructor(
+        'asset:blackbird/lib/devices/apple_remote.dart#AppleRemote', getRemote);
   }
 
-  static Ontario getRemote(Context context, String uuid) {
+  static AppleRemote getRemote(Context context, String uuid) {
     _registerSerializers(context);
     _registerStubConstructors(context);
     RmiProxyHandler handler = RmiProxyHandler(context, uuid);
-    return _$OntarioProxy(handler.handle);
+    return _$AppleRemoteProxy(handler.handle);
   }
 
-  static Provision provideRemote(Context context, Ontario target) {
+  static Provision provideRemote(Context context, AppleRemote target) {
     _registerSerializers(context);
     _registerStubConstructors(context);
-    return rmiProvideRemote(
-        context, target, 'asset:blackbird/lib/devices/ontario.dart#Ontario');
+    return rmiProvideRemote(context, target,
+        'asset:blackbird/lib/devices/apple_remote.dart#AppleRemote');
   }
 }

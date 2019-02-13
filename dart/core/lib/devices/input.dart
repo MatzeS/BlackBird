@@ -1,4 +1,6 @@
 import 'package:blackbird/blackbird.dart';
+import 'package:async/async.dart';
+import 'dart:async';
 import 'common.dart';
 
 part 'input.g.dart';
@@ -39,4 +41,53 @@ mixin BinaryInput implements DiscreteInput {
   get states => 2;
   get isOn async => state == ON;
   get isOff async => state == OFF;
+}
+
+typedef bool EventMatcher<T>(T event, T sequenceElement);
+
+class SequenceTrigger<T> {
+  final Stream<T> source;
+  final List<T> sequence;
+  EventMatcher<T> _matcher;
+  EventMatcher<T> get matcher => _matcher;
+
+  List<T> _recordedSequence = [];
+  int get sequenceIndex => _recordedSequence.length;
+
+  StreamController<List<T>> _controller = new StreamController<List<T>>();
+  RestartableTimer _timer;
+
+  SequenceTrigger(this.source, this.sequence,
+      {Duration sequenceTimeout = const Duration(milliseconds: 500),
+      EventMatcher<T> matcher}) {
+    _matcher = matcher;
+    if (_matcher == null) _matcher = (a, b) => a == b;
+
+    _timer = new RestartableTimer(sequenceTimeout, () {});
+
+    source.listen(parseEvent);
+  }
+
+  parseEvent(T event) {
+    if (!_timer.isActive) {
+      _resetSequence();
+    }
+
+    if (matcher(event, sequence[sequenceIndex])) {
+      _recordedSequence.add(event);
+    } else {
+      _resetSequence();
+    }
+
+    if (sequenceIndex == sequence.length) {
+      _controller.sink.add(_recordedSequence);
+      _resetSequence();
+    }
+
+    _timer.reset();
+  }
+
+  _resetSequence() => _recordedSequence.clear();
+
+  Stream<List<T>> get trigger => _controller.stream;
 }

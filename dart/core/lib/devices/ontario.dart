@@ -4,6 +4,7 @@ import 'package:blackbird/src/ontario/connection.dart';
 import 'package:blackbird/src/ontario/functions/i2c.dart';
 import 'package:blackbird/src/ontario/functions/ir.dart';
 import 'package:blackbird/src/ontario/functions/common_interrupt.dart';
+import 'package:blackbird/devices/ir_receiver.dart';
 
 export 'package:blackbird/src/ontario/connection.dart';
 export 'package:blackbird/src/ontario/serial_port.dart';
@@ -12,13 +13,18 @@ export 'package:blackbird/src/ontario/functions/ir.dart';
 
 part 'ontario.g.dart';
 
-abstract class Ontario extends Device implements I2CMaster {
+abstract class Ontario extends Device implements I2CMaster, IRReceiver {
   Ontario._();
   factory Ontario() => _$OntarioDevice();
   static Ontario getRemote(Context context, String uuid) =>
       _$OntarioRmi.getRemote(context, uuid);
 
   AVRConnection get connection;
+
+  Stream<int> get receive => connection.stream
+      .where((p) => p is IRReceiveResponse)
+      .map((r) => r as IRReceiveResponse)
+      .map((r) => r.data);
 
   Future<void> sendIR(int ir) {
     //TODO
