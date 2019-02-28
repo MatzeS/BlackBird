@@ -18,7 +18,8 @@ class Codes {
 
   static bool testPrefix(int code) => _getPrefix(code) == Codes.PREFIX;
   static bool testKey(int code, int key) => _getKeyByte(code) == key;
-  static bool testSuffix(int code, int suffix) => _getSuffix(code) == suffix;
+  static bool testSuffix(int code, int suffix) =>
+      suffix == AppleRemote.ALL_ADDR || _getSuffix(code) == suffix;
 }
 
 abstract class AppleRemote extends Device {
@@ -26,6 +27,8 @@ abstract class AppleRemote extends Device {
   factory AppleRemote() => _$AppleRemoteDevice();
   static AppleRemote getRemote(Context context, String uuid) =>
       _$AppleRemoteRmi.getRemote(context, uuid);
+
+  static const int ALL_ADDR = -1;
 
   int address;
 

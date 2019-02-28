@@ -10,15 +10,15 @@ abstract class MCP23017 extends I2CSlave {
       _$MCP23017Rmi.getRemote(context, uuid);
 
   turnOn() {
-    // writePortRegister(Port.A, Register.IODIR, 0x00);
-    // writePortRegister(Port.A, Register.OLAT, 0xFF);
-    writePortBit(Port.B, Register.IODIR, 0, false);
-    writePortBit(Port.B, Register.OLAT, 0, true);
+    writePortRegister(Port.A, Register.IODIR, 0x00);
+    writePortRegister(Port.A, Register.OLAT, 0xFF);
+    // writePortBit(Port.B, Register.IODIR, 0, false);
+    // writePortBit(Port.B, Register.OLAT, 0, true);
   }
 
   turnOff() {
-    // writePortRegister(Port.A, Register.OLAT, 0x00);
-    writePortBit(Port.B, Register.OLAT, 0, false);
+    writePortRegister(Port.A, Register.OLAT, 0x00);
+    // writePortBit(Port.B, Register.OLAT, 0, false);
   }
 
   Future<void> writePortBit(

@@ -54,7 +54,8 @@ class SequenceTrigger<T> {
   List<T> _recordedSequence = [];
   int get sequenceIndex => _recordedSequence.length;
 
-  StreamController<List<T>> _controller = new StreamController<List<T>>();
+  StreamController<List<T>> _controller =
+      new StreamController<List<T>>.broadcast();
   RestartableTimer _timer;
 
   SequenceTrigger(this.source, this.sequence,

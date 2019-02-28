@@ -56,7 +56,7 @@ class Electrode {
 
   Future<void> loadConfig(ElectrodeConfig config) async {
     await mpr.stopModeOperation(() async {
-      await   setChargeCurrent(config.chargeCurrent);
+      await setChargeCurrent(config.chargeCurrent);
       await setChargeTime(config.chargeTime);
       await setBaseLineValue(config.baselineValue);
       await setTouchThreshold(config.touchThreshold);
@@ -67,6 +67,10 @@ class Electrode {
   Stream<Transition> get change => mpr.touchEvent
       .where((e) => e.electrode == electrode)
       .map((e) => e.transition);
+
+  Stream<void> get released => change.where((e) => e.isTouched);
+
+  Stream<void> get touched => change.where((e) => e.isReleased);
 }
 
 /// Not considered / implemented:
@@ -442,6 +446,9 @@ class Transition {
   bool matches(Transition other) {
     return this == other || this == ANY || other == ANY;
   }
+
+  bool get isTouched => this == TOUCHED;
+  bool get isReleased => this == RELEASED;
 
   operator ==(Object other) {
     if (other is! Transition) return false;
