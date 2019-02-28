@@ -25,6 +25,8 @@ class _$AppleRemoteDevice extends AppleRemote {
   @override
   Map<String, dynamic> toJson() => _$AppleRemoteToJson(this);
 
+  Stream<int> get fullCode =>
+      throw new Exception("you cannot execute stuff on devices");
   Stream<int> get keyCode =>
       throw new Exception("you cannot execute stuff on devices");
   Stream<void> get up =>
@@ -150,6 +152,9 @@ class _$AppleRemoteInvoker {
     if (invocation.isSetter && #receiver == invocation.memberName) {
       target.receiver = invocation.positionalArguments[0];
       return null;
+    }
+    if (invocation.isGetter && #fullCode == invocation.memberName) {
+      return target.fullCode;
     }
     if (invocation.isGetter && #keyCode == invocation.memberName) {
       return target.keyCode;
@@ -376,6 +381,15 @@ class _$AppleRemoteProxy implements AppleRemote {
   InvocationHandlerFunction _handle;
   _$AppleRemoteProxy(this._handle) : super();
 
+  int get ALL_ADDR {
+    Invocation invocation = Invocation.getter(#ALL_ADDR);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
   int get address {
     Invocation invocation = Invocation.getter(#address);
 
@@ -390,6 +404,15 @@ class _$AppleRemoteProxy implements AppleRemote {
 
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
+  Stream<int> get fullCode {
+    Invocation invocation = Invocation.getter(#fullCode);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = true;
 
     return _handle(invocation, metadata);
   }

@@ -61,6 +61,8 @@ DeviceMemberType _mapAnnotationToType(DartObject annotation) {
 }
 
 DeviceMemberType identify(Element element) {
+  if (element is ExecutableElement && element.isStatic)
+    throw new Exception("static elements cannot be device members");
   if (element is! MethodElement &&
       element is! PropertyAccessorElement &&
       element is! FieldElement)
@@ -218,24 +220,23 @@ bool _isDevice(DartType type) {
       .isAssignableFromType(type);
 }
 
+bool _typeImplies<T>(e, test(T t)) => e is! T || (e is T && test(e));
+List<Element> _relevantMembers(ClassElement e) => filterConcreteElements(
+        e, allClassMember(e))
+    .where((e) => e.isPublic && e is! ConstructorElement)
+    .where((e) => _typeImplies<ClassMemberElement>(e, (e) => !e.isStatic))
+    .where((e) => _typeImplies<PropertyAccessorElement>(e, (e) => !e.isStatic))
+    .toList();
+
 List<Element> getRuntimeDependencies(ClassElement classElement) =>
-    filterConcreteElements(classElement, allClassMember(classElement))
-        .where((e) => e.isPublic && e is! ConstructorElement)
-        .where((e) => e is FieldElement || !(e as ExecutableElement).isStatic)
+    _relevantMembers(classElement)
         .where((e) => isRuntimeDependency(e))
         .toList();
 List<Element> getProperties(ClassElement classElement) =>
-    filterConcreteElements(classElement, allClassMember(classElement))
-        .where((e) => e.isPublic && e is! ConstructorElement)
-        .where((e) => e is FieldElement || !(e as ExecutableElement).isStatic)
-        .where((e) => isProperty(e))
-        .toList();
+    _relevantMembers(classElement).where((e) => isProperty(e)).toList();
 List<Element> getSubModules(ClassElement classElement) =>
-    filterConcreteElements(classElement, allClassMember(classElement))
-        .where((e) => e.isPublic && e is! ConstructorElement)
-        .where((e) => e is FieldElement || !(e as ExecutableElement).isStatic)
-        .where((e) => isSubModule(e))
-        .toList();
+    _relevantMembers(classElement).where((e) => isSubModule(e)).toList();
+
 List<Element> getExecutables(ClassElement classElement) =>
     filterConcreteElements(classElement, allExecutables(classElement))
         .where((e) => e.isPublic && e is! ConstructorElement)
