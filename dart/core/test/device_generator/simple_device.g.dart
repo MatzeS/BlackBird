@@ -90,7 +90,7 @@ class _$SimpleDeviceImplementation extends SimpleDevice {
   Host get host => _host;
 
   SimpleDevice implementation(Map<Symbol, Object> dependencies) =>
-      throw Exception('this is already an implementation');
+      throw Exception('this($this) is already an implementation');
   @override
   Object invoke(Invocation invocation) =>
       _$SimpleDeviceInvoker.invoke(invocation, this);
@@ -172,7 +172,7 @@ class _$EvenSimplerDeviceImplementation extends EvenSimplerDevice {
   Host get host => _host;
 
   EvenSimplerDevice implementation(Map<Symbol, Object> dependencies) =>
-      throw Exception('this is already an implementation');
+      throw Exception('this($this) is already an implementation');
   @override
   Object invoke(Invocation invocation) =>
       _$EvenSimplerDeviceInvoker.invoke(invocation, this);

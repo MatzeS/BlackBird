@@ -129,7 +129,7 @@ class ImplementationVisitor extends BasicDeviceVisitor<String> {
       Host get host => _host;
 
       $name implementation(Map<Symbol, Object> dependencies) 
-        => throw Exception('this is already an implementation');
+        => throw Exception('this(\$this) is already an implementation');
       @override
       Object invoke(Invocation invocation) =>
           _\$${name}Invoker.invoke(invocation, this);

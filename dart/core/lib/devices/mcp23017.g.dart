@@ -100,7 +100,7 @@ class _$MCP23017Implementation extends MCP23017 {
   Host get host => _host;
 
   MCP23017 implementation(Map<Symbol, Object> dependencies) =>
-      throw Exception('this is already an implementation');
+      throw Exception('this($this) is already an implementation');
   @override
   Object invoke(Invocation invocation) =>
       _$MCP23017Invoker.invoke(invocation, this);

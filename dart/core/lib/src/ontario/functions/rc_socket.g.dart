@@ -76,7 +76,7 @@ class _$DipSwitchSocketImplementation extends DipSwitchSocket {
   Host get host => _host;
 
   DipSwitchSocket implementation(Map<Symbol, Object> dependencies) =>
-      throw Exception('this is already an implementation');
+      throw Exception('this($this) is already an implementation');
   @override
   Object invoke(Invocation invocation) =>
       _$DipSwitchSocketInvoker.invoke(invocation, this);
@@ -179,7 +179,7 @@ class _$IntertechnoSwitchImplementation extends IntertechnoSwitch {
   Host get host => _host;
 
   IntertechnoSwitch implementation(Map<Symbol, Object> dependencies) =>
-      throw Exception('this is already an implementation');
+      throw Exception('this($this) is already an implementation');
   @override
   Object invoke(Invocation invocation) =>
       _$IntertechnoSwitchInvoker.invoke(invocation, this);

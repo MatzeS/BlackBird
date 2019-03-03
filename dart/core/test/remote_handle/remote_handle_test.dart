@@ -16,35 +16,46 @@ main() {
       Host localB = Host();
       localB.address = "localhost";
       localB.port = 2002;
-      localB.name = 'Host b';
+      localB.name = 'Host B';
 
       Blackbird blackbirdA = new Blackbird(localA);
+      // ADevice testDeviceA = ADevice();
+      // testDeviceA.identifier = 'A';
+      // blackbirdA.cluster.devices.add(testDeviceA);
+
       Blackbird blackbirdB = new Blackbird(localB);
-
-      ADevice testDeviceA = ADevice();
-      testDeviceA.identifier = 'A';
-      blackbirdA.cluster.devices.add(testDeviceA);
-
       ADevice testDeviceB = ADevice();
       testDeviceB.identifier = 'B';
       blackbirdB.cluster.devices.add(testDeviceB);
 
-      (await blackbirdB.interfaceDevice(testDeviceB)).executive("local");
+      blackbirdA.registerHooks(testDeviceB);
+      blackbirdB.registerHooks(testDeviceB);
+
+      localB = await blackbirdB.interfaceDevice(localB);
+      testDeviceB = await blackbirdB.interfaceDevice(testDeviceB);
+      testDeviceB.executive("localizer");
+      expect(testDeviceB.blackbird.localDevice, localB);
+      expect(localB.blackbird.localDevice, localB);
 
       blackbirdA.cluster.devices.add(localB);
       blackbirdB.cluster.devices.add(localA);
 
-      expect(testDeviceA, testDeviceB);
-      expect(testDeviceA.hashCode, testDeviceB.hashCode);
+      // expect(testDeviceA, testDeviceB);
+      // expect(testDeviceA.hashCode, testDeviceB.hashCode);
 
       Host handleOfHostBOnA = await blackbirdA.interfaceDevice(localB);
 
-      expect(localB.name, handleOfHostBOnA.name);
+      // expect(localB.name, handleOfHostBOnA.name);
 
       await handleOfHostBOnA.something('test');
 
       ADevice remoteDeviceB =
           await handleOfHostBOnA.getRemoteHandle(testDeviceB);
+
+      // expect(testDeviceA.blackbird.localDevice, localA);
+
+      expect(remoteDeviceB, isNotNull);
+
       await remoteDeviceB.executive("some");
     }, tags: "current");
   });

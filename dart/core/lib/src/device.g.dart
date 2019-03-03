@@ -79,7 +79,7 @@ class _$HostImplementation extends Host {
   Host get host => _host;
 
   Host implementation(Map<Symbol, Object> dependencies) =>
-      throw Exception('this is already an implementation');
+      throw Exception('this($this) is already an implementation');
   @override
   Object invoke(Invocation invocation) =>
       _$HostInvoker.invoke(invocation, this);

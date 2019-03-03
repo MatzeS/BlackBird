@@ -87,7 +87,7 @@ class _$I2CSlaveImplementation extends I2CSlave {
   Host get host => _host;
 
   I2CSlave implementation(Map<Symbol, Object> dependencies) =>
-      throw Exception('this is already an implementation');
+      throw Exception('this($this) is already an implementation');
   @override
   Object invoke(Invocation invocation) =>
       _$I2CSlaveInvoker.invoke(invocation, this);

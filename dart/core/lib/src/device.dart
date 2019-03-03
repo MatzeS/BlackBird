@@ -229,7 +229,6 @@ abstract class Host extends Device {
   Blackbird get blackbird;
 
   Future<Device> getRemoteHandle(@NotAsRmi() Device device) async {
-    print('get remote is on $name $this ${blackbird.localDevice} $device');
     return await blackbird.localGetRemoteHandle(device);
   }
 
@@ -249,7 +248,7 @@ abstract class Host extends Device {
   operator ==(Object other) {
     if (other is! Host) return false;
     Host host = other as Host;
-    return address == host.address;
+    return address == host.address && port == host.port; //TODO
   }
 
   static Host getRemote(Context context, String uuid) =>

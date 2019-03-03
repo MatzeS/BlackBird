@@ -105,7 +105,6 @@ class Blackbird {
     else if (device is Host)
       return new HostManager(device, this);
     else {
-      print('$device is agent');
       return AgentManager(device, this);
     }
   }

@@ -31,7 +31,9 @@ abstract class ConstructionManager extends DeviceManager {
 
     await Future.wait(list);
 
-    return device.implementation(dependencies);
+    var impl = device.implementation(dependencies);
+    impl.blackbird = blackbird; //TODO put to dependnecies
+    return impl;
   }
 
   Object constructDependency(Dependency dependency) {

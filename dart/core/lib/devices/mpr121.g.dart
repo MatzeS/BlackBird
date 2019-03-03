@@ -153,7 +153,7 @@ class _$MPR121Implementation extends MPR121 {
   Host get host => _host;
 
   MPR121 implementation(Map<Symbol, Object> dependencies) =>
-      throw Exception('this is already an implementation');
+      throw Exception('this($this) is already an implementation');
   @override
   Object invoke(Invocation invocation) =>
       _$MPR121Invoker.invoke(invocation, this);

@@ -88,7 +88,7 @@ class _$OntarioImplementation extends Ontario {
   Host get host => _host;
 
   Ontario implementation(Map<Symbol, Object> dependencies) =>
-      throw Exception('this is already an implementation');
+      throw Exception('this($this) is already an implementation');
   @override
   Object invoke(Invocation invocation) =>
       _$OntarioInvoker.invoke(invocation, this);

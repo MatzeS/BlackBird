@@ -58,7 +58,7 @@ class _$ADeviceImplementation extends ADevice {
   Host get host => _host;
 
   ADevice implementation(Map<Symbol, Object> dependencies) =>
-      throw Exception('this is already an implementation');
+      throw Exception('this($this) is already an implementation');
   @override
   Object invoke(Invocation invocation) =>
       _$ADeviceInvoker.invoke(invocation, this);
