@@ -8,7 +8,6 @@ abstract class ConstructionManager extends DeviceManager {
       : super(device, blackbird);
 
   Future<Device> constructImplementation() async {
-    print('${blackbird.localDevice} constructing $device');
     ConstructionInfoException info;
     try {
       device.implementation(null);

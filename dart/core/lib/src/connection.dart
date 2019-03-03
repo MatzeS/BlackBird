@@ -58,11 +58,9 @@ class Connection<T> extends DelegatingStream<T> implements StreamSink<T> {
       R receivedPacket;
       for (int i = 0; i < tries; i++) {
         try {
-          // print('sending request');
           send(request);
           receivedPacket = await receiver;
         } on TimeoutException {
-          // receiver = receive<R>(filter: filter, timeout: timeout);
           continue;
         }
         break;

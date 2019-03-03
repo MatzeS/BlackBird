@@ -6,6 +6,20 @@ import 'dart:io';
 // part 'remote_handle_test.g.dart';
 import 'package:blackbird/devices/example_device.dart';
 
+void _socketProvider(Blackbird blackbird) {
+  ServerSocket.bind("localhost", blackbird.localDevice.port).then((server) {
+    server.listen((socket) {
+      var output = new StreamController<String>();
+      output.stream.listen((data) {
+        socket.write(data);
+      });
+      Connection<String> subconnection = Connection<String>.fromParts(
+          socket.map((d) => String.fromCharCodes(d)), output.sink);
+      blackbird.registerHostConnection(subconnection);
+    });
+  });
+}
+
 main() {
   group('', () {
     test('', () async {
@@ -19,11 +33,13 @@ main() {
       localB.name = 'Host B';
 
       Blackbird blackbirdA = new Blackbird(localA);
+      _socketProvider(blackbirdA);
       // ADevice testDeviceA = ADevice();
       // testDeviceA.identifier = 'A';
       // blackbirdA.cluster.devices.add(testDeviceA);
 
       Blackbird blackbirdB = new Blackbird(localB);
+      _socketProvider(blackbirdB);
       ADevice testDeviceB = ADevice();
       testDeviceB.identifier = 'B';
       blackbirdB.cluster.devices.add(testDeviceB);
@@ -34,8 +50,12 @@ main() {
       localB = await blackbirdB.interfaceDevice(localB);
       testDeviceB = await blackbirdB.interfaceDevice(testDeviceB);
       testDeviceB.executive("localizer");
+
       expect(testDeviceB.blackbird.localDevice, localB);
       expect(localB.blackbird.localDevice, localB);
+      expect(testDeviceB.hit, true);
+      testDeviceB.hit = false;
+      expect(testDeviceB.hit, false);
 
       blackbirdA.cluster.devices.add(localB);
       blackbirdB.cluster.devices.add(localA);
@@ -47,8 +67,6 @@ main() {
 
       // expect(localB.name, handleOfHostBOnA.name);
 
-      await handleOfHostBOnA.something('test');
-
       ADevice remoteDeviceB =
           await handleOfHostBOnA.getRemoteHandle(testDeviceB);
 
@@ -57,6 +75,6 @@ main() {
       expect(remoteDeviceB, isNotNull);
 
       await remoteDeviceB.executive("some");
-    }, tags: "current");
+    });
   });
 }

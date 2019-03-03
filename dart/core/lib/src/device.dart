@@ -232,10 +232,6 @@ abstract class Host extends Device {
     return await blackbird.localGetRemoteHandle(device);
   }
 
-  Future<void> something(String text) async {
-    print('well ${toString()} $text');
-  }
-
   @Ignore()
   String toString() {
     if (name != null)

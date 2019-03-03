@@ -29,8 +29,6 @@ class _$HostDevice extends Host {
       'cannot get runtime dependencys on device representation');
   Future<Device> getRemoteHandle(Device device) async =>
       throw new Exception("you cannot execute stuff on devices");
-  Future<void> something(String text) async =>
-      throw new Exception("you cannot execute stuff on devices");
 }
 
 class _$HostImplementation extends Host {
@@ -229,16 +227,6 @@ class _$HostInvoker {
         positionalArguments.add(null);
 
       return target.getRemoteHandle(
-        positionalArguments[0],
-      );
-    }
-    if (invocation.isMethod && #something == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 1; i++)
-        positionalArguments.add(null);
-
-      return target.something(
         positionalArguments[0],
       );
     }
@@ -527,21 +515,6 @@ class _$HostProxy implements Host {
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.positionalArgumentMetadata.add([]);
     metadata.positionalArgumentMetadata[0].add(NotAsRmi());
-    metadata.isStream = false;
-
-    return await _handle(_$invocation, metadata);
-  }
-
-  Future<void> something(String text) async {
-    List<Object> arguments = [];
-    arguments.add(text);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#something, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
     metadata.isStream = false;
 
     return await _handle(_$invocation, metadata);

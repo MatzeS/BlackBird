@@ -8,8 +8,11 @@ abstract class ADevice extends Device {
   ADevice._();
   factory ADevice() => _$ADeviceDevice();
 
+  @Ignore()
+  bool hit = false;
+
   Future<void> executive(String data) async {
-    print('on $host device $identifier, executive: $data');
+    hit = true;
   }
 
   @Property()

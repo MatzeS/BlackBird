@@ -51,7 +51,6 @@ class AgentManager extends ConstructionManager {
     _acquireRemoteHandle();
     if (isRemoteHandlePresent) return _remoteHandle;
 
-    print("constructing $device on ${blackbird.localDevice}");
     _localHandle = await constructImplementation();
     return _localHandle;
   }

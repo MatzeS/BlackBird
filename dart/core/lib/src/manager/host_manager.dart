@@ -25,7 +25,6 @@ class HostManager extends DeviceManager {
   }
 
   Future<void> _acquireRemoteHandle() async {
-    print('connecting to $device');
     Socket socket = await Socket.connect(device.address, device.port);
     HostConnection connection = HostConnection.fromSocket(socket);
 

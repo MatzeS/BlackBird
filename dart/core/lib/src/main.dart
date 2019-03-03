@@ -1,5 +1,7 @@
 import 'package:logging/logging.dart';
 import 'package:rmi/rmi.dart';
+import 'dart:io';
+import 'dart:async';
 
 import 'device.dart';
 import 'cluster.dart';
@@ -99,7 +101,6 @@ class Blackbird {
   }
 
   DeviceManager _createManager(Device device) {
-    print('$localDevice creates $device manager');
     if (device == localDevice)
       return new LocalDeviceManager(device, this);
     else if (device is Host)
@@ -111,9 +112,8 @@ class Blackbird {
 
   /// TODO probably removed
   Future<Device> localGetRemoteHandle(Device device) async {
-    print('on $localDevice local Get Remote $device ${_managers[device]}');
     if (!getManager(device).isLocallyHosted) {
-      print('wa;lwkdjf;lkasdjf;lksadjfkas;f');
+      //TODO
       return null;
     }
     return await interfaceDevice(device);

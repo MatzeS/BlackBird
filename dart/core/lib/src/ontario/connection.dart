@@ -6,6 +6,9 @@ import 'functions/ir.dart';
 import 'functions/i2c.dart';
 import 'functions/common_interrupt.dart';
 import 'package:async/async.dart';
+import 'package:logging/logging.dart';
+
+final Logger log = new Logger('AVR_Connection');
 
 class AVRPacket {}
 
@@ -156,7 +159,7 @@ class _PayloadDecoder {
       AVRPacket packet = parser.parse(data);
       sink.add(packet);
     } on Object catch (e) {
-      print('no parser $command / $e');
+      log.severe('no parser $command / $e');
       return;
     }
   }
@@ -214,13 +217,12 @@ class _PayloadDecoder {
 
         expect = Expect.DATA;
       } else
-        print("unhandled byte $incomingByte"); //TODO error
+        log.warning("unhandled byte $incomingByte"); //TODO error
 
-    } on Exception {
-      print('exception');
-    } on Error catch (e, s) {
-      print('error $e');
-      // print(s);
+    } on Exception catch (e) {
+      log.severe("Exception on parseByte", e);
+    } on Error catch (e) {
+      log.severe("Error on parseByte", e);
     }
   }
 }
