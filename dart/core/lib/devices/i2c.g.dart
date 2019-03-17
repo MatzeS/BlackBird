@@ -27,18 +27,6 @@ class _$I2CSlaveDevice extends I2CSlave {
 
   Stream<void> get commonInterrupt =>
       throw new Exception("you cannot execute stuff on devices");
-  Future<void> writeBit(int register, int bit, bool value) async =>
-      throw new Exception("you cannot execute stuff on devices");
-  Future<bool> readBit(int register, int bit) async =>
-      throw new Exception("you cannot execute stuff on devices");
-  Future<int> readBits(int register, int lsb, int numBits) async =>
-      throw new Exception("you cannot execute stuff on devices");
-  Future<void> writeBits(int register, int lsb, int numBits, int value) async =>
-      throw new Exception("you cannot execute stuff on devices");
-  Future<void> writeRegister(int register, int value) =>
-      throw new Exception("you cannot execute stuff on devices");
-  Future<int> readRegister(int register) =>
-      throw new Exception("you cannot execute stuff on devices");
   Future<void> writeRegisters(int register, List values) =>
       throw new Exception("you cannot execute stuff on devices");
   Future<List<int>> readRegisters(int register, int length) =>
@@ -136,75 +124,6 @@ Map<String, dynamic> _$I2CSlaveToJson(I2CSlave instance) => <String, dynamic>{
 
 class _$I2CSlaveInvoker {
   static dynamic invoke(Invocation invocation, I2CSlave target) {
-    if (invocation.isMethod && #writeBit == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 3; i++)
-        positionalArguments.add(null);
-
-      return target.writeBit(
-        positionalArguments[0],
-        positionalArguments[1],
-        positionalArguments[2],
-      );
-    }
-    if (invocation.isMethod && #readBit == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 2; i++)
-        positionalArguments.add(null);
-
-      return target.readBit(
-        positionalArguments[0],
-        positionalArguments[1],
-      );
-    }
-    if (invocation.isMethod && #readBits == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 3; i++)
-        positionalArguments.add(null);
-
-      return target.readBits(
-        positionalArguments[0],
-        positionalArguments[1],
-        positionalArguments[2],
-      );
-    }
-    if (invocation.isMethod && #writeBits == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 4; i++)
-        positionalArguments.add(null);
-
-      return target.writeBits(
-        positionalArguments[0],
-        positionalArguments[1],
-        positionalArguments[2],
-        positionalArguments[3],
-      );
-    }
-    if (invocation.isMethod && #writeRegister == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 2; i++)
-        positionalArguments.add(null);
-
-      return target.writeRegister(
-        positionalArguments[0],
-        positionalArguments[1],
-      );
-    }
-    if (invocation.isMethod && #readRegister == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 1; i++)
-        positionalArguments.add(null);
-
-      return target.readRegister(
-        positionalArguments[0],
-      );
-    }
     if (invocation.isMethod && #writeRegisters == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
@@ -317,6 +236,96 @@ class _$I2CSlaveInvoker {
         positionalArguments[0],
       );
     }
+    if (invocation.isMethod && #readRegister == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.readRegister(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod && #writeRegister == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 2; i++)
+        positionalArguments.add(null);
+
+      return target.writeRegister(
+        positionalArguments[0],
+        positionalArguments[1],
+      );
+    }
+    if (invocation.isMethod && #readBit == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 2; i++)
+        positionalArguments.add(null);
+
+      return target.readBit(
+        positionalArguments[0],
+        positionalArguments[1],
+      );
+    }
+    if (invocation.isMethod && #writeBit == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 3; i++)
+        positionalArguments.add(null);
+
+      return target.writeBit(
+        positionalArguments[0],
+        positionalArguments[1],
+        positionalArguments[2],
+      );
+    }
+    if (invocation.isMethod && #readBits == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 3; i++)
+        positionalArguments.add(null);
+
+      return target.readBits(
+        positionalArguments[0],
+        positionalArguments[1],
+        positionalArguments[2],
+      );
+    }
+    if (invocation.isMethod && #writeBits == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 4; i++)
+        positionalArguments.add(null);
+
+      return target.writeBits(
+        positionalArguments[0],
+        positionalArguments[1],
+        positionalArguments[2],
+        positionalArguments[3],
+      );
+    }
+    if (invocation.isMethod && #readBitBlock == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.readBitBlock(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod && #writeBitBlock == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 2; i++)
+        positionalArguments.add(null);
+
+      return target.writeBitBlock(
+        positionalArguments[0],
+        positionalArguments[1],
+      );
+    }
     if (invocation.isMethod && #== == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
@@ -330,29 +339,6 @@ class _$I2CSlaveInvoker {
 
 class _$I2CMasterInvoker {
   static dynamic invoke(Invocation invocation, I2CMaster target) {
-    if (invocation.isMethod && #writeRegister == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 3; i++)
-        positionalArguments.add(null);
-
-      return target.writeRegister(
-        positionalArguments[0],
-        positionalArguments[1],
-        positionalArguments[2],
-      );
-    }
-    if (invocation.isMethod && #readRegister == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 2; i++)
-        positionalArguments.add(null);
-
-      return target.readRegister(
-        positionalArguments[0],
-        positionalArguments[1],
-      );
-    }
     if (invocation.isMethod && #writeRegisters == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
@@ -469,114 +455,6 @@ class _$I2CMasterInvoker {
 // **************************************************************************
 
 class _$I2CSlaveProxy implements I2CSlave {
-  Future<void> writeBit(int register, int bit, bool value) async {
-    List<Object> arguments = [];
-    arguments.add(register);
-    arguments.add(bit);
-    arguments.add(value);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#writeBit, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.isStream = false;
-
-    return await _handle(_$invocation, metadata);
-  }
-
-  Future<bool> readBit(int register, int bit) async {
-    List<Object> arguments = [];
-    arguments.add(register);
-    arguments.add(bit);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#readBit, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.isStream = false;
-
-    return await _handle(_$invocation, metadata);
-  }
-
-  Future<int> readBits(int register, int lsb, int numBits) async {
-    List<Object> arguments = [];
-    arguments.add(register);
-    arguments.add(lsb);
-    arguments.add(numBits);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#readBits, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.isStream = false;
-
-    return await _handle(_$invocation, metadata);
-  }
-
-  Future<void> writeBits(int register, int lsb, int numBits, int value) async {
-    List<Object> arguments = [];
-    arguments.add(register);
-    arguments.add(lsb);
-    arguments.add(numBits);
-    arguments.add(value);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#writeBits, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.isStream = false;
-
-    return await _handle(_$invocation, metadata);
-  }
-
-  Future<void> writeRegister(int register, int value) {
-    List<Object> arguments = [];
-    arguments.add(register);
-    arguments.add(value);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#writeRegister, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.isStream = false;
-
-    return _handle(_$invocation, metadata);
-  }
-
-  Future<int> readRegister(int register) {
-    List<Object> arguments = [];
-    arguments.add(register);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#readRegister, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.isStream = false;
-
-    return _handle(_$invocation, metadata);
-  }
-
   Future<void> writeRegisters(int register, List values) {
     List<Object> arguments = [];
     arguments.add(register);
@@ -720,6 +598,147 @@ class _$I2CSlaveProxy implements I2CSlave {
     return _handle(_$invocation, metadata);
   }
 
+  Future<int> readRegister(int register) {
+    List<Object> arguments = [];
+    arguments.add(register);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#readRegister, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
+  }
+
+  Future<void> writeRegister(int register, int value) {
+    List<Object> arguments = [];
+    arguments.add(register);
+    arguments.add(value);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#writeRegister, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
+  }
+
+  Future<bool> readBit(int register, int bit) async {
+    List<Object> arguments = [];
+    arguments.add(register);
+    arguments.add(bit);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#readBit, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return await _handle(_$invocation, metadata);
+  }
+
+  Future<int> writeBit(int register, int bit, bool value) async {
+    List<Object> arguments = [];
+    arguments.add(register);
+    arguments.add(bit);
+    arguments.add(value);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#writeBit, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return await _handle(_$invocation, metadata);
+  }
+
+  Future<int> readBits(int register, int firstBit, int width) async {
+    List<Object> arguments = [];
+    arguments.add(register);
+    arguments.add(firstBit);
+    arguments.add(width);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#readBits, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return await _handle(_$invocation, metadata);
+  }
+
+  Future<int> writeBits(
+      int register, int firstBit, int width, int value) async {
+    List<Object> arguments = [];
+    arguments.add(register);
+    arguments.add(firstBit);
+    arguments.add(width);
+    arguments.add(value);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#writeBits, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return await _handle(_$invocation, metadata);
+  }
+
+  Future<int> readBitBlock(BitBlock bitBlock) {
+    List<Object> arguments = [];
+    arguments.add(bitBlock);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#readBitBlock, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
+  }
+
+  Future<void> writeBitBlock(BitBlock bitBlock, int value) {
+    List<Object> arguments = [];
+    arguments.add(bitBlock);
+    arguments.add(value);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#writeBitBlock, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
+  }
+
   InvocationHandlerFunction _handle;
   _$I2CSlaveProxy(this._handle) : super();
 
@@ -802,42 +821,6 @@ class _$I2CSlaveProxy implements I2CSlave {
 }
 
 class _$I2CMasterProxy implements I2CMaster {
-  Future<void> writeRegister(int slave, int register, int value) {
-    List<Object> arguments = [];
-    arguments.add(slave);
-    arguments.add(register);
-    arguments.add(value);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#writeRegister, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.isStream = false;
-
-    return _handle(_$invocation, metadata);
-  }
-
-  Future<int> readRegister(int slave, int register) {
-    List<Object> arguments = [];
-    arguments.add(slave);
-    arguments.add(register);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#readRegister, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.isStream = false;
-
-    return _handle(_$invocation, metadata);
-  }
-
   Future<void> writeRegisters(int slave, int register, List values) {
     List<Object> arguments = [];
     arguments.add(slave);

@@ -146,8 +146,6 @@ DeviceMemberType identify(Element element) {
         throw new Exception('submodule accessor/method cannot be void');
 
       return DeviceMemberType.submodule;
-    } else if (isSubmodule && element.displayName != 'host') {
-      throw new Exception('Devices have to be passed as module, $element');
     } else if (type == DeviceMemberType.property) {
       // property basically allows everything
       return DeviceMemberType.property;
@@ -167,10 +165,6 @@ DeviceMemberType identify(Element element) {
   }
 
   // not annotated, assume type
-
-  //TODO
-  if (element.displayName == 'getRemoteHandle')
-    return DeviceMemberType.executive;
 
   if (isSubmodule) {
     //log.fine('$element is not annotated, assuming submodule');

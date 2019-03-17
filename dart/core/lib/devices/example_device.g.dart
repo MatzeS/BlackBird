@@ -137,6 +137,13 @@ class _$ADeviceInvoker {
       target.identifier = invocation.positionalArguments[0];
       return null;
     }
+    if (invocation.isGetter && #hit == invocation.memberName) {
+      return target.hit;
+    }
+    if (invocation.isSetter && #hit == invocation.memberName) {
+      target.hit = invocation.positionalArguments[0];
+      return null;
+    }
     if (invocation.isGetter && #hashCode == invocation.memberName) {
       return target.hashCode;
     }
@@ -339,6 +346,15 @@ class _$ADeviceProxy implements ADevice {
 
   String get identifier {
     Invocation invocation = Invocation.getter(#identifier);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.isStream = false;
+
+    return _handle(invocation, metadata);
+  }
+
+  bool get hit {
+    Invocation invocation = Invocation.getter(#hit);
 
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.isStream = false;

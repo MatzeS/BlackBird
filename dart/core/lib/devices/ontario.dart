@@ -4,16 +4,18 @@ import 'package:blackbird/src/ontario/connection.dart';
 import 'package:blackbird/src/ontario/functions/i2c.dart';
 import 'package:blackbird/src/ontario/functions/ir.dart';
 import 'package:blackbird/src/ontario/functions/common_interrupt.dart';
-import 'package:blackbird/devices/ir_receiver.dart';
+import 'package:blackbird/devices/ir.dart';
 
 export 'package:blackbird/src/ontario/connection.dart';
 export 'package:blackbird/src/ontario/serial_port.dart';
 export 'package:blackbird/src/ontario/functions/rc_socket.dart';
 export 'package:blackbird/src/ontario/functions/ir.dart';
+export 'package:blackbird/devices/ir.dart';
 
 part 'ontario.g.dart';
 
-abstract class Ontario extends Device implements I2CMaster, IRReceiver {
+abstract class Ontario extends Device
+    implements I2CMaster, IRReceiver, IRTransmitter {
   Ontario._();
   factory Ontario() => _$OntarioDevice();
   static Ontario getRemote(Context context, String uuid) =>
@@ -26,16 +28,9 @@ abstract class Ontario extends Device implements I2CMaster, IRReceiver {
       .map((r) => r as IRReceiveResponse)
       .map((r) => r.data);
 
-  Future<void> sendIR(int ir) {
-    //TODO
-    IRSendQuery x = new IRSendQuery(ir);
-    connection.send(x);
+  Future<void> transmitIRCode(int code) async {
+    connection.send(new IRSendQuery(code));
   }
-
-  writeRegister(int slave, int register, int value) =>
-      writeRegisters(slave, register, [value]);
-  readRegister(int slave, int register) async =>
-      readRegisters(slave, register, 1).then((l) => l.single);
 
   Stream<void> _commonInterruptStream;
   Stream<void> get commonInterrupt {

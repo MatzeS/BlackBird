@@ -74,7 +74,7 @@ main() {
           } else if (expectedType.contains('Ignore')) {
             expected = DeviceMemberType.ignored;
           } else if (expectedType.contains('Illegal')) {
-            fail('identified as $type although Illegal expected');
+            fail('$e identified as $type although Illegal expected');
           } else
             throw new Exception(
                 'cannot identify expected device member type, $e, $type');

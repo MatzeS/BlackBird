@@ -168,23 +168,7 @@ abstract class KitchenSinkDevice extends Device {
   set aSuspiciousSetter(Device device) {}
 
   @ExpectAs(Illegal)
-  @Property() // for the moment, devices are not even allowed as property permuatator parameters
-  set aSuspiciousPropertySetter(Device device) {}
-
-  @ExpectAs(Illegal)
-  @Executive()
-  set aSuspiciousExecutiveSetter(Device device) {}
-
-  @ExpectAs(Illegal)
   set abstractSuspiciousSetter(Device device);
-
-  @ExpectAs(Illegal)
-  @Property()
-  set abstractSuspiciousPropertySetter(Device device);
-
-  @ExpectAs(Illegal)
-  @Executive()
-  set abstractSuspiciousExecutiveSetter(Device device);
 
   @ExpectAs(Illegal)
   Device get submoduleGetter {}

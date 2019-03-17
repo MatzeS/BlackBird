@@ -65,10 +65,6 @@ class _$MPR121Device extends MPR121 {
   Future<void> writeOffsetRegister(int baseRegister, int registerSkip,
           int offset, int registerWidth, int value) async =>
       throw new Exception("you cannot execute stuff on devices");
-  Future<int> readBitBlock(BitBlock bitBlock) =>
-      throw new Exception("you cannot execute stuff on devices");
-  Future<void> writeBitBlock(BitBlock bitBlock, int value) =>
-      throw new Exception("you cannot execute stuff on devices");
   dynamic setTouchDebounce(int value) =>
       throw new Exception("you cannot execute stuff on devices");
   dynamic setReleaseDebounce(int value) =>
@@ -93,22 +89,6 @@ class _$MPR121Device extends MPR121 {
       throw new Exception("you cannot execute stuff on devices");
 
   Stream<void> get commonInterrupt =>
-      throw new Exception("you cannot execute stuff on devices");
-  Future<void> writeBit(int register, int bit, bool value) async =>
-      throw new Exception("you cannot execute stuff on devices");
-  Future<bool> readBit(int register, int bit) async =>
-      throw new Exception("you cannot execute stuff on devices");
-  Future<int> readBits(int register, int lsb, int numBits) async =>
-      throw new Exception("you cannot execute stuff on devices");
-  Future<void> writeBits(int register, int lsb, int numBits, int value) async =>
-      throw new Exception("you cannot execute stuff on devices");
-  Future<void> writeRegister(int register, int value) =>
-      throw new Exception("you cannot execute stuff on devices");
-  Future<int> readRegister(int register) =>
-      throw new Exception("you cannot execute stuff on devices");
-  Future<void> writeRegisters(int register, List values) =>
-      throw new Exception("you cannot execute stuff on devices");
-  Future<List<int>> readRegisters(int register, int length) =>
       throw new Exception("you cannot execute stuff on devices");
 }
 
@@ -260,27 +240,6 @@ class _$MPR121Invoker {
         positionalArguments[4],
       );
     }
-    if (invocation.isMethod && #readBitBlock == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 1; i++)
-        positionalArguments.add(null);
-
-      return target.readBitBlock(
-        positionalArguments[0],
-      );
-    }
-    if (invocation.isMethod && #writeBitBlock == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 2; i++)
-        positionalArguments.add(null);
-
-      return target.writeBitBlock(
-        positionalArguments[0],
-        positionalArguments[1],
-      );
-    }
     if (invocation.isMethod && #setTouchDebounce == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
@@ -394,13 +353,13 @@ class _$MPR121Invoker {
 
       return target.softReset();
     }
-    if (invocation.isMethod && #electorde == invocation.memberName) {
+    if (invocation.isMethod && #electrode == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
       for (int i = invocation.positionalArguments.length; i < 1; i++)
         positionalArguments.add(null);
 
-      return target.electorde(
+      return target.electrode(
         positionalArguments[0],
       );
     }
@@ -488,16 +447,47 @@ class _$MPR121Invoker {
     if (invocation.isGetter && #runtimeType == invocation.memberName) {
       return target.runtimeType;
     }
-    if (invocation.isMethod && #writeBit == invocation.memberName) {
+    if (invocation.isMethod && #writeRegisters == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 3; i++)
+      for (int i = invocation.positionalArguments.length; i < 2; i++)
         positionalArguments.add(null);
 
-      return target.writeBit(
+      return target.writeRegisters(
         positionalArguments[0],
         positionalArguments[1],
-        positionalArguments[2],
+      );
+    }
+    if (invocation.isMethod && #readRegisters == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 2; i++)
+        positionalArguments.add(null);
+
+      return target.readRegisters(
+        positionalArguments[0],
+        positionalArguments[1],
+      );
+    }
+    if (invocation.isMethod && #readRegister == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 1; i++)
+        positionalArguments.add(null);
+
+      return target.readRegister(
+        positionalArguments[0],
+      );
+    }
+    if (invocation.isMethod && #writeRegister == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 2; i++)
+        positionalArguments.add(null);
+
+      return target.writeRegister(
+        positionalArguments[0],
+        positionalArguments[1],
       );
     }
     if (invocation.isMethod && #readBit == invocation.memberName) {
@@ -509,6 +499,18 @@ class _$MPR121Invoker {
       return target.readBit(
         positionalArguments[0],
         positionalArguments[1],
+      );
+    }
+    if (invocation.isMethod && #writeBit == invocation.memberName) {
+      List<Object> positionalArguments =
+          List.from(invocation.positionalArguments);
+      for (int i = invocation.positionalArguments.length; i < 3; i++)
+        positionalArguments.add(null);
+
+      return target.writeBit(
+        positionalArguments[0],
+        positionalArguments[1],
+        positionalArguments[2],
       );
     }
     if (invocation.isMethod && #readBits == invocation.memberName) {
@@ -536,45 +538,23 @@ class _$MPR121Invoker {
         positionalArguments[3],
       );
     }
-    if (invocation.isMethod && #writeRegister == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 2; i++)
-        positionalArguments.add(null);
-
-      return target.writeRegister(
-        positionalArguments[0],
-        positionalArguments[1],
-      );
-    }
-    if (invocation.isMethod && #readRegister == invocation.memberName) {
+    if (invocation.isMethod && #readBitBlock == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
       for (int i = invocation.positionalArguments.length; i < 1; i++)
         positionalArguments.add(null);
 
-      return target.readRegister(
+      return target.readBitBlock(
         positionalArguments[0],
       );
     }
-    if (invocation.isMethod && #writeRegisters == invocation.memberName) {
+    if (invocation.isMethod && #writeBitBlock == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
       for (int i = invocation.positionalArguments.length; i < 2; i++)
         positionalArguments.add(null);
 
-      return target.writeRegisters(
-        positionalArguments[0],
-        positionalArguments[1],
-      );
-    }
-    if (invocation.isMethod && #readRegisters == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 2; i++)
-        positionalArguments.add(null);
-
-      return target.readRegisters(
+      return target.writeBitBlock(
         positionalArguments[0],
         positionalArguments[1],
       );
@@ -742,38 +722,6 @@ class _$MPR121Proxy implements MPR121 {
     return await _handle(_$invocation, metadata);
   }
 
-  Future<int> readBitBlock(BitBlock bitBlock) {
-    List<Object> arguments = [];
-    arguments.add(bitBlock);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#readBitBlock, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.isStream = false;
-
-    return _handle(_$invocation, metadata);
-  }
-
-  Future<void> writeBitBlock(BitBlock bitBlock, int value) {
-    List<Object> arguments = [];
-    arguments.add(bitBlock);
-    arguments.add(value);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#writeBitBlock, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.isStream = false;
-
-    return _handle(_$invocation, metadata);
-  }
-
   dynamic setTouchDebounce(int value) {
     List<Object> arguments = [];
     arguments.add(value);
@@ -938,125 +886,17 @@ class _$MPR121Proxy implements MPR121 {
     return _handle(_$invocation, metadata);
   }
 
-  Electrode electorde(int index) {
+  Electrode electrode(int index) {
     List<Object> arguments = [];
     arguments.add(index);
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation =
-        Invocation.method(#electorde, arguments, namedArguments);
+        Invocation.method(#electrode, arguments, namedArguments);
 
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.positionalArgumentMetadata.add([]);
     metadata.elementMetadata.add(Ignore());
-    metadata.isStream = false;
-
-    return _handle(_$invocation, metadata);
-  }
-
-  Future<void> writeBit(int register, int bit, bool value) async {
-    List<Object> arguments = [];
-    arguments.add(register);
-    arguments.add(bit);
-    arguments.add(value);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#writeBit, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.isStream = false;
-
-    return await _handle(_$invocation, metadata);
-  }
-
-  Future<bool> readBit(int register, int bit) async {
-    List<Object> arguments = [];
-    arguments.add(register);
-    arguments.add(bit);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#readBit, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.isStream = false;
-
-    return await _handle(_$invocation, metadata);
-  }
-
-  Future<int> readBits(int register, int lsb, int numBits) async {
-    List<Object> arguments = [];
-    arguments.add(register);
-    arguments.add(lsb);
-    arguments.add(numBits);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#readBits, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.isStream = false;
-
-    return await _handle(_$invocation, metadata);
-  }
-
-  Future<void> writeBits(int register, int lsb, int numBits, int value) async {
-    List<Object> arguments = [];
-    arguments.add(register);
-    arguments.add(lsb);
-    arguments.add(numBits);
-    arguments.add(value);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#writeBits, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.isStream = false;
-
-    return await _handle(_$invocation, metadata);
-  }
-
-  Future<void> writeRegister(int register, int value) {
-    List<Object> arguments = [];
-    arguments.add(register);
-    arguments.add(value);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#writeRegister, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.isStream = false;
-
-    return _handle(_$invocation, metadata);
-  }
-
-  Future<int> readRegister(int register) {
-    List<Object> arguments = [];
-    arguments.add(register);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#readRegister, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
     metadata.isStream = false;
 
     return _handle(_$invocation, metadata);
@@ -1087,6 +927,147 @@ class _$MPR121Proxy implements MPR121 {
 
     Invocation _$invocation =
         Invocation.method(#readRegisters, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
+  }
+
+  Future<int> readRegister(int register) {
+    List<Object> arguments = [];
+    arguments.add(register);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#readRegister, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
+  }
+
+  Future<void> writeRegister(int register, int value) {
+    List<Object> arguments = [];
+    arguments.add(register);
+    arguments.add(value);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#writeRegister, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
+  }
+
+  Future<bool> readBit(int register, int bit) async {
+    List<Object> arguments = [];
+    arguments.add(register);
+    arguments.add(bit);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#readBit, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return await _handle(_$invocation, metadata);
+  }
+
+  Future<int> writeBit(int register, int bit, bool value) async {
+    List<Object> arguments = [];
+    arguments.add(register);
+    arguments.add(bit);
+    arguments.add(value);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#writeBit, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return await _handle(_$invocation, metadata);
+  }
+
+  Future<int> readBits(int register, int firstBit, int width) async {
+    List<Object> arguments = [];
+    arguments.add(register);
+    arguments.add(firstBit);
+    arguments.add(width);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#readBits, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return await _handle(_$invocation, metadata);
+  }
+
+  Future<int> writeBits(
+      int register, int firstBit, int width, int value) async {
+    List<Object> arguments = [];
+    arguments.add(register);
+    arguments.add(firstBit);
+    arguments.add(width);
+    arguments.add(value);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#writeBits, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return await _handle(_$invocation, metadata);
+  }
+
+  Future<int> readBitBlock(BitBlock bitBlock) {
+    List<Object> arguments = [];
+    arguments.add(bitBlock);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#readBitBlock, arguments, namedArguments);
+
+    InvocationMetadata metadata = new InvocationMetadata();
+    metadata.positionalArgumentMetadata.add([]);
+    metadata.isStream = false;
+
+    return _handle(_$invocation, metadata);
+  }
+
+  Future<void> writeBitBlock(BitBlock bitBlock, int value) {
+    List<Object> arguments = [];
+    arguments.add(bitBlock);
+    arguments.add(value);
+    Map<Symbol, Object> namedArguments = {};
+
+    Invocation _$invocation =
+        Invocation.method(#writeBitBlock, arguments, namedArguments);
 
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.positionalArgumentMetadata.add([]);

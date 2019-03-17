@@ -9,17 +9,16 @@ Host york;
 Host companion;
 
 Ontario ontario;
-OsramBulb bulb;
-MCP23017 mcp;
 
-OsramBulb deskLamp;
+RCSocket deskLamp;
 RCSocket workbenchLamp;
 RCSocket computerPeripherals;
-
 RCSocket ambientLight;
 
 Blackbird blackbird;
 Host local;
+
+MCP23017 mcp;
 
 void setupDomum(String name) {
   registerDevices();
@@ -47,18 +46,15 @@ void setupDomum(String name) {
   blackbird.cluster.devices.remove(local);
 
   ontario = new Ontario();
-  bulb = new OsramBulb();
-  bulb.ontario = ontario;
 
   mcp = new MCP23017();
   mcp.master = ontario;
   mcp.address = 32;
 
-  // deskLamp = DipSwitchSocket('1000110000');
-  // deskLamp.sender = ontario;
-  deskLamp = bulb;
+  deskLamp = DipSwitchSocket('1000101000');
+  deskLamp.sender = ontario;
 
-  workbenchLamp = DipSwitchSocket('1000101000');
+  workbenchLamp = DipSwitchSocket('1000110000');
   workbenchLamp.sender = ontario;
 
   ambientLight = IntertechnoSwitch('M', 6);

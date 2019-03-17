@@ -41,7 +41,7 @@ main() async {
   // #############################
 
   AppleRemote remote = new AppleRemote();
-  remote.address = 0xc6;
+  remote.address = AppleRemote.ALL_ADDR; //0xc6;
   remote.receiver = ontario;
 
   remote = await blackbird.interfaceDevice(remote);
@@ -78,6 +78,8 @@ main() async {
       new SequenceTrigger(remote.keyCode, [Codes.KEY_DOWN, Codes.KEY_CENTER_1]);
   sequence.trigger.listen((_) => computerPeripherals.toggle());
 
+  remote.keyCode.listen(print);
+
   // bulbe = new OsramBulb();
   // bulbe.ontario = ontario;
 
@@ -104,7 +106,7 @@ main() async {
   mpr.address = Address.GND;
   mpr.master = ontario;
   mpr = await blackbird.interfaceDevice(mpr);
-
+  await mprStart();
   // await testBus();
   // bulbe.turnOn();
   // await Future.delayed(Duration(milliseconds: 500));
@@ -158,22 +160,45 @@ void mprStart() async {
   print('sr done ${await mpr.electrodeEnable}');
 
   List<Electrode> electrodes = [];
-  for (int i = 0; i < 8; i++) {
+  for (int i = 0; i < 10; i++) {
     electrodes.add(mpr.electorde(i));
   }
 
   var config = ElectrodeConfig(0x3F ~/ 2, 4, 470, 100, 80);
   for (int i = 0; i < 7; i++) await electrodes[i].loadConfig(config);
 
-  await mpr.setElectrodeEnable(8);
+  var config2 = ElectrodeConfig(0x3F ~/ 2, 4, 540, 100, 80);
+  await electrodes[8].loadConfig(config2);
+  await electrodes[9].loadConfig(config2);
+
+  await mpr.setElectrodeEnable(10);
   print('enabled: ${await mpr.electrodeEnable}');
 
   mpr.touchEvent.listen(print);
 
-  electrodes[6]
-      .change
-      .where((t) => t == Transition.TOUCHED)
-      .listen((e) => deskLamp.toggle());
+  electrodes[6].touched.listen((e) => workbenchLamp.toggle());
+  electrodes[4].touched.listen((e) => deskLamp.toggle());
+  electrodes[5].touched.listen((e) => ambientLight.toggle());
+
+  var ep = mpr.touchEvent
+      .where((e) => e.transition.isTouched)
+      .map((e) => e.electrode)
+      .asBroadcastStream();
+
+  SequenceTrigger doubleTab = new SequenceTrigger(ep, [8, 8]);
+  doubleTab.trigger.listen((_) => deskLamp.toggle());
+
+  SequenceTrigger doubleTab2 = new SequenceTrigger(ep, [9, 9]);
+  doubleTab2.trigger.listen((_) => workbenchLamp.toggle());
+
+  SequenceTrigger doubleTab3 = new SequenceTrigger(ep, [8, 9, 8]);
+  doubleTab3.trigger.listen((_) => ambientLight.toggle());
+
+  SequenceTrigger doubleTab5 = new SequenceTrigger(ep, [3, 3]);
+  doubleTab5.trigger.listen((_) => computerPeripherals.toggle());
+  // while (true) {
+  //   print(await electrodes[8].electrodeFilteredData);
+  // }
 
   // electrodes[4]
   //     .change
@@ -191,15 +216,15 @@ testBus() async {
   print('=====================================');
   print('');
 
-  I2CSlave slave = new I2CSlave();
-  slave.master = ontario;
-  slave.address = 0x74;
-  // slave.address = int.parse('01110100', radix: 2);
+  // I2CSlave slave = new I2CSlave();
+  // slave.master = ontario;
+  // slave.address = 0x74;
+  // // slave.address = int.parse('01110100', radix: 2);
 
-  slave = await blackbird.interfaceDevice(slave);
+  // slave = await blackbird.interfaceDevice(slave);
 
-  int value = int.parse('00001000', radix: 2);
-  slave.writeRegisters(value, []);
+  // int value = int.parse('00001000', radix: 2);
+  // slave.writeRegisters(value, []);
 
   print('done');
   await mpr.writeRegister(0x5E, 0x15);

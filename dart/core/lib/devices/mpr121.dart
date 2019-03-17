@@ -3,8 +3,11 @@ import 'dart:async';
 import 'package:blackbird/blackbird.dart';
 import 'i2c.dart';
 import 'package:synchronized/synchronized.dart';
+import 'byte_operations.dart';
+import 'register_table_device.dart';
 part 'mpr121.g.dart';
 
+//TODO abstract Bit operations
 class ElectrodeConfig {
   final int chargeCurrent;
   final int chargeTime;
@@ -76,7 +79,7 @@ class Electrode {
 /// Not considered / implemented:
 ///  - OVCF, over-current flag, 5.2
 ///  - GPIO
-abstract class MPR121 extends I2CSlave {
+abstract class MPR121 extends I2CSlave with RegisterTableDevice {
   MPR121._() : super.extender();
   factory MPR121() => _$MPR121Device();
   static MPR121 getRemote(Context context, String uuid) =>
@@ -144,11 +147,6 @@ abstract class MPR121 extends I2CSlave {
 
     await writeRegisters(baseRegister + offset * registerSkip, values);
   }
-
-  Future<int> readBitBlock(BitBlock bitBlock) =>
-      readBits(bitBlock.register, bitBlock.firstBit, bitBlock.numBits);
-  Future<void> writeBitBlock(BitBlock bitBlock, int value) =>
-      writeBits(bitBlock.register, bitBlock.firstBit, bitBlock.numBits, value);
 
   get touchDebounce => readBitBlock(BitBlocks.DT);
   setTouchDebounce(int value) => writeBitBlock(BitBlocks.DT, value);
@@ -229,7 +227,7 @@ abstract class MPR121 extends I2CSlave {
   Future<void> softReset() => writeRegister(Register.SRST, 0x63);
 
   @Ignore()
-  Electrode electorde(int index) => new Electrode(this, index);
+  Electrode electrode(int index) => new Electrode(this, index);
 
   get touchStatus async => await read16Bit(Register.TS1) & 0x7FFF;
 
@@ -477,14 +475,6 @@ class TouchEvent {
 
   @override
   String toString() => 'TouchEvent[$electrode, $transition]';
-}
-
-class BitBlock {
-  final int register;
-  final int firstBit;
-  final int numBits;
-
-  const BitBlock(this.register, this.firstBit, this.numBits);
 }
 
 class BitBlocks {

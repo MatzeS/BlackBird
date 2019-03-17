@@ -40,8 +40,8 @@ abstract class OsramBulb extends Device with BinaryOutput, BufferedOutput {
   static OsramBulb getRemote(Context context, String uuid) =>
       _$OsramBulbRmi.getRemote(context, uuid);
 
-  Ontario ontario;
-  _send(int data) => ontario.sendIR(data);
+  IRTransmitter transmitter;
+  _send(int data) => transmitter.transmitIRCode(data);
 
   toggle() => state = state == ON ? OFF : ON;
 

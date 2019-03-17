@@ -1,6 +1,6 @@
 import 'package:blackbird/blackbird.dart';
 
-part 'ir_receiver.g.dart';
+part 'ir.g.dart';
 
 abstract class IRReceiver extends Device {
   IRReceiver._();
@@ -9,4 +9,13 @@ abstract class IRReceiver extends Device {
 
   @Executive()
   Stream<int> get receive;
+}
+
+abstract class IRTransmitter extends Device {
+  IRTransmitter._();
+  static IRTransmitter getRemote(Context context, String uuid) =>
+      _$IRTransmitterRmi.getRemote(context, uuid);
+
+  @Executive()
+  Future<void> transmitIRCode(int code);
 }

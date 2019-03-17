@@ -12,9 +12,6 @@ import 'package:source_gen/source_gen.dart';
 import 'package:blackbird/blackbird.dart';
 import 'package:blackbird_common/member_identifier.dart';
 import 'dart:io';
-//TODO abstract executive getter
-
-//todo load
 
 String source = '''
 import 'package:blackbird/blackbird.dart';
@@ -28,6 +25,8 @@ abstract class SimpleDevice implements Device {
   void executiveMethod() {}
   int get executiveGetter {}
   set executiveSetter(int value) {}
+
+  void abstractExecutiveMethod();
 
   @Property()
   int get annotationProperty => aProperty + 1;

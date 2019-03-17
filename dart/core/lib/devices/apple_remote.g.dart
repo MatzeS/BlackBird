@@ -70,7 +70,7 @@ class _$AppleRemoteImplementation extends AppleRemote {
       info.dependencies.add(new Dependency(
           name: #receiver,
           type: [
-            "asset:blackbird/lib/devices/ir_receiver.dart#IRReceiver",
+            "asset:blackbird/lib/devices/ir.dart#IRReceiver",
             "asset:blackbird/lib/src/device.dart#Device",
             "dart:core#Object"
           ],
@@ -548,8 +548,7 @@ class _$AppleRemoteRmi {
   static void _registerSerializers(Context context) {}
   static void _registerStubConstructors(Context context) {
     context.registerRemoteStubConstructor(
-        'asset:blackbird/lib/devices/ir_receiver.dart#IRReceiver',
-        IRReceiver.getRemote);
+        'asset:blackbird/lib/devices/ir.dart#IRReceiver', IRReceiver.getRemote);
     context.registerRemoteStubConstructor(
         'asset:blackbird/lib/devices/apple_remote.dart#AppleRemote', getRemote);
   }

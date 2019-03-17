@@ -33,12 +33,12 @@ class _$OsramBulbDevice extends OsramBulb {
       throw new Exception("you cannot execute stuff on devices");
   dynamic dim() async =>
       throw new Exception("you cannot execute stuff on devices");
-  Ontario ontario;
+  IRTransmitter transmitter;
 }
 
 class _$OsramBulbImplementation extends OsramBulb {
   Host _host;
-  Ontario _ontario;
+  IRTransmitter _transmitter;
 
   _$OsramBulbImplementation(OsramBulb delegate, Map<Symbol, Object> parameters)
       : super._() {
@@ -55,21 +55,21 @@ class _$OsramBulbImplementation extends OsramBulb {
           module: null,
           isModule: false));
       info.dependencies.add(new Dependency(
-          name: #ontario,
+          name: #transmitter,
           type: [
-            "asset:blackbird/lib/devices/ontario.dart#Ontario",
+            "asset:blackbird/lib/devices/ir.dart#IRTransmitter",
             "asset:blackbird/lib/src/device.dart#Device",
             "dart:core#Object"
           ],
           device: this,
-          module: delegate.ontario,
+          module: delegate.transmitter,
           isModule: true));
       info[#host].annotations.add(Runtime());
       throw info;
     }
 
     _host = parameters[#host];
-    _ontario = parameters[#ontario];
+    _transmitter = parameters[#transmitter];
   }
 
   Host get host => _host;
@@ -88,8 +88,8 @@ class _$OsramBulbImplementation extends OsramBulb {
 
   get hooks => _$OsramBulbHooks;
 
-  Ontario get ontario => _ontario;
-  set ontario(Ontario _ontario) => throw new Exception(
+  IRTransmitter get transmitter => _transmitter;
+  set transmitter(IRTransmitter _transmitter) => throw new Exception(
       "cannot change module after implementation construction");
 }
 
@@ -162,11 +162,11 @@ class _$OsramBulbInvoker {
 
       return target == positionalArguments[0];
     }
-    if (invocation.isGetter && #ontario == invocation.memberName) {
-      return target.ontario;
+    if (invocation.isGetter && #transmitter == invocation.memberName) {
+      return target.transmitter;
     }
-    if (invocation.isSetter && #ontario == invocation.memberName) {
-      target.ontario = invocation.positionalArguments[0];
+    if (invocation.isSetter && #transmitter == invocation.memberName) {
+      target.transmitter = invocation.positionalArguments[0];
       return null;
     }
     if (invocation.isGetter && #hashCode == invocation.memberName) {
@@ -478,8 +478,8 @@ class _$OsramBulbProxy implements OsramBulb {
   InvocationHandlerFunction _handle;
   _$OsramBulbProxy(this._handle) : super();
 
-  Ontario get ontario {
-    Invocation invocation = Invocation.getter(#ontario);
+  IRTransmitter get transmitter {
+    Invocation invocation = Invocation.getter(#transmitter);
 
     InvocationMetadata metadata = new InvocationMetadata();
     metadata.isStream = false;
@@ -575,7 +575,8 @@ class _$OsramBulbRmi {
   static void _registerSerializers(Context context) {}
   static void _registerStubConstructors(Context context) {
     context.registerRemoteStubConstructor(
-        'asset:blackbird/lib/devices/ontario.dart#Ontario', Ontario.getRemote);
+        'asset:blackbird/lib/devices/ir.dart#IRTransmitter',
+        IRTransmitter.getRemote);
     context.registerRemoteStubConstructor(
         'asset:blackbird/lib/devices/osram_bulb.dart#OsramBulb', getRemote);
   }

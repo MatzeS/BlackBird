@@ -31,11 +31,7 @@ class _$OntarioDevice extends Ontario {
       throw new Exception("you cannot execute stuff on devices");
   Stream<void> get commonInterrupt =>
       throw new Exception("you cannot execute stuff on devices");
-  Future<void> sendIR(int ir) =>
-      throw new Exception("you cannot execute stuff on devices");
-  Future<void> writeRegister(int slave, int register, int value) =>
-      throw new Exception("you cannot execute stuff on devices");
-  Future<int> readRegister(int slave, int register) async =>
+  Future<void> transmitIRCode(int code) async =>
       throw new Exception("you cannot execute stuff on devices");
   dynamic setupCommonInterruptStream() =>
       throw new Exception("you cannot execute stuff on devices");
@@ -131,37 +127,14 @@ Map<String, dynamic> _$OntarioToJson(Ontario instance) => <String, dynamic>{
 
 class _$OntarioInvoker {
   static dynamic invoke(Invocation invocation, Ontario target) {
-    if (invocation.isMethod && #sendIR == invocation.memberName) {
+    if (invocation.isMethod && #transmitIRCode == invocation.memberName) {
       List<Object> positionalArguments =
           List.from(invocation.positionalArguments);
       for (int i = invocation.positionalArguments.length; i < 1; i++)
         positionalArguments.add(null);
 
-      return target.sendIR(
+      return target.transmitIRCode(
         positionalArguments[0],
-      );
-    }
-    if (invocation.isMethod && #writeRegister == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 3; i++)
-        positionalArguments.add(null);
-
-      return target.writeRegister(
-        positionalArguments[0],
-        positionalArguments[1],
-        positionalArguments[2],
-      );
-    }
-    if (invocation.isMethod && #readRegister == invocation.memberName) {
-      List<Object> positionalArguments =
-          List.from(invocation.positionalArguments);
-      for (int i = invocation.positionalArguments.length; i < 2; i++)
-        positionalArguments.add(null);
-
-      return target.readRegister(
-        positionalArguments[0],
-        positionalArguments[1],
       );
     }
     if (invocation.isMethod &&
@@ -295,51 +268,15 @@ class _$OntarioInvoker {
 // **************************************************************************
 
 class _$OntarioProxy implements Ontario {
-  Future<void> sendIR(int ir) {
+  Future<void> transmitIRCode(int code) async {
     List<Object> arguments = [];
-    arguments.add(ir);
+    arguments.add(code);
     Map<Symbol, Object> namedArguments = {};
 
     Invocation _$invocation =
-        Invocation.method(#sendIR, arguments, namedArguments);
+        Invocation.method(#transmitIRCode, arguments, namedArguments);
 
     InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.isStream = false;
-
-    return _handle(_$invocation, metadata);
-  }
-
-  Future<void> writeRegister(int slave, int register, int value) {
-    List<Object> arguments = [];
-    arguments.add(slave);
-    arguments.add(register);
-    arguments.add(value);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#writeRegister, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.positionalArgumentMetadata.add([]);
-    metadata.isStream = false;
-
-    return _handle(_$invocation, metadata);
-  }
-
-  Future<int> readRegister(int slave, int register) async {
-    List<Object> arguments = [];
-    arguments.add(slave);
-    arguments.add(register);
-    Map<Symbol, Object> namedArguments = {};
-
-    Invocation _$invocation =
-        Invocation.method(#readRegister, arguments, namedArguments);
-
-    InvocationMetadata metadata = new InvocationMetadata();
-    metadata.positionalArgumentMetadata.add([]);
     metadata.positionalArgumentMetadata.add([]);
     metadata.isStream = false;
 

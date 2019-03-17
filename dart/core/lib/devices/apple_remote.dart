@@ -1,5 +1,5 @@
 import 'package:blackbird/blackbird.dart';
-import 'package:blackbird/devices/ir_receiver.dart';
+import 'package:blackbird/devices/ir.dart';
 
 part 'apple_remote.g.dart';
 

@@ -228,6 +228,7 @@ abstract class Host extends Device {
   @Runtime()
   Blackbird get blackbird;
 
+  @Executive()
   Future<Device> getRemoteHandle(@NotAsRmi() Device device) async {
     return await blackbird.localGetRemoteHandle(device);
   }
